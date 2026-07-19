@@ -1,11 +1,25 @@
 #!/usr/bin/env sh
 set -eu
+
+GAME_TITLE="Valya Adventure"
+LOVEJS_VERSION="11.4.1"
+
 ./scripts/build-love.sh >/dev/null
 rm -rf dist/web
 mkdir -p dist/web
-cp platform/web/index.html dist/web/index.html
-cp dist/valya-adventure.love dist/web/game.love
+
+if [ -x ./node_modules/.bin/love.js ]; then
+  LOVEJS="./node_modules/.bin/love.js"
+else
+  LOVEJS="npx --yes love.js@${LOVEJS_VERSION}"
+fi
+
+# Build the compatibility target so GitHub Pages can serve the game as plain
+# static files without cross-origin isolation headers for SharedArrayBuffer.
+$LOVEJS dist/valya-adventure.love dist/web -c -t "$GAME_TITLE"
+
 cat > dist/web/README.md <<'EOT'
-Serve this directory over HTTP. This scaffold contains game.love and index.html. To produce game.data/game.js/love.wasm, install or provide a compatible love.js release and run its packager against game.love. Runtime is intentionally not vendored here.
+Serve this directory over HTTP. It contains the static love.js compatibility build generated from dist/valya-adventure.love and can be published directly by GitHub Pages.
 EOT
-echo "Created dist/web scaffold with game.love. Provide love.js runtime to complete wasm packaging."
+
+echo "Created runnable love.js web build in dist/web."
