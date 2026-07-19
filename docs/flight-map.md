@@ -36,7 +36,8 @@ All cycle logic is a pure, tested module so the scene just drives it:
   returns to free flight.
 - `allCompleted()` / `reset()` — drive the celebration and cycle restart.
 - `visibleCharacters()` / `panelStates()` — what the scene renders: all
-  uncompleted characters in free flight, only the active one during a mission.
+  uncompleted characters in free flight, and none during an active mission (the
+  chosen character has "boarded"; the panel + target guidance carry it).
 
 ## A is the single interaction button
 
