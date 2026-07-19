@@ -18,6 +18,21 @@ fi
 # static files without cross-origin isolation headers for SharedArrayBuffer.
 $LOVEJS dist/valya-adventure.love dist/web -c -t "$GAME_TITLE"
 
+# love.js bundles LOVE 11.4, but conf.lua targets 11.5 for the desktop build.
+# That mismatch makes LOVE's SDL message box fire a blocking "Compatibility
+# Warning" alert() on every page load. Route only that specific message box to
+# console.warn so the browser build boots straight into the game; all other
+# message boxes (real errors) keep using alert().
+node -e '
+  var fs = require("fs");
+  var f = "dist/web/love.js";
+  var s = fs.readFileSync(f, "utf8");
+  var from = "function($0,$1){alert(UTF8ToString($0)+\"\\n\\n\"+UTF8ToString($1))}";
+  var to = "function($0,$1){var t=UTF8ToString($0),m=UTF8ToString($1);if(t.indexOf(\"Compatibility Warning\")!==-1){console.warn(t+\"\\n\"+m);return}alert(t+\"\\n\\n\"+m)}";
+  if (s.indexOf(from) === -1) { console.error("build-web: compatibility-alert patch target not found in love.js"); process.exit(1); }
+  fs.writeFileSync(f, s.split(from).join(to));
+'
+
 cat > dist/web/README.md <<'EOT'
 Serve this directory over HTTP. It contains the static love.js compatibility build generated from dist/valya-adventure.love and can be published directly by GitHub Pages.
 EOT
