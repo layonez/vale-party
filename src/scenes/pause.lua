@@ -3,7 +3,7 @@ local Menu = require("src.ui.menu")
 
 local Pause = {}
 
-function Pause:enter(app, garden)
+function Pause:enter(_, app, garden)
 	self.app = app
 	self.garden = garden
 	self.selected = 1
