@@ -9,6 +9,9 @@ local World = require("src.core.world")
 local WorldData = require("content.world")
 local Recognition = require("src.core.recognition")
 local Airport = require("src.ui.airport")
+local CharacterView = require("src.ui.character")
+local ProgressPanel = require("src.ui.progress_panel")
+local MissionState = require("src.core.mission_state")
 
 -- Flight Map: the main playable scene. The player flies a small airplane that
 -- stays fixed near the center of the screen while the globe rotates beneath it.
@@ -30,6 +33,7 @@ local GLOBE = {
 local MOVE_SPEED = 45 -- degrees per second; constant, no acceleration/inertia
 local GRID_STEP = 30 -- degrees between grid lines
 local SEGMENTS = 48 -- samples per grid line
+local CHARACTER_RANGE = 7 -- angular degrees within which a character is interactable
 
 -- Debug-only auto-drift directions cycled by the dbg_drift key. Each entry is a
 -- screen-axis turn {axis, sign}: "y" = up/down flight, "z" = left/right flight.
@@ -60,6 +64,7 @@ function FlightMap:enter(_, app)
 	self.continents = Landmass.build(Continents)
 	self.world = World.new(WorldData)
 	self.recognition = Recognition.new()
+	self.mission = MissionState.new(self.world)
 	-- Precompute each country's region outline (great-circle circle) once.
 	self.countryOutlines = {}
 	for _, country in ipairs(self.world.countries) do
@@ -72,6 +77,7 @@ function FlightMap:enter(_, app)
 	self.orientation = Sphere.orientationFor(self.start.lat, self.start.lon)
 	self.time = 0
 	self.currentCountryId = nil
+	self.nearCharacterId = nil
 	-- Debug-only auto-drift so rotation is observable without holding a key.
 	-- 0 = off; other indices pick a direction from DRIFTS.
 	self.drift = 0
@@ -146,6 +152,17 @@ function FlightMap:update(dt)
 		self.recognizedName = nil
 	end
 
+	-- Nearest interactable character beneath the plane (spec §11), used for the
+	-- stronger glow; acceptance wiring arrives in a later phase.
+	self.nearCharacterId = nil
+	for _, character in ipairs(self.mission:visibleCharacters()) do
+		local d = World.angularDistance(lat, lon, character.latitude, character.longitude)
+		if d <= CHARACTER_RANGE then
+			self.nearCharacterId = character.id
+			break
+		end
+	end
+
 	self.time = self.time + dt
 end
 
@@ -213,6 +230,14 @@ function FlightMap:drawGlobe()
 	self:drawCountries(orientation)
 	-- Airports sit inside their countries; all locked in the MVP (spec §9).
 	Airport.draw(self.world.airports, orientation, GLOBE)
+	-- Mission characters visible in the current state (spec §10).
+	CharacterView.draw(
+		self.mission:visibleCharacters(),
+		orientation,
+		GLOBE,
+		self.time,
+		self.nearCharacterId
+	)
 
 	-- Horizon rim on top.
 	love.graphics.setColor(0.09, 0.24, 0.45)
@@ -253,6 +278,9 @@ function FlightMap:drawWorld()
 	drawStars(self.stars)
 	self:drawGlobe()
 	drawAirplane(GLOBE.x, GLOBE.y)
+
+	-- Permanent five-slot progress panel at the top (spec §16).
+	ProgressPanel.draw(self.world.characters, self.mission:panelStates())
 
 	-- Recognised country name, shown as a learning aid (spec §8). Play is fully
 	-- possible without reading, so this is supplementary.
