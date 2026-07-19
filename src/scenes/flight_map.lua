@@ -8,6 +8,7 @@ local Continents = require("content.continents")
 local World = require("src.core.world")
 local WorldData = require("content.world")
 local Recognition = require("src.core.recognition")
+local Airport = require("src.ui.airport")
 
 -- Flight Map: the main playable scene. The player flies a small airplane that
 -- stays fixed near the center of the screen while the globe rotates beneath it.
@@ -210,6 +211,8 @@ function FlightMap:drawGlobe()
 	end
 
 	self:drawCountries(orientation)
+	-- Airports sit inside their countries; all locked in the MVP (spec §9).
+	Airport.draw(self.world.airports, orientation, GLOBE)
 
 	-- Horizon rim on top.
 	love.graphics.setColor(0.09, 0.24, 0.45)
