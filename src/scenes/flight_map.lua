@@ -153,13 +153,32 @@ function FlightMap:update(dt)
 	end
 
 	-- Nearest interactable character beneath the plane (spec §11), used for the
-	-- stronger glow; acceptance wiring arrives in a later phase.
+	-- stronger glow and as the A-button acceptance target.
 	self.nearCharacterId = nil
 	for _, character in ipairs(self.mission:visibleCharacters()) do
 		local d = World.angularDistance(lat, lon, character.latitude, character.longitude)
 		if d <= CHARACTER_RANGE then
 			self.nearCharacterId = character.id
 			break
+		end
+	end
+
+	-- A accepts a nearby character's mission (spec §11). `pressed` is edge-
+	-- triggered, so holding A does not re-trigger. Acceptance hides the other
+	-- characters and activates the panel slot via the mission model.
+	if input:pressed("interact") and self.nearCharacterId and not self.mission:isActive() then
+		if self.mission:accept(self.nearCharacterId) then
+			self.app.log("mission_accept:" .. self.nearCharacterId)
+			Audio.playFeedback(self.app.audio)
+		end
+	end
+
+	-- B cancels the active mission (spec §6): back to free flight, mission not
+	-- completed, all unfinished characters restored.
+	if input:pressed("back") and self.mission:isActive() then
+		if self.mission:cancel() then
+			self.app.log("mission_cancel")
+			Audio.playFeedback(self.app.audio)
 		end
 	end
 
@@ -299,10 +318,12 @@ function FlightMap:drawWorld()
 	self.app.drawDebug(
 		"flight_map",
 		string.format(
-			"lat: %.1f\nlon: %.1f\nover: %s\ndrift[0]: %s\nreset[9]",
+			"lat: %.1f\nlon: %.1f\nover: %s\nnear: %s\nstate: %s\ndrift[0]: %s\nreset[9]",
 			lat,
 			lon,
 			self.currentCountryId or "-",
+			self.nearCharacterId or "-",
+			self.mission.state,
 			self.drift > 0 and driftNames[self.drift] or "off"
 		)
 	)
