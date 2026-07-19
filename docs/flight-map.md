@@ -117,6 +117,24 @@ Recordings live under `assets/voice/ru/` as Vorbis `.ogg`. Because playback
 always falls back to a beep (or silence), the game runs fully without any voice
 files present — dropping in a `de/` set later needs no code change.
 
+## Background music
+
+`Audio.startMusic` streams `assets/music.ogg` on a loop at 25% volume — quiet
+enough that the voice hints always read over it. It is **idempotent** (a second
+call while playing is a no-op, so resuming from pause never stacks a second
+track) and silently does nothing when the file is missing.
+
+Lifecycle: the Flight Map **starts** music on `enter`; the **main menu** stops
+it on `enter`. The menu is the single authoritative stop because it covers every
+path back out — including pause → menu, where the Flight Map's own `leave` never
+fires (HUMP only calls `leave` on the top-of-stack state, and the pause menu is
+pushed *on top* of the Flight Map). Pausing keeps the music playing under the
+pause overlay; restart re-enters and `startMusic` continues seamlessly.
+
+The shipped `.ogg` files are converted from mp3 masters kept locally in
+`voice-src/` (gitignored) — see [testing & debug](testing-and-debug.md) for the
+`ffmpeg` recipe (the built-in Vorbis encoder needs `-ac 2 -strict -2`).
+
 ## Cycle celebration (spec §17)
 
 Completing the fifth mission pauses flight and shows a gentle festive overlay

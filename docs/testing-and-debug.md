@@ -72,6 +72,20 @@ it. Keep source art sized for its on-screen use, and watch that stray files
 (e.g. a `plane_old.png` backup left in `assets/`) don't get swept into the
 build.
 
+The same discipline applies to audio. Voice lines (`assets/voice/<lang>/*.ogg`)
+and the looping music (`assets/music.ogg`) ship as **Vorbis `.ogg`**, converted
+from mp3 masters that live in the **gitignored `voice-src/`** — masters never
+enter `assets/`, so the build globs only the shipped `.ogg`s. Convert with:
+
+```sh
+ffmpeg -i voice-src/<name>.mp3 -ac 2 -c:a vorbis -strict -2 -q:a 4 assets/voice/ru/<id>.ogg
+```
+
+`-ac 2` and `-strict -2` are both required: Homebrew's ffmpeg ships without
+`libvorbis`, so it uses the built-in experimental Vorbis encoder (`-strict -2`),
+which only accepts stereo (`-ac 2`) — mono input fails with "only supports 2
+channels".
+
 ## Debug keys (gated behind debug mode)
 
 Toggle debug with **`` ` ``** (backtick — browser-safe, unlike F1 which the
