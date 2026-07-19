@@ -78,7 +78,12 @@ function Garden:drawWorld()
 
 	self.app.drawDebug(
 		"garden",
-		string.format("player: %.0f,%.0f\nnear: %s", self.player.x, self.player.y, tostring(self.near))
+		string.format(
+			"player: %.0f,%.0f\nnear: %s",
+			self.player.x,
+			self.player.y,
+			tostring(self.near)
+		)
 	)
 end
 

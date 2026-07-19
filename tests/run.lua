@@ -1,12 +1,51 @@
-package.path='./?.lua;./?/init.lua;'..package.path
-local total,fail=0,0
-local function test(name,fn) total=total+1; local ok,err=pcall(fn); if ok then print('ok - '..name) else fail=fail+1; print('not ok - '..name..' - '..tostring(err)) end end
-local function assertEq(a,b) assert(a==b, tostring(a)..' ~= '..tostring(b)) end
-local Player=require('src.entities.player'); local Settings=require('src.core.settings'); local Loc=require('src.core.localization'); local Inter=require('src.entities.interactable')
-test('diagonal movement is normalized', function() local x,y=Player.moveVector({left=false,right=true,up=true,down=false}); assert(math.abs(math.sqrt(x*x+y*y)-1)<0.0001) end)
-test('player cannot leave world bounds', function() local p=Player.new(10,10); Player.update(p,{left=true,up=true},1,{x=0,y=0,w=640,h=480},{}); assert(p.x>=p.radius and p.y>=p.radius) end)
-test('malformed settings fall back', function() local s=Settings.decode('not lua'); assertEq(s.language,'ru'); assertEq(s.fullscreen,false) end)
-test('missing German falls back to Russian', function() local l=Loc.new('de'); assertEq(l:t('missing.key'),'missing.key'); assertEq(l:t('menu.start'),'Start') end)
-test('switching language updates menu labels', function() local l=Loc.new('ru'); assertEq(l:t('menu.start'),'Старт'); l:setLanguage('de'); assertEq(l:t('menu.start'),'Start') end)
-test('interaction activates only in range', function() local o=Inter.new(100,100); assert(Inter.isNear(o,{x=150,y=100})); assert(not Inter.isNear(o,{x=250,y=100})) end)
-print(string.format('%d tests, %d failures',total,fail)); os.exit(fail)
+package.path = "./?.lua;./?/init.lua;" .. package.path
+local total, fail = 0, 0
+local function test(name, fn)
+	total = total + 1
+	local ok, err = pcall(fn)
+	if ok then
+		print("ok - " .. name)
+	else
+		fail = fail + 1
+		print("not ok - " .. name .. " - " .. tostring(err))
+	end
+end
+local function assertEq(a, b)
+	assert(a == b, tostring(a) .. " ~= " .. tostring(b))
+end
+local Player = require("src.entities.player")
+local Settings = require("src.core.settings")
+local Loc = require("src.core.localization")
+local Inter = require("src.entities.interactable")
+test("diagonal movement is normalized", function()
+	local x, y = Player.moveVector({ left = false, right = true, up = true, down = false })
+	assert(math.abs(math.sqrt(x * x + y * y) - 1) < 0.0001)
+end)
+test("player cannot leave world bounds", function()
+	local p = Player.new(10, 10)
+	Player.update(p, { left = true, up = true }, 1, { x = 0, y = 0, w = 640, h = 480 }, {})
+	assert(p.x >= p.radius and p.y >= p.radius)
+end)
+test("malformed settings fall back", function()
+	local s = Settings.decode("not lua")
+	assertEq(s.language, "ru")
+	assertEq(s.fullscreen, false)
+end)
+test("missing German falls back to Russian", function()
+	local l = Loc.new("de")
+	assertEq(l:t("missing.key"), "missing.key")
+	assertEq(l:t("menu.start"), "Start")
+end)
+test("switching language updates menu labels", function()
+	local l = Loc.new("ru")
+	assertEq(l:t("menu.start"), "Старт")
+	l:setLanguage("de")
+	assertEq(l:t("menu.start"), "Start")
+end)
+test("interaction activates only in range", function()
+	local o = Inter.new(100, 100)
+	assert(Inter.isNear(o, { x = 150, y = 100 }))
+	assert(not Inter.isNear(o, { x = 250, y = 100 }))
+end)
+print(string.format("%d tests, %d failures", total, fail))
+os.exit(fail)

@@ -52,7 +52,14 @@ function Interactable.draw(object)
 	love.graphics.setColor(1, 0.72, 0.22)
 	for index = 1, 8 do
 		local angle = index * math.pi / 4
-		love.graphics.ellipse("fill", math.cos(angle) * 24, math.sin(angle) * 24 - 18, 15, 24, angle)
+		love.graphics.ellipse(
+			"fill",
+			math.cos(angle) * 24,
+			math.sin(angle) * 24 - 18,
+			15,
+			24,
+			angle
+		)
 	end
 	love.graphics.setColor(0.45, 0.22, 0.08)
 	love.graphics.circle("fill", 0, -18, 16)
