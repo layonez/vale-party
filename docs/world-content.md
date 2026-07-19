@@ -18,13 +18,30 @@ Content shape:
   PNGs; a `flag_asset` path is recorded for a future art swap.
 - **Airports** (1 per country) — all `state = "locked"` in the MVP, with an
   unused `level_id` recorded so unlocking later needs no data reshape.
-- **Characters** (exactly 5) — fixed positions, color, and the mission each
-  gives.
+- **Characters** (exactly 5) — fixed positions, a `color`, a portrait `sprite`
+  (art drawn on the globe and in the HUD; the `color` still tints the pulsing
+  glow behind it), and the mission each gives.
 - **Missions** (5) — link a character to a target country.
 
 A test (`data integrity: five characters, and every reference resolves`)
 enforces that every cross-reference resolves and there are exactly five
 characters/missions.
+
+## Character interaction range is angular, not pixels
+
+The plane picks up / hands off a character when the great-circle angular
+distance from its sub-point to the character is within `CHARACTER_RANGE` (in the
+scene). **This is degrees on the globe, and the on-screen radius is
+`globe.radius * sin(range)`** — so the numbers feel much smaller than they look:
+at radius 210, 7° ≈ 26px but 28° ≈ 105px. The range was widened to **28°** so
+pickup triggers when the enlarged sprite visually overlaps the plane, not only
+when dead-centred.
+
+At that size the zones can overlap, so the scene picks the **nearest** character
+in range rather than the first one found. The five characters are ≥38.7° apart
+(closest pair), and two 28° zones would only both catch the plane within 36°, so
+in practice you are never "near" two at once — but nearest-wins keeps it correct
+if positions ever change.
 
 ## Detection regions are circles, and must not overlap
 

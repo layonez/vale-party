@@ -51,9 +51,42 @@ state-dependent (spec §6):
 A is edge-triggered (`input:pressed`), so **holding A never re-triggers** (spec
 §6). **B** cancels an active mission.
 
+## Characters, hover feedback, and highlight
+
+Characters render as portrait art ([`src/ui/character.lua`](../src/ui/character.lua))
+with a tinted glow behind them so they read as interactive beacons. Art loads
+lazily and is cached by path; a vector dot is the fallback when there is no
+graphics context (tests) or the asset is missing.
+
+When the plane moves within range of a character (the "near" one, see
+[world content](world-content.md#character-interaction-range-is-angular-not-pixels)),
+it is **highlighted**: a brighter, faster-pulsing layered halo (colored fill +
+white rim) and a gentle scale pulse on the sprite, while the other characters
+dim slightly for contrast. Entering the near-state also plays a soft, short
+"here!" blip (`Audio.playHover`) — **edge-triggered** on the scene's
+`nearCharacterId` so it fires once on arrival, not every frame while lingering.
+Because a hover means the plane sits *on top of* the character, the plane sprite
+covers the art; the halo around the plane is what communicates the highlight.
+
+## HUD layout
+
+Everything sits at the screen edges so it never covers the globe center:
+
+- **Progress panel** — a vertical column of character slots down the **left**
+  edge, centered vertically ([`src/ui/progress_panel.lua`](../src/ui/progress_panel.lua)).
+  Each slot shows the portrait (dimmed + green check when completed, bright
+  border when active).
+- **Recognised-country name** — a centered strip near the **top** edge
+  (learning aid, spec §8).
+- **Mission box** — bottom-right (below).
+
 ## Guidance while a mission is active (spec §13, §14)
 
-- **Mission box** (bottom-right): target flag, name, and a `?`.
+- **Mission box** (bottom-right): the carried character's portrait on the left,
+  a "wants to go" prompt, then the target country name in **bold** with its flag
+  to the right. Bold is faked (DejaVuSans has no bold face) by stamping the text
+  with 1px offsets; the name **auto-shrinks** to fit one line so long names like
+  "Германия" never wrap.
 - **Target arrow**: a large high-contrast chevron at the globe rim pointing
   toward the target **while it is behind the horizon**; it disappears once any
   part of the target is on screen.
@@ -62,6 +95,27 @@ A is edge-triggered (`input:pressed`), so **holding A never re-triggers** (spec
 
 Target visibility is computed from the region center plus its outline samples,
 so a partial edge coming over the horizon counts.
+
+## Voice hints (spec §8, §11)
+
+The game is for a pre-reader, so the key moments are also spoken in Russian.
+`Audio.playVoice(audio, lang, id[, quiet])` loads `assets/voice/<lang>/<id>.ogg`,
+caches each source, and plays it on a single shared voice channel so lines never
+talk over each other. A missing file falls back to the confirmation beep, unless
+`quiet` is set (additive cues that shouldn't beep in languages without a
+recording).
+
+| Moment | Trigger | Voice id |
+| --- | --- | --- |
+| Start greeting | `FlightMap:enter` | `greeting` (quiet) |
+| Country recognized | dwell recognition | `voice.<country_id>` |
+| Friend accepted | A near a character | active mission id (`mission_1`…`mission_5`) |
+| Friend delivered | A over the target | `success` (quiet) |
+| All five done | fifth completion / debug finish | `celebration` (quiet) |
+
+Recordings live under `assets/voice/ru/` as Vorbis `.ogg`. Because playback
+always falls back to a beep (or silence), the game runs fully without any voice
+files present — dropping in a `de/` set later needs no code change.
 
 ## Cycle celebration (spec §17)
 
@@ -76,5 +130,6 @@ resumes.
 `drawWorld` draws back-to-front: starfield → ocean disc → continents →
 graticule → country outlines/highlights → characters → horizon rim → the plane
 (pinned at center, see [globe & movement](globe-and-movement.md#plane-sprite--facing))
-→ HUD (panel, mission box, arrow, name banner, celebration). Airports would sit
-between outlines and characters but are currently disabled.
+→ HUD (left-column progress panel, top country-name strip, bottom-right mission
+box, target arrow, celebration). Airports would sit between outlines and
+characters but are currently disabled.

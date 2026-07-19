@@ -8,7 +8,7 @@ local Plane = {}
 
 local SHEET = "assets/sprites/plane.png"
 local CELL = 418 -- each sprite cell is 418x418 (1254 / 3)
-local DRAW_SIZE = 108 -- on-screen size of the plane on the 640x480 canvas
+local DRAW_SIZE = 140 -- on-screen size of the plane on the 640x480 canvas (~30% larger for readability on small screens)
 
 -- Compass cell (column, row), 0-based, for each facing.
 local CELLS = {

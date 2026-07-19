@@ -17,4 +17,5 @@ return {
 	["country.australia"] = "Австралия",
 	["country.egypt"] = "Египет",
 	["flight.cycle_complete"] = "Молодец! Все задания выполнены!",
+	["flight.wants_to_go"] = "хочет в",
 }

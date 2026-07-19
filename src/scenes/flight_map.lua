@@ -40,7 +40,9 @@ local GLOBE = {
 local MOVE_SPEED = 45 -- degrees per second; constant, no acceleration/inertia
 local GRID_STEP = 30 -- degrees between grid lines
 local SEGMENTS = 48 -- samples per grid line
-local CHARACTER_RANGE = 7 -- angular degrees within which a character is interactable
+-- Angular degrees within which a character is interactable (~105px on screen).
+-- Sized so pickup triggers when the sprite visually overlaps the plane.
+local CHARACTER_RANGE = 28
 local CELEBRATION_TIME = 4 -- seconds the cycle celebration plays before auto-ending (spec §17)
 local FACING_STEP_TIME = 0.09 -- seconds per one-tile step when the plane turns
 
@@ -113,6 +115,17 @@ function FlightMap:enter(_, app)
 	-- Debug-only auto-drift so rotation is observable without holding a key.
 	-- 0 = off; other indices pick a direction from DRIFTS.
 	self.drift = 0
+
+	-- Spoken greeting on game start (spec §8-style voice hint): "Привет, Валюша!
+	-- Давай поможем твоим друзьям добраться до дома!". Quiet fallback so languages
+	-- without a recording stay silent rather than beeping on entry.
+	Audio.playVoice(self.app.audio, self.app.loc.language, "greeting", true)
+
+	-- Gentle looping background music while playing. Idempotent, so resuming from
+	-- pause (a push, not a re-enter) never stacks a second track. The main menu
+	-- stops it on entry, which covers every path back out (including pause ->
+	-- menu, where this scene's leave never fires because it is not the top state).
+	Audio.startMusic(self.app.audio)
 end
 
 -- Persist the current session (spec §20): airplane front position, completed
@@ -201,6 +214,7 @@ function FlightMap:update(dt)
 			end
 			self.celebrationTime = CELEBRATION_TIME
 			self.app.log("cycle_celebration")
+			Audio.playVoice(self.app.audio, self.app.loc.language, "celebration", true)
 		end
 	else
 		self.drift = 0
@@ -246,14 +260,23 @@ function FlightMap:update(dt)
 	end
 
 	-- Nearest interactable character beneath the plane (spec §11), used for the
-	-- stronger glow and as the A-button acceptance target.
+	-- stronger glow and as the A-button acceptance target. With the generous
+	-- range, zones can overlap, so pick the closest character rather than the
+	-- first one found.
+	local previousNear = self.nearCharacterId
 	self.nearCharacterId = nil
+	local nearest = CHARACTER_RANGE
 	for _, character in ipairs(self.mission:visibleCharacters()) do
 		local d = World.angularDistance(lat, lon, character.latitude, character.longitude)
-		if d <= CHARACTER_RANGE then
+		if d <= nearest then
+			nearest = d
 			self.nearCharacterId = character.id
-			break
 		end
+	end
+	-- Play a gentle hover blip when we first move onto a character (edge-triggered
+	-- so it does not repeat every frame while lingering over the same one).
+	if self.nearCharacterId and self.nearCharacterId ~= previousNear then
+		Audio.playHover(self.app.audio)
 	end
 
 	-- A is the single interaction button (spec §6). Its effect depends on state:
@@ -267,18 +290,25 @@ function FlightMap:update(dt)
 				local doneCharacter = self.mission:complete()
 				if doneCharacter then
 					self.app.log("mission_complete:" .. doneCharacter)
-					Audio.playFeedback(self.app.audio)
-					-- Fifth completion starts the cycle celebration (spec §17).
+					-- Fifth completion starts the cycle celebration (spec §17): let
+					-- the celebration line ("Все друзья дома!") carry the finale;
+					-- otherwise the friend cheers home ("Ура! Мы дома!").
 					if self.mission:allCompleted() then
 						self.celebrationTime = CELEBRATION_TIME
 						self.app.log("cycle_celebration")
+						Audio.playVoice(self.app.audio, self.app.loc.language, "celebration", true)
+					else
+						Audio.playVoice(self.app.audio, self.app.loc.language, "success", true)
 					end
 				end
 			end
 		elseif self.nearCharacterId then
 			if self.mission:accept(self.nearCharacterId) then
 				self.app.log("mission_accept:" .. self.nearCharacterId)
-				Audio.playFeedback(self.app.audio)
+				-- The friend speaks their request ("Отвези меня в ..."); its id is
+				-- the accepted mission id. Falls back to the beep if unrecorded.
+				local accepted = self.mission:activeMission()
+				Audio.playVoice(self.app.audio, self.app.loc.language, accepted.id)
 			end
 		end
 	end
@@ -485,18 +515,25 @@ function FlightMap:drawWorld()
 			)
 			TargetArrow.draw(dx, dy)
 		end
-		MissionBox.draw(target, self.app.loc:t(target.name_key))
+		local character = self.world:character(mission.character_id)
+		MissionBox.draw(
+			target,
+			self.app.loc:t(target.name_key),
+			character,
+			self.app.loc:t("flight.wants_to_go")
+		)
 	end
 
-	-- Recognised country name, shown as a learning aid (spec §8). Play is fully
-	-- possible without reading, so this is supplementary.
+	-- Recognised country name, shown as a learning aid (spec §8) as a strip near
+	-- the top edge. Play is fully possible without reading, so this is
+	-- supplementary.
 	if self.recognizedName then
 		love.graphics.setFont(Fonts.get(26))
 		local w = 360
 		love.graphics.setColor(0.05, 0.1, 0.2, 0.8)
-		love.graphics.rectangle("fill", (640 - w) / 2, 400, w, 48, 14)
+		love.graphics.rectangle("fill", (640 - w) / 2, 8, w, 44, 12)
 		love.graphics.setColor(1, 0.97, 0.7)
-		love.graphics.printf(self.recognizedName, (640 - w) / 2, 412, w, "center")
+		love.graphics.printf(self.recognizedName, (640 - w) / 2, 18, w, "center")
 	end
 
 	-- Cycle celebration overlay (spec §17): shown after all five are done.
