@@ -14,6 +14,7 @@ local ProgressPanel = require("src.ui.progress_panel")
 local MissionState = require("src.core.mission_state")
 local MissionBox = require("src.ui.mission_box")
 local TargetArrow = require("src.ui.target_arrow")
+local Plane = require("src.ui.plane")
 local SaveGameLove = require("src.core.savegame_love")
 
 -- Flight Map: the main playable scene. The player flies a small airplane that
@@ -38,6 +39,7 @@ local GRID_STEP = 30 -- degrees between grid lines
 local SEGMENTS = 48 -- samples per grid line
 local CHARACTER_RANGE = 7 -- angular degrees within which a character is interactable
 local CELEBRATION_TIME = 4 -- seconds the cycle celebration plays before auto-ending (spec §17)
+local FACING_STEP_TIME = 0.06 -- seconds per one-tile step when the plane turns
 
 -- Debug-only auto-drift directions cycled by the dbg_drift key. Each entry is a
 -- screen-axis turn {axis, sign}: "y" = up/down flight, "z" = left/right flight.
@@ -88,6 +90,9 @@ function FlightMap:enter(_, app)
 	self.time = 0
 	self.currentCountryId = nil
 	self.nearCharacterId = nil
+	self.facing = "s" -- plane faces the viewer by default (spec §4)
+	self.targetFacing = "s"
+	self.facingTimer = 0
 	-- Debug-only auto-drift so rotation is observable without holding a key.
 	-- 0 = off; other indices pick a direction from DRIFTS.
 	self.drift = 0
@@ -194,6 +199,18 @@ function FlightMap:update(dt)
 	end
 	if axis then
 		self.orientation = Sphere.turn(self.orientation, axis, angle)
+		-- Aim at the travel direction; the sprite spins toward it through the
+		-- intermediate compass tiles (below). Idle keeps the last target.
+		self.targetFacing = Plane.facingFor(axis, angle) or self.targetFacing
+	end
+
+	-- Step the drawn facing one tile toward the target at a fixed rate, so a
+	-- left->right turn visibly rotates through the diagonal/vertical sprites
+	-- instead of snapping (spec §4).
+	self.facingTimer = (self.facingTimer or 0) + dt
+	while self.facingTimer >= FACING_STEP_TIME do
+		self.facingTimer = self.facingTimer - FACING_STEP_TIME
+		self.facing = Plane.stepToward(self.facing, self.targetFacing)
 	end
 
 	-- Country detection uses the world point beneath the airplane (view front).
@@ -397,15 +414,8 @@ function FlightMap:drawCountries(orientation)
 	end
 end
 
-local function drawAirplane(x, y)
-	love.graphics.push()
-	love.graphics.translate(x, y)
-	love.graphics.setColor(1, 0.95, 0.4)
-	love.graphics.polygon("fill", 0, -18, 12, 14, 0, 8, -12, 14)
-	love.graphics.setColor(0.2, 0.2, 0.25)
-	love.graphics.setLineWidth(3)
-	love.graphics.polygon("line", 0, -18, 12, 14, 0, 8, -12, 14)
-	love.graphics.pop()
+local function drawAirplane(x, y, facing)
+	Plane.draw(x, y, facing)
 end
 
 function FlightMap:drawWorld()
@@ -413,7 +423,7 @@ function FlightMap:drawWorld()
 	love.graphics.rectangle("fill", 0, 0, 640, 480)
 	drawStars(self.stars)
 	self:drawGlobe()
-	drawAirplane(GLOBE.x, GLOBE.y)
+	drawAirplane(GLOBE.x, GLOBE.y, self.facing)
 
 	-- Permanent five-slot progress panel at the top (spec §16).
 	ProgressPanel.draw(self.world.characters, self.mission:panelStates())

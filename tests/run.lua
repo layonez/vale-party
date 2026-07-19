@@ -21,6 +21,7 @@ local worldData = require("content.world")
 local Recognition = require("src.core.recognition")
 local MissionState = require("src.core.mission_state")
 local SaveGame = require("src.core.savegame")
+local Plane = require("src.ui.plane")
 local function assertClose(a, b, eps)
 	assert(math.abs(a - b) < (eps or 0.0001), tostring(a) .. " ~= " .. tostring(b))
 end
@@ -286,6 +287,29 @@ test("savegame normalize clamps bad latitude and drops non-string ids", function
 	assertEq(s.lon, 10) -- non-number longitude rejected -> default
 	assertEq(#s.completed, 1)
 	assertEq(s.completed[1], "ok")
+end)
+test("plane facing steps one tile toward the target, not snapping", function()
+	-- west -> east must pass through a diagonal/vertical tile, not jump directly.
+	local step1 = Plane.stepToward("w", "e")
+	assert(step1 == "nw" or step1 == "sw", "first step should be a diagonal, got " .. step1)
+	assert(step1 ~= "e", "must not snap straight to the target")
+end)
+test("plane facing reaches the target over several steps along shortest arc", function()
+	local f = "w"
+	for _ = 1, 8 do
+		f = Plane.stepToward(f, "e")
+		if f == "e" then
+			break
+		end
+	end
+	assertEq(f, "e")
+end)
+test("plane facing takes the shortest arc (n -> e goes clockwise via ne)", function()
+	assertEq(Plane.stepToward("n", "e"), "ne")
+	assertEq(Plane.stepToward("n", "w"), "nw") -- counter-clockwise is shorter here
+end)
+test("plane facing holds when already at the target", function()
+	assertEq(Plane.stepToward("e", "e"), "e")
 end)
 print(string.format("%d tests, %d failures", total, fail))
 os.exit(fail)
