@@ -27,6 +27,40 @@ function MissionState:reset()
 	self.state = MissionState.FREE_FLIGHT
 end
 
+-- Restore from a save: a list of completed character ids and an optional active
+-- mission id (spec §20). Unknown ids are ignored so a stale save never wedges
+-- the cycle. An active mission whose character is already completed is dropped.
+---@param completedIds string[]
+---@param activeMissionId string|nil
+function MissionState:restore(completedIds, activeMissionId)
+	self:reset()
+	for _, id in ipairs(completedIds or {}) do
+		if self.world:character(id) then
+			self.completed[id] = true
+		end
+	end
+	if activeMissionId then
+		local mission = self.world:mission(activeMissionId)
+		if mission and not self.completed[mission.character_id] then
+			self.activeMissionId = activeMissionId
+			self.state = MissionState.MISSION_ACTIVE
+		end
+	end
+end
+
+-- Snapshot for saving: the completed character ids and the active mission id.
+---@return string[] completedIds
+---@return string|nil activeMissionId
+function MissionState:snapshot()
+	local ids = {}
+	for _, character in ipairs(self.world.characters) do
+		if self.completed[character.id] then
+			ids[#ids + 1] = character.id
+		end
+	end
+	return ids, self.activeMissionId
+end
+
 ---@return boolean
 function MissionState:isActive()
 	return self.activeMissionId ~= nil

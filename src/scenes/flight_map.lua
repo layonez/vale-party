@@ -14,6 +14,7 @@ local ProgressPanel = require("src.ui.progress_panel")
 local MissionState = require("src.core.mission_state")
 local MissionBox = require("src.ui.mission_box")
 local TargetArrow = require("src.ui.target_arrow")
+local SaveGameLove = require("src.core.savegame_love")
 
 -- Flight Map: the main playable scene. The player flies a small airplane that
 -- stays fixed near the center of the screen while the globe rotates beneath it.
@@ -77,13 +78,37 @@ function FlightMap:enter(_, app)
 	end
 	-- Start in the northern part of the globe, no mission active (spec §3).
 	self.start = { lat = 40, lon = 10 }
-	self.orientation = Sphere.orientationFor(self.start.lat, self.start.lon)
+
+	-- Restore the saved session if present (spec §20): airplane position, cycle
+	-- completion, and active mission. A fresh save just yields the start state.
+	local saved = SaveGameLove.load(app.log)
+	self.orientation = Sphere.orientationFor(saved.lat, saved.lon)
+	self.mission:restore(saved.completed, saved.activeMissionId)
+
 	self.time = 0
 	self.currentCountryId = nil
 	self.nearCharacterId = nil
 	-- Debug-only auto-drift so rotation is observable without holding a key.
 	-- 0 = off; other indices pick a direction from DRIFTS.
 	self.drift = 0
+end
+
+-- Persist the current session (spec §20): airplane front position, completed
+-- characters, and the active mission id.
+function FlightMap:save()
+	local lat, lon = Sphere.front(self.orientation)
+	local completed, activeMissionId = self.mission:snapshot()
+	SaveGameLove.save({
+		lat = lat,
+		lon = lon,
+		completed = completed,
+		activeMissionId = activeMissionId,
+	}, self.app.log)
+end
+
+-- Save on application quit too (gamestate forwards love.quit to the scene).
+function FlightMap:quit()
+	self:save()
 end
 
 -- Read the d-pad into a screen-axis turn for this frame. Conflicting directions
@@ -129,6 +154,7 @@ function FlightMap:update(dt)
 	end
 
 	if input:pressed("pause") then
+		self:save()
 		Gamestate.push(require("src.scenes.pause"), self.app, self)
 		return
 	end
