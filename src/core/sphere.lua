@@ -165,4 +165,37 @@ function Sphere.project(orientation, lat, lon, radius, cx, cy)
 	return cx + radius * vy, cy - radius * vz, vx >= 0
 end
 
+---Sample a small circle on the sphere: the set of points at angular distance
+---`angRadius` (degrees) from a center lat/lon. Returns `segments+1` {lat, lon}
+---points closing the loop, for drawing country regions/highlights.
+---@param centerLat number
+---@param centerLon number
+---@param angRadius number angular radius in degrees
+---@param segments integer number of segments around the circle
+---@return table points list of {lat, lon}
+function Sphere.circlePoints(centerLat, centerLon, angRadius, segments)
+	-- Build a local frame at the center: forward toward the center, plus two
+	-- perpendicular axes to sweep the circle around.
+	local cx, cy, cz = Sphere.latLonToVec(centerLat, centerLon)
+	-- Pick any vector not parallel to the center to derive the tangent axes.
+	local ux, uy, uz = normalize(cross(cx, cy, cz, 0, 0, 1))
+	if ux == 0 and uy == 0 and uz == 0 then
+		ux, uy, uz = normalize(cross(cx, cy, cz, 1, 0, 0))
+	end
+	local vx, vy, vz = cross(cx, cy, cz, ux, uy, uz) -- second tangent axis
+	local ca, sa = cos(rad(angRadius)), sin(rad(angRadius))
+	local points = {}
+	for i = 0, segments do
+		local t = 2 * math.pi * i / segments
+		local ct, st = cos(t), sin(t)
+		-- point = center*cos(r) + (u*cos t + v*sin t)*sin(r)
+		local px = cx * ca + (ux * ct + vx * st) * sa
+		local py = cy * ca + (uy * ct + vy * st) * sa
+		local pz = cz * ca + (uz * ct + vz * st) * sa
+		local lat, lon = Sphere.vecToLatLon(px, py, pz)
+		points[#points + 1] = { lat, lon }
+	end
+	return points
+end
+
 return Sphere

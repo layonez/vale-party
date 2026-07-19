@@ -2,8 +2,12 @@ local Gamestate = require("vendor.hump.gamestate")
 local Fonts = require("src.core.fonts")
 local Sphere = require("src.core.sphere")
 local Input = require("src.platform.input")
+local Audio = require("src.platform.audio")
 local Landmass = require("src.core.landmass")
 local Continents = require("content.continents")
+local World = require("src.core.world")
+local WorldData = require("content.world")
+local Recognition = require("src.core.recognition")
 
 -- Flight Map: the main playable scene. The player flies a small airplane that
 -- stays fixed near the center of the screen while the globe rotates beneath it.
@@ -53,10 +57,20 @@ function FlightMap:enter(_, app)
 	self.app = app
 	self.stars = buildStars()
 	self.continents = Landmass.build(Continents)
+	self.world = World.new(WorldData)
+	self.recognition = Recognition.new()
+	-- Precompute each country's region outline (great-circle circle) once.
+	self.countryOutlines = {}
+	for _, country in ipairs(self.world.countries) do
+		local r = country.region
+		self.countryOutlines[country.id] =
+			Sphere.circlePoints(r.latitude, r.longitude, r.radius, 40)
+	end
 	-- Start in the northern part of the globe, no mission active (spec §3).
 	self.start = { lat = 40, lon = 10 }
 	self.orientation = Sphere.orientationFor(self.start.lat, self.start.lon)
 	self.time = 0
+	self.currentCountryId = nil
 	-- Debug-only auto-drift so rotation is observable without holding a key.
 	-- 0 = off; other indices pick a direction from DRIFTS.
 	self.drift = 0
@@ -115,6 +129,20 @@ function FlightMap:update(dt)
 	end
 	if axis then
 		self.orientation = Sphere.turn(self.orientation, axis, angle)
+	end
+
+	-- Country detection uses the world point beneath the airplane (view front).
+	local lat, lon = Sphere.front(self.orientation)
+	local country = self.world:countryAt(lat, lon)
+	self.currentCountryId = country and country.id or nil
+	local recognized = self.recognition:update(self.currentCountryId, dt)
+	if recognized then
+		local named = self.world:country(recognized)
+		self.app.log("recognized:" .. recognized)
+		Audio.playVoice(self.app.audio, self.app.loc.language, "voice." .. recognized)
+		self.recognizedName = self.app.loc:t(named.name_key)
+	elseif not self.recognition.recognizedId then
+		self.recognizedName = nil
 	end
 
 	self.time = self.time + dt
@@ -181,10 +209,28 @@ function FlightMap:drawGlobe()
 		drawGridLine(pts, orientation)
 	end
 
+	self:drawCountries(orientation)
+
 	-- Horizon rim on top.
 	love.graphics.setColor(0.09, 0.24, 0.45)
 	love.graphics.setLineWidth(6)
 	love.graphics.circle("line", GLOBE.x, GLOBE.y, GLOBE.radius)
+end
+
+-- Outline each playable country's region. The recognised country (or the one
+-- currently beneath the plane) gets a brighter, thicker highlight (spec §8).
+function FlightMap:drawCountries(orientation)
+	for _, country in ipairs(self.world.countries) do
+		local recognized = self.recognition.recognizedId == country.id
+		if recognized then
+			love.graphics.setColor(1, 0.95, 0.5, 0.95)
+			love.graphics.setLineWidth(3)
+		else
+			love.graphics.setColor(0.95, 0.85, 0.4, 0.5)
+			love.graphics.setLineWidth(2)
+		end
+		drawGridLine(self.countryOutlines[country.id], orientation)
+	end
 end
 
 local function drawAirplane(x, y)
@@ -205,15 +251,27 @@ function FlightMap:drawWorld()
 	self:drawGlobe()
 	drawAirplane(GLOBE.x, GLOBE.y)
 
+	-- Recognised country name, shown as a learning aid (spec §8). Play is fully
+	-- possible without reading, so this is supplementary.
+	if self.recognizedName then
+		love.graphics.setFont(Fonts.get(26))
+		local w = 360
+		love.graphics.setColor(0.05, 0.1, 0.2, 0.8)
+		love.graphics.rectangle("fill", (640 - w) / 2, 400, w, 48, 14)
+		love.graphics.setColor(1, 0.97, 0.7)
+		love.graphics.printf(self.recognizedName, (640 - w) / 2, 412, w, "center")
+	end
+
 	love.graphics.setFont(Fonts.get(14))
 	local driftNames = { "east", "north", "west", "south" }
 	local lat, lon = Sphere.front(self.orientation)
 	self.app.drawDebug(
 		"flight_map",
 		string.format(
-			"lat: %.1f\nlon: %.1f\ndrift[0]: %s\nreset[9]",
+			"lat: %.1f\nlon: %.1f\nover: %s\ndrift[0]: %s\nreset[9]",
 			lat,
 			lon,
+			self.currentCountryId or "-",
 			self.drift > 0 and driftNames[self.drift] or "off"
 		)
 	)

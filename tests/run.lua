@@ -20,6 +20,7 @@ local Inter = require("src.entities.interactable")
 local Sphere = require("src.core.sphere")
 local World = require("src.core.world")
 local worldData = require("content.world")
+local Recognition = require("src.core.recognition")
 local function assertClose(a, b, eps)
 	assert(math.abs(a - b) < (eps or 0.0001), tostring(a) .. " ~= " .. tostring(b))
 end
@@ -156,6 +157,32 @@ test("data integrity: five characters, and every reference resolves", function()
 	for _, c in ipairs(w.countries) do
 		assert(w:airport(c.airport_id), "country airport missing: " .. c.airport_id)
 	end
+end)
+test("circle points all sit at the given angular radius from the center", function()
+	local pts = Sphere.circlePoints(20, 40, 10, 24)
+	for _, p in ipairs(pts) do
+		assertClose(World.angularDistance(20, 40, p[1], p[2]), 10, 0.001)
+	end
+end)
+test("recognition fires once after the dwell time, not before", function()
+	local r = Recognition.new(1.0)
+	assertEq(r:update("brazil", 0.5), nil) -- not yet
+	assertEq(r:update("brazil", 0.4), nil) -- 0.9s, still short
+	assertEq(r:update("brazil", 0.2), "brazil") -- crosses 1.0s -> recognised
+	assertEq(r:update("brazil", 0.5), nil) -- stays inside, does not re-fire
+end)
+test("recognition resets when leaving and can re-recognise on return", function()
+	local r = Recognition.new(1.0)
+	assertEq(r:update("brazil", 1.0), "brazil")
+	assertEq(r:update(nil, 0.5), nil) -- left to open ocean
+	assertEq(r.recognizedId, nil)
+	assertEq(r:update("brazil", 1.0), "brazil") -- re-enter, recognise again
+end)
+test("recognition dwell resets when switching countries directly", function()
+	local r = Recognition.new(1.0)
+	assertEq(r:update("brazil", 0.8), nil)
+	assertEq(r:update("germany", 0.8), nil) -- switched; timer restarted, not 1.6
+	assertEq(r:update("germany", 0.3), "germany") -- 1.1s over germany
 end)
 print(string.format("%d tests, %d failures", total, fail))
 os.exit(fail)
