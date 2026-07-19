@@ -17,6 +17,7 @@ local controls = {
 	-- screenshot; dbg_reset returns to the start position.
 	dbg_drift = { "key:0" },
 	dbg_reset = { "key:9" },
+	dbg_finish = { "key:8" },
 }
 
 function Input.new()
@@ -46,6 +47,7 @@ local LOGGED = {
 	"pause",
 	"dbg_drift",
 	"dbg_reset",
+	"dbg_finish",
 	"debug",
 }
 

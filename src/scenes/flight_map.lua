@@ -36,6 +36,7 @@ local MOVE_SPEED = 45 -- degrees per second; constant, no acceleration/inertia
 local GRID_STEP = 30 -- degrees between grid lines
 local SEGMENTS = 48 -- samples per grid line
 local CHARACTER_RANGE = 7 -- angular degrees within which a character is interactable
+local CELEBRATION_TIME = 4 -- seconds the cycle celebration plays before auto-ending (spec §17)
 
 -- Debug-only auto-drift directions cycled by the dbg_drift key. Each entry is a
 -- screen-axis turn {axis, sign}: "y" = up/down flight, "z" = left/right flight.
@@ -110,6 +111,23 @@ function FlightMap:update(dt)
 	if input:pressed("debug") then
 		self.app.toggleDebug()
 	end
+
+	-- Cycle celebration (spec §17): after the fifth mission, flight is paused
+	-- and a short celebration plays. It auto-ends after a duration, or A skips
+	-- it; then the cycle resets and free flight resumes.
+	if self.celebrationTime then
+		self.time = self.time + dt
+		self.celebrationTime = self.celebrationTime - dt
+		if self.celebrationTime <= 0 or input:pressed("interact") then
+			self.celebrationTime = nil
+			self.mission:reset()
+			self.recognition = Recognition.new()
+			self.recognizedName = nil
+			self.app.log("cycle_reset")
+		end
+		return
+	end
+
 	if input:pressed("pause") then
 		Gamestate.push(require("src.scenes.pause"), self.app, self)
 		return
@@ -123,6 +141,18 @@ function FlightMap:update(dt)
 		if input:pressed("dbg_reset") then
 			self.orientation = Sphere.orientationFor(self.start.lat, self.start.lon)
 			self.drift = 0
+		end
+		-- Complete every remaining mission at once, then trigger the celebration,
+		-- so the cycle finale is testable without flying all five (spec §17).
+		if input:pressed("dbg_finish") then
+			for _, character in ipairs(self.world.characters) do
+				if not self.mission.completed[character.id] then
+					self.mission:accept(character.id)
+					self.mission:complete()
+				end
+			end
+			self.celebrationTime = CELEBRATION_TIME
+			self.app.log("cycle_celebration")
 		end
 	else
 		self.drift = 0
@@ -177,6 +207,11 @@ function FlightMap:update(dt)
 				if doneCharacter then
 					self.app.log("mission_complete:" .. doneCharacter)
 					Audio.playFeedback(self.app.audio)
+					-- Fifth completion starts the cycle celebration (spec §17).
+					if self.mission:allCompleted() then
+						self.celebrationTime = CELEBRATION_TIME
+						self.app.log("cycle_celebration")
+					end
 				end
 			end
 		elseif self.nearCharacterId then
@@ -384,6 +419,11 @@ function FlightMap:drawWorld()
 		love.graphics.printf(self.recognizedName, (640 - w) / 2, 412, w, "center")
 	end
 
+	-- Cycle celebration overlay (spec §17): shown after all five are done.
+	if self.celebrationTime then
+		self:drawCelebration()
+	end
+
 	love.graphics.setFont(Fonts.get(14))
 	local driftNames = { "east", "north", "west", "south" }
 	local lat, lon = Sphere.front(self.orientation)
@@ -405,6 +445,37 @@ function FlightMap:draw()
 	self.app.drawScaled(function()
 		self:drawWorld()
 	end)
+end
+
+-- Cycle celebration overlay: dim the scene, show festive bursts and a message
+-- (spec §17). Kept simple and gentle per the child-friendly rules (no flashing).
+function FlightMap:drawCelebration()
+	love.graphics.setColor(0.03, 0.05, 0.12, 0.7)
+	love.graphics.rectangle("fill", 0, 0, 640, 480)
+
+	-- Soft radiating bursts around the center, slowly rotating.
+	local colors = { { 1, 0.8, 0.3 }, { 0.5, 0.9, 1 }, { 1, 0.5, 0.6 }, { 0.6, 1, 0.6 } }
+	for i = 1, 12 do
+		local angle = self.time * 0.8 + i * (math.pi * 2 / 12)
+		local r = 120 + 20 * math.sin(self.time * 2 + i)
+		local x = 320 + math.cos(angle) * r
+		local y = 220 + math.sin(angle) * r
+		local c = colors[(i % #colors) + 1]
+		love.graphics.setColor(c[1], c[2], c[3], 0.85)
+		love.graphics.circle("fill", x, y, 8 + 3 * math.sin(self.time * 3 + i))
+	end
+
+	-- Row of five checks to celebrate the completed cycle.
+	love.graphics.setColor(0.2, 0.85, 0.35, 1)
+	for i = 0, 4 do
+		local x = 250 + i * 30
+		love.graphics.setLineWidth(4)
+		love.graphics.line(x, 220, x + 8, 232, x + 20, 208)
+	end
+
+	love.graphics.setFont(Fonts.get(32))
+	love.graphics.setColor(1, 0.97, 0.7, 1)
+	love.graphics.printf(self.app.loc:t("flight.cycle_complete"), 60, 260, 520, "center")
 end
 
 return FlightMap

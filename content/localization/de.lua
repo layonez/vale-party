@@ -19,4 +19,5 @@ return {
 	["country.usa"] = "USA",
 	["country.australia"] = "Australien",
 	["country.egypt"] = "Ägypten",
+	["flight.cycle_complete"] = "Super! Alle Aufgaben geschafft!",
 }

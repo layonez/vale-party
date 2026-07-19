@@ -30,6 +30,7 @@
     debug: { key: "`", code: "Backquote", keyCode: 192 },
     drift: { key: "0", code: "Digit0", keyCode: 48 },
     reset: { key: "9", code: "Digit9", keyCode: 57 },
+    finish: { key: "8", code: "Digit8", keyCode: 56 },
   };
 
   function resolve(name) {
