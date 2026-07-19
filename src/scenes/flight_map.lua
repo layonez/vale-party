@@ -5,6 +5,9 @@ local Input = require("src.platform.input")
 local Audio = require("src.platform.audio")
 local Landmass = require("src.core.landmass")
 local Continents = require("content.continents")
+local GlobeShader = require("src.core.globe_shader")
+local GlobeRegions = require("src.core.globe_regions")
+local Regions = require("content.regions")
 local World = require("src.core.world")
 local WorldData = require("content.world")
 local Recognition = require("src.core.recognition")
@@ -67,16 +70,29 @@ end
 function FlightMap:enter(_, app)
 	self.app = app
 	self.stars = buildStars()
+	-- Textured Natural Earth globe. If the shader or assets fail to
+	-- load (e.g. an older GPU), globe stays nil and we fall back to the simplified
+	-- vector continents below, so the scene always renders.
+	self.globe =
+		GlobeShader.new("assets/globe/world_base.png", "assets/globe/country_ids.png", app.log)
+	self.globeRegions = GlobeRegions.new("assets/globe/country_ids.png", Regions)
 	self.continents = Landmass.build(Continents)
 	self.world = World.new(WorldData)
 	self.recognition = Recognition.new()
 	self.mission = MissionState.new(self.world)
 	-- Precompute each country's region outline (great-circle circle) once.
 	self.countryOutlines = {}
+	-- And its flat id-mask color, so the textured globe can fill the real
+	-- country shape (nil for any country missing from the mask -> falls back to
+	-- the great-circle outline highlight).
+	self.countryColors = {}
 	for _, country in ipairs(self.world.countries) do
 		local r = country.region
 		self.countryOutlines[country.id] =
 			Sphere.circlePoints(r.latitude, r.longitude, r.radius, 40)
+		if country.iso then
+			self.countryColors[country.id] = self.globeRegions:colorForIso(country.iso)
+		end
 	end
 	-- Start in the northern part of the globe, no mission active (spec §3).
 	self.start = { lat = 40, lon = 10 }
@@ -340,12 +356,31 @@ end
 function FlightMap:drawGlobe()
 	local orientation = self.orientation
 
-	-- Ocean sphere with a soft rim so the curvature and horizon read clearly.
-	love.graphics.setColor(0.16, 0.42, 0.7)
-	love.graphics.circle("fill", GLOBE.x, GLOBE.y, GLOBE.radius)
-
-	-- Simplified continents for geographic reference (non-interactive).
-	Landmass.draw(self.continents, orientation, GLOBE)
+	if self.globe then
+		-- Textured Natural Earth globe with the mission target and the recognized
+		-- country filled on their real shapes (via the id mask).
+		local mission = self.mission:activeMission()
+		local targetId = mission and mission.target_country_id or nil
+		local targetColor = targetId and self.countryColors[targetId] or nil
+		if targetColor then
+			-- Pulse strength tracks the completion-available state: brightest while
+			-- the plane is over the target (spec §15).
+			local overTarget = self.currentCountryId == targetId
+			local pulse = overTarget and (0.7 + 0.3 * math.sin(self.time * 6)) or 0.5
+			self.globe:setHighlight(targetColor, pulse)
+		else
+			self.globe:setHighlight(nil)
+		end
+		local recognizedId = self.recognition.recognizedId
+		local recognizedColor = recognizedId and self.countryColors[recognizedId] or nil
+		self.globe:setSecondaryHighlight(recognizedColor)
+		self.globe:draw(orientation, GLOBE)
+	else
+		-- Fallback: flat ocean sphere plus simplified vector continents.
+		love.graphics.setColor(0.16, 0.42, 0.7)
+		love.graphics.circle("fill", GLOBE.x, GLOBE.y, GLOBE.radius)
+		Landmass.draw(self.continents, orientation, GLOBE)
+	end
 
 	-- Lat/lon graticule rotating beneath the plane.
 	love.graphics.setColor(0.35, 0.62, 0.85, 0.75)
@@ -367,7 +402,13 @@ function FlightMap:drawGlobe()
 		drawGridLine(pts, orientation)
 	end
 
-	self:drawCountries(orientation)
+	-- Country emphasis. With the textured globe, the mission target and the
+	-- recognized country are filled on their real shapes by the shader (above),
+	-- so we skip the great-circle outline rings that only approximate them. The
+	-- rings remain the emphasis in the vector fallback.
+	if not self.globe then
+		self:drawCountries(orientation)
+	end
 	-- Airport rendering is disabled for now: airports are locked with no logic
 	-- behind them yet. Data + src/ui/airport.lua stay for when levels arrive.
 	-- Airport.draw(self.world.airports, orientation, GLOBE)

@@ -10,3 +10,6 @@ dist/
 # Local editor/cache state
 .luacheckcache
 .stylua-cache/
+
+# Downloaded source data for the globe asset generator (re-fetched on demand).
+scripts/.cache/

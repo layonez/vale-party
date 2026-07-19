@@ -15,6 +15,7 @@ local countries = {
 	{
 		id = "germany",
 		name_key = "country.germany",
+		iso = "DE", -- Natural Earth id-mask code (src/core/globe_regions.lua)
 		flag = { { 0.1, 0.1, 0.1 }, { 0.8, 0.1, 0.1 }, { 1.0, 0.8, 0.0 } },
 		flag_asset = "flags/germany.png",
 		latitude = 51,
@@ -25,6 +26,7 @@ local countries = {
 	{
 		id = "russia",
 		name_key = "country.russia",
+		iso = "RU",
 		flag = { { 1, 1, 1 }, { 0.1, 0.2, 0.7 }, { 0.8, 0.1, 0.1 } },
 		flag_asset = "flags/russia.png",
 		latitude = 60,
@@ -35,6 +37,7 @@ local countries = {
 	{
 		id = "india",
 		name_key = "country.india",
+		iso = "IN",
 		flag = { { 1.0, 0.6, 0.2 }, { 1, 1, 1 }, { 0.2, 0.6, 0.3 } },
 		flag_asset = "flags/india.png",
 		latitude = 22,
@@ -45,6 +48,7 @@ local countries = {
 	{
 		id = "japan",
 		name_key = "country.japan",
+		iso = "JP",
 		flag = { { 1, 1, 1 }, { 0.85, 0.1, 0.2 }, { 1, 1, 1 } },
 		flag_asset = "flags/japan.png",
 		latitude = 36,
@@ -55,6 +59,7 @@ local countries = {
 	{
 		id = "brazil",
 		name_key = "country.brazil",
+		iso = "BR",
 		flag = { { 0.0, 0.6, 0.3 }, { 1.0, 0.8, 0.0 }, { 0.1, 0.2, 0.6 } },
 		flag_asset = "flags/brazil.png",
 		latitude = -10,
@@ -65,6 +70,7 @@ local countries = {
 	{
 		id = "usa",
 		name_key = "country.usa",
+		iso = "US",
 		flag = { { 0.1, 0.2, 0.5 }, { 1, 1, 1 }, { 0.8, 0.1, 0.2 } },
 		flag_asset = "flags/usa.png",
 		latitude = 39,
@@ -75,6 +81,7 @@ local countries = {
 	{
 		id = "australia",
 		name_key = "country.australia",
+		iso = "AU",
 		flag = { { 0.1, 0.2, 0.5 }, { 1, 1, 1 }, { 0.8, 0.1, 0.2 } },
 		flag_asset = "flags/australia.png",
 		latitude = -25,
@@ -85,6 +92,7 @@ local countries = {
 	{
 		id = "egypt",
 		name_key = "country.egypt",
+		iso = "EG",
 		flag = { { 0.8, 0.1, 0.1 }, { 1, 1, 1 }, { 0.1, 0.1, 0.1 } },
 		flag_asset = "flags/egypt.png",
 		latitude = 27,

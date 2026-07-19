@@ -12,6 +12,9 @@ code does; read the code for the what.
   states, and the accept → guide → complete cycle.
 - [Testing & debug tooling](testing-and-debug.md) — the pure-logic test suite,
   the browser command bridge, and debug keys.
+- [Textured globe](textured-globe.md) — the Natural Earth shader globe with
+  real continents/countries, its offline asset pipeline, and renderer-independent
+  country detection.
 
 The spec these implement lives in [`../specs/flight_map_spec.md`](../specs/flight_map_spec.md).
 Section references like "spec §13" point there.

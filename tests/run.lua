@@ -22,6 +22,7 @@ local Recognition = require("src.core.recognition")
 local MissionState = require("src.core.mission_state")
 local SaveGame = require("src.core.savegame")
 local Plane = require("src.ui.plane")
+local GlobeRegions = require("src.core.globe_regions")
 local function assertClose(a, b, eps)
 	assert(math.abs(a - b) < (eps or 0.0001), tostring(a) .. " ~= " .. tostring(b))
 end
@@ -325,6 +326,64 @@ test("plane idle animation stays small and lively while moving", function()
 	local _, _, restRot = Plane.animation(0.3, false)
 	local _, _, flyRot = Plane.animation(0.3, true)
 	assert(math.abs(flyRot) > math.abs(restRot), "flying should wobble more than idle")
+end)
+-- GlobeRegions: renderer-independent country lookup from the ID mask. Uses a
+-- tiny fake ImageData so the lat/lon -> pixel -> color -> id math runs headless
+-- (the real PNG is validated separately under LOVE). Two 3x3 "countries" laid
+-- out on an equirect grid plus black ocean.
+local function fakeImageData(pixels, w, h)
+	return {
+		getWidth = function()
+			return w
+		end,
+		getHeight = function()
+			return h
+		end,
+		-- pixels keyed "x,y" -> {r,g,b} in 0..255; default black (ocean).
+		getPixel = function(_, x, y)
+			local c = pixels[x .. "," .. y] or { 0, 0, 0 }
+			return c[1] / 255, c[2] / 255, c[3] / 255
+		end,
+	}
+end
+test("globe regions maps lat/lon through the mask to a country id, nil over ocean", function()
+	local w, h = 8, 4
+	-- Place a red pixel at the column/row Munich(48.14,11.58) lands on and a
+	-- green pixel where Yerevan(40.18,44.51) lands; everything else is ocean.
+	local function pixelFor(lat, lon)
+		local u = (lon + 180) / 360
+		local v = (90 - lat) / 180
+		return math.floor(u * w), math.floor(v * h)
+	end
+	local mx, my = pixelFor(48.14, 11.58)
+	local yx, yy = pixelFor(40.18, 44.51)
+	local pixels = {}
+	pixels[mx .. "," .. my] = { 48, 120, 30 } -- germany color
+	pixels[yx .. "," .. yy] = { 156, 30, 30 } -- armenia color
+	local regions = {
+		byColor = {
+			["48,120,30"] = { id = "germany" },
+			["156,30,30"] = { id = "armenia" },
+		},
+		list = {},
+	}
+	local gr = GlobeRegions.fromImageData(fakeImageData(pixels, w, h), regions)
+	assertEq(gr:countryAt(48.14, 11.58), "germany") -- Munich
+	assertEq(gr:countryAt(40.18, 44.51), "armenia") -- Yerevan
+	assertEq(gr:countryAt(0, -30), nil) -- central Atlantic -> ocean
+end)
+test("globe regions rounds 0..1 float pixels and wraps the dateline", function()
+	local w, h = 8, 4
+	-- Longitude 190 must wrap to -170 and sample the same column as -170.
+	local gr = GlobeRegions.fromImageData(fakeImageData({}, w, h), { byColor = {}, list = {} })
+	local a1 = { gr:pixelFor(0, 190) }
+	local a2 = { gr:pixelFor(0, -170) }
+	assertEq(a1[1], a2[1])
+	assertEq(a1[2], a2[2])
+	-- Clamp: extreme latitude stays inside the image bounds.
+	local px, py = gr:pixelFor(90, 0)
+	assert(py >= 0 and py <= h - 1, "py out of bounds: " .. py)
+	assert(px >= 0 and px <= w - 1, "px out of bounds: " .. px)
 end)
 print(string.format("%d tests, %d failures", total, fail))
 os.exit(fail)
