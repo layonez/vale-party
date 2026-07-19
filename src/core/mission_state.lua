@@ -125,17 +125,17 @@ function MissionState:allCompleted()
 end
 
 -- Characters visible on the globe right now: during a mission only the active
--- character; in free flight all not-yet-completed characters (spec §10, §11).
+-- Characters visible on the globe right now: none while a mission is active
+-- (the chosen character has "boarded"; the panel + target guidance carry the
+-- mission), and all not-yet-completed characters in free flight (spec §10, §11).
 ---@return table[]
 function MissionState:visibleCharacters()
+	if self:isActive() then
+		return {}
+	end
 	local visible = {}
-	local activeMission = self:activeMission()
 	for _, character in ipairs(self.world.characters) do
-		if activeMission then
-			if character.id == activeMission.character_id then
-				visible[#visible + 1] = character
-			end
-		elseif not self.completed[character.id] then
+		if not self.completed[character.id] then
 			visible[#visible + 1] = character
 		end
 	end

@@ -192,13 +192,12 @@ test("mission starts in free flight with nothing active or completed", function(
 	assertEq(#m:visibleCharacters(), 5) -- all five available
 	assertEq(m:panelStates().character_1, "available")
 end)
-test("accepting a mission activates it and hides other characters", function()
+test("accepting a mission activates it and hides all characters", function()
 	local m = MissionState.new(World.new(worldData))
 	assertEq(m:accept("character_1"), true)
 	assertEq(m.state, MissionState.MISSION_ACTIVE)
 	assertEq(m:activeMission().id, "mission_1")
-	assertEq(#m:visibleCharacters(), 1) -- only the active character remains
-	assertEq(m:visibleCharacters()[1].id, "character_1")
+	assertEq(#m:visibleCharacters(), 0) -- all characters leave the globe (spec §11)
 	assertEq(m:panelStates().character_1, "active")
 	assertEq(m:accept("character_2"), false) -- only one mission at a time
 end)
