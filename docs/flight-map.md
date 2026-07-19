@@ -73,6 +73,7 @@ resumes.
 ## Rendering order
 
 `drawWorld` draws back-to-front: starfield → ocean disc → continents →
-graticule → country outlines/highlights → characters → horizon rim → HUD (panel,
-mission box, arrow, name banner, celebration). Airports would sit between
-outlines and characters but are currently disabled.
+graticule → country outlines/highlights → characters → horizon rim → the plane
+(pinned at center, see [globe & movement](globe-and-movement.md#plane-sprite--facing))
+→ HUD (panel, mission box, arrow, name banner, celebration). Airports would sit
+between outlines and characters but are currently disabled.

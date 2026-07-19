@@ -44,6 +44,26 @@ Constant angular speed, no acceleration or inertia, stops immediately on
 release, no diagonal (spec §6). Conflicting directions resolve consistently
 (vertical wins). See `turnDelta` in the scene.
 
+## Plane sprite & facing
+
+Code: [`src/ui/plane.lua`](../src/ui/plane.lua).
+
+The plane is an 8-direction sprite from `assets/sprites/plane.png` — a 3×3
+compass sheet (center cell empty) of the kid in a plane facing N/NE/E/SE/S/SW/
+W/NW. It stays pinned at screen center and we swap which cell is drawn to face
+the travel direction (spec §4). Idle keeps the last facing; the default is south
+(facing the viewer).
+
+**Turns rotate through the intermediate tiles, not snap.** Input is only
+4-directional, so a naive mapping would use just 4 of the 8 tiles and flip
+instantly. Instead the sheet is treated as a compass ring and the drawn facing
+steps **one tile at a time along the shortest arc** toward the target facing
+(`Plane.stepToward`), at a fixed rate (~0.06s/tile, `FACING_STEP_TIME` in the
+scene). So a west→east turn visibly spins through nw/n/ne (or sw/s/se), using all
+eight sprites. Ties (exact opposite) resolve clockwise, consistently. The
+stepping is pure and unit-tested; the sheet loads lazily so the module can be
+required without a live graphics context.
+
 ## Portability note
 
 `math.atan2` (LuaJIT / LÖVE) vs the two-arg `math.atan` (Lua 5.3, used by the
