@@ -40,6 +40,38 @@ it:
 These are harmless in production — the bridge only adds console helpers and
 never fires input on its own — so they ship in every build.
 
+## Desktop screenshot harness
+
+[`scripts/shot.lua`](../scripts/shot.lua) is a dev-only, **env-gated** harness
+for capturing a single Flight Map frame from the desktop LÖVE build (verifying
+sprites, HUD, highlights without a browser). `main.lua` loads it only when
+`VALE_SHOT` is set, so normal runs are untouched, and it is never bundled (the
+`.love` build globs `src/ content/ assets/ vendor/` + root files, not
+`scripts/`). It boots straight into the Flight Map, lets ~30 frames settle,
+writes `vale_shot.png` to the save dir, and quits. Optional overrides:
+
+- `VALE_SHOT_HOVER="lat,lon"` — park the plane over a point (e.g. to show the
+  hover highlight).
+- `VALE_SHOT_MISSION="character_3"` — reset the cycle and accept that mission,
+  to capture the active mission box.
+- `VALE_SHOT_COUNTRY="Индия"` — force the recognised-country label (re-applied
+  each frame, since `update` clears it when not dwelling).
+
+Because LÖVE's `require` uses a virtual filesystem, the harness runs against the
+real game root rather than a mounted subdir; gate it behind the env var instead.
+
+## Keep the love.js data package small
+
+love.js copies the whole packed `game.data` into the WASM heap in one
+`HEAPU8.set`. Oversized assets overflow it and the web build dies at load with
+`RangeError: offset is out of bounds` (in `processPackageData`) — the **desktop**
+build is unaffected, so this only shows up in the browser. This bit us when
+1024² character portraits pushed `game.data` past ~10MB; downscaling the sprites
+to 256² (ample for their ~64px on-screen size) dropped it back to ~3MB and fixed
+it. Keep source art sized for its on-screen use, and watch that stray files
+(e.g. a `plane_old.png` backup left in `assets/`) don't get swept into the
+build.
+
 ## Debug keys (gated behind debug mode)
 
 Toggle debug with **`` ` ``** (backtick — browser-safe, unlike F1 which the

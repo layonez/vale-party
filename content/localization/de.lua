@@ -17,4 +17,5 @@ return {
 	["country.australia"] = "Australien",
 	["country.egypt"] = "Ägypten",
 	["flight.cycle_complete"] = "Super! Alle Aufgaben geschafft!",
+	["flight.wants_to_go"] = "möchte nach",
 }

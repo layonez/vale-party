@@ -13,3 +13,8 @@ dist/
 
 # Downloaded source data for the globe asset generator (re-fetched on demand).
 scripts/.cache/
+
+# Audio source masters: the shipped assets are the .ogg files under assets/;
+# these mp3 originals are kept locally only, for future re-encoding.
+voice-src/
+

@@ -173,10 +173,13 @@ local airports = {
 
 -- Exactly five mission characters at fixed positions (spec §10). They sit in
 -- varied spots (land, water, ice, air) so the player discovers them exploring.
+-- `sprite` is the portrait art drawn on the globe (src/ui/character.lua); `color`
+-- still tints the pulsing glow behind it so each reads as its own beacon.
 local characters = {
 	{
 		id = "character_1",
 		color = { 0.95, 0.5, 0.3 },
+		sprite = "assets/sprites/1.png",
 		latitude = 20,
 		longitude = -30,
 		mission_id = "mission_1",
@@ -184,6 +187,7 @@ local characters = {
 	{
 		id = "character_2",
 		color = { 0.4, 0.8, 0.9 },
+		sprite = "assets/sprites/2.png",
 		latitude = 65,
 		longitude = 15,
 		mission_id = "mission_2",
@@ -191,6 +195,7 @@ local characters = {
 	{
 		id = "character_3",
 		color = { 0.7, 0.5, 0.9 },
+		sprite = "assets/sprites/3.png",
 		latitude = 5,
 		longitude = 60,
 		mission_id = "mission_3",
@@ -198,6 +203,7 @@ local characters = {
 	{
 		id = "character_4",
 		color = { 0.9, 0.8, 0.3 },
+		sprite = "assets/sprites/4.png",
 		latitude = -20,
 		longitude = 90,
 		mission_id = "mission_4",
@@ -205,6 +211,7 @@ local characters = {
 	{
 		id = "character_5",
 		color = { 0.5, 0.9, 0.5 },
+		sprite = "assets/sprites/5.png",
 		latitude = 30,
 		longitude = -140,
 		mission_id = "mission_5",

@@ -1,12 +1,17 @@
 local Gamestate = require("vendor.hump.gamestate")
 local Menu = require("src.ui.menu")
 local Fonts = require("src.core.fonts")
+local Audio = require("src.platform.audio")
 
 local MainMenu = {}
 
 function MainMenu:enter(_, app)
 	self.app = app
 	self.selected = 1
+	-- Silence gameplay music whenever we land on the menu. This is the single
+	-- authoritative stop: it covers quitting to menu directly and via the pause
+	-- menu (where the Flight Map is not the top state, so its leave never fires).
+	Audio.stopMusic(app.audio)
 end
 
 function MainMenu:update()
