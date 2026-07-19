@@ -2,6 +2,8 @@ local Gamestate = require("vendor.hump.gamestate")
 local Fonts = require("src.core.fonts")
 local Sphere = require("src.core.sphere")
 local Input = require("src.platform.input")
+local Landmass = require("src.core.landmass")
+local Continents = require("content.continents")
 
 -- Flight Map: the main playable scene. The player flies a small airplane that
 -- stays fixed near the center of the screen while the globe rotates beneath it.
@@ -50,6 +52,7 @@ end
 function FlightMap:enter(_, app)
 	self.app = app
 	self.stars = buildStars()
+	self.continents = Landmass.build(Continents)
 	-- Start in the northern part of the globe, no mission active (spec §3).
 	self.start = { lat = 40, lon = 10 }
 	self.orientation = Sphere.orientationFor(self.start.lat, self.start.lon)
@@ -154,6 +157,9 @@ function FlightMap:drawGlobe()
 	-- Ocean sphere with a soft rim so the curvature and horizon read clearly.
 	love.graphics.setColor(0.16, 0.42, 0.7)
 	love.graphics.circle("fill", GLOBE.x, GLOBE.y, GLOBE.radius)
+
+	-- Simplified continents for geographic reference (non-interactive).
+	Landmass.draw(self.continents, orientation, GLOBE)
 
 	-- Lat/lon graticule rotating beneath the plane.
 	love.graphics.setColor(0.35, 0.62, 0.85, 0.75)
