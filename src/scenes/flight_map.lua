@@ -8,7 +8,7 @@ local Continents = require("content.continents")
 local World = require("src.core.world")
 local WorldData = require("content.world")
 local Recognition = require("src.core.recognition")
-local Airport = require("src.ui.airport")
+-- local Airport = require("src.ui.airport") -- airport rendering disabled for now
 local CharacterView = require("src.ui.character")
 local ProgressPanel = require("src.ui.progress_panel")
 local MissionState = require("src.core.mission_state")
@@ -349,8 +349,9 @@ function FlightMap:drawGlobe()
 	end
 
 	self:drawCountries(orientation)
-	-- Airports sit inside their countries; all locked in the MVP (spec §9).
-	Airport.draw(self.world.airports, orientation, GLOBE)
+	-- Airport rendering is disabled for now: airports are locked with no logic
+	-- behind them yet. Data + src/ui/airport.lua stay for when levels arrive.
+	-- Airport.draw(self.world.airports, orientation, GLOBE)
 	-- Mission characters visible in the current state (spec §10).
 	CharacterView.draw(
 		self.mission:visibleCharacters(),
