@@ -3,6 +3,7 @@ local Input = require("src.platform.input")
 local Audio = require("src.platform.audio")
 local Settings = require("src.core.settings_love")
 local Localization = require("src.core.localization")
+local Fonts = require("src.core.fonts")
 
 ---@class App
 ---@field W integer
@@ -21,6 +22,9 @@ end
 
 function App.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
+	-- Use a Cyrillic-capable font everywhere; LOVE's built-in font renders
+	-- Russian text as tofu boxes.
+	love.graphics.setFont(Fonts.get(14))
 	App.canvas = love.graphics.newCanvas(App.W, App.H)
 	App.input = Input.new()
 	App.settings = Settings.load(App.log)

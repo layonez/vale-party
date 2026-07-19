@@ -3,6 +3,7 @@ local Player = require("src.entities.player")
 local Flower = require("src.entities.interactable")
 local Input = require("src.platform.input")
 local Prompt = require("src.ui.interaction_prompt")
+local Fonts = require("src.core.fonts")
 
 local Garden = {
 	bounds = { x = 34, y = 72, w = 572, h = 360 },
@@ -62,7 +63,7 @@ function Garden:drawWorld()
 	end
 	Player.draw(self.player)
 
-	love.graphics.setFont(love.graphics.newFont(24))
+	love.graphics.setFont(Fonts.get(24))
 	if self.flower.messageTime > 0 then
 		love.graphics.setColor(1, 1, 1, 0.9)
 		love.graphics.rectangle("fill", 365, 120, 190, 54, 18)

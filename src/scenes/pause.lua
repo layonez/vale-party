@@ -1,5 +1,6 @@
 local Gamestate = require("vendor.hump.gamestate")
 local Menu = require("src.ui.menu")
+local Fonts = require("src.core.fonts")
 
 local Pause = {}
 
@@ -38,7 +39,7 @@ function Pause:draw()
 		self.garden:drawWorld()
 		love.graphics.setColor(0, 0, 0, 0.48)
 		love.graphics.rectangle("fill", 0, 0, 640, 480)
-		love.graphics.setFont(love.graphics.newFont(28))
+		love.graphics.setFont(Fonts.get(28))
 		Menu.draw({
 			{ label = self.app.loc:t("pause.continue") },
 			{ label = self.app.loc:t("pause.restart") },

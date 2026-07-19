@@ -1,5 +1,6 @@
 local Gamestate = require("vendor.hump.gamestate")
 local Menu = require("src.ui.menu")
+local Fonts = require("src.core.fonts")
 
 local MainMenu = {}
 
@@ -44,11 +45,11 @@ end
 function MainMenu:draw()
 	local app = self.app
 	app.drawScaled(function()
-		love.graphics.setFont(love.graphics.newFont(32))
+		love.graphics.setFont(Fonts.get(32))
 		love.graphics.setColor(0.18, 0.48, 0.22)
 		love.graphics.printf(app.loc:t("title"), 40, 48, 560, "center")
 
-		love.graphics.setFont(love.graphics.newFont(26))
+		love.graphics.setFont(Fonts.get(26))
 		local languageLabel = app.loc:t("menu.language")
 			.. ": "
 			.. app.loc:t("language." .. app.loc.language)
