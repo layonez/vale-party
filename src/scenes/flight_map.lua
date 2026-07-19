@@ -165,13 +165,25 @@ function FlightMap:update(dt)
 		end
 	end
 
-	-- A accepts a nearby character's mission (spec §11). `pressed` is edge-
-	-- triggered, so holding A does not re-trigger. Acceptance hides the other
-	-- characters and activates the panel slot via the mission model.
-	if input:pressed("interact") and self.nearCharacterId and not self.mission:isActive() then
-		if self.mission:accept(self.nearCharacterId) then
-			self.app.log("mission_accept:" .. self.nearCharacterId)
-			Audio.playFeedback(self.app.audio)
+	-- A is the single interaction button (spec §6). Its effect depends on state:
+	-- accept a nearby character's mission in free flight, or complete the active
+	-- mission when over the target country. Edge-triggered, so holding A does not
+	-- re-trigger.
+	if input:pressed("interact") then
+		if self.mission:isActive() then
+			local mission = self.mission:activeMission()
+			if self.currentCountryId == mission.target_country_id then
+				local doneCharacter = self.mission:complete()
+				if doneCharacter then
+					self.app.log("mission_complete:" .. doneCharacter)
+					Audio.playFeedback(self.app.audio)
+				end
+			end
+		elseif self.nearCharacterId then
+			if self.mission:accept(self.nearCharacterId) then
+				self.app.log("mission_accept:" .. self.nearCharacterId)
+				Audio.playFeedback(self.app.audio)
+			end
 		end
 	end
 
