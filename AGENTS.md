@@ -10,7 +10,7 @@ Architecture boundaries: keep small modules under `src/core`, `src/platform`, `s
 
 Controls: arrows/WASD move; Enter/Space interact/confirm; R/Backspace repeat/back; Escape/P pause; F1 debug. Controller uses SDL gamepad D-pad, A, B, Start through Baton.
 
-Commands: `./scripts/run-desktop.sh`, `./scripts/test.sh`, `./scripts/lint.sh`, `./scripts/format.sh`, `./scripts/build-love.sh`, `./scripts/build-web.sh`, `./scripts/build-stock.sh`.
+Commands: `./scripts/run-desktop.sh`, `./scripts/test.sh`, `./scripts/lint.sh`, `./scripts/format.sh`, `./scripts/build-love.sh`, `./scripts/build-web.sh`, `./scripts/build-stock.sh`, `./scripts/check.sh`. Before committing, agents must run `./scripts/check.sh` and only commit if it passes. Install the versioned pre-commit hook with `./scripts/install-hooks.sh`; the hook runs `./scripts/check.sh`.
 
 Add a localized string: add the same stable key to `content/localization/ru.lua` and `content/localization/de.lua`; Russian is the fallback.
 

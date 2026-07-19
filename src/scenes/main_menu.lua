@@ -49,7 +49,9 @@ function MainMenu:draw()
 		love.graphics.printf(app.loc:t("title"), 40, 48, 560, "center")
 
 		love.graphics.setFont(love.graphics.newFont(26))
-		local languageLabel = app.loc:t("menu.language") .. ": " .. app.loc:t("language." .. app.loc.language)
+		local languageLabel = app.loc:t("menu.language")
+			.. ": "
+			.. app.loc:t("language." .. app.loc.language)
 		Menu.draw({
 			{ label = app.loc:t("menu.start") },
 			{ label = languageLabel },
