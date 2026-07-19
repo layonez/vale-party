@@ -310,5 +310,21 @@ end)
 test("plane facing holds when already at the target", function()
 	assertEq(Plane.stepToward("e", "e"), "e")
 end)
+test("plane idle animation stays small and lively while moving", function()
+	-- Amplitudes stay gentle (child-friendly: no big or flashing motion).
+	local maxBob, maxScale = 0, 0
+	for i = 0, 200 do
+		local t = i * 0.05
+		local dy, scaleMul = Plane.animation(t, false)
+		maxBob = math.max(maxBob, math.abs(dy))
+		maxScale = math.max(maxScale, math.abs(scaleMul - 1))
+	end
+	assert(maxBob <= 3.001, "bob should stay within ~3px, got " .. maxBob)
+	assert(maxScale <= 0.031, "scale pulse should stay within ~3%, got " .. maxScale)
+	-- Wobble is larger in flight than at rest.
+	local _, _, restRot = Plane.animation(0.3, false)
+	local _, _, flyRot = Plane.animation(0.3, true)
+	assert(math.abs(flyRot) > math.abs(restRot), "flying should wobble more than idle")
+end)
 print(string.format("%d tests, %d failures", total, fail))
 os.exit(fail)

@@ -39,7 +39,7 @@ local GRID_STEP = 30 -- degrees between grid lines
 local SEGMENTS = 48 -- samples per grid line
 local CHARACTER_RANGE = 7 -- angular degrees within which a character is interactable
 local CELEBRATION_TIME = 4 -- seconds the cycle celebration plays before auto-ending (spec §17)
-local FACING_STEP_TIME = 0.06 -- seconds per one-tile step when the plane turns
+local FACING_STEP_TIME = 0.09 -- seconds per one-tile step when the plane turns
 
 -- Debug-only auto-drift directions cycled by the dbg_drift key. Each entry is a
 -- screen-axis turn {axis, sign}: "y" = up/down flight, "z" = left/right flight.
@@ -93,6 +93,7 @@ function FlightMap:enter(_, app)
 	self.facing = "s" -- plane faces the viewer by default (spec §4)
 	self.targetFacing = "s"
 	self.facingTimer = 0
+	self.moving = false
 	-- Debug-only auto-drift so rotation is observable without holding a key.
 	-- 0 = off; other indices pick a direction from DRIFTS.
 	self.drift = 0
@@ -203,6 +204,7 @@ function FlightMap:update(dt)
 		-- intermediate compass tiles (below). Idle keeps the last target.
 		self.targetFacing = Plane.facingFor(axis, angle) or self.targetFacing
 	end
+	self.moving = axis ~= nil
 
 	-- Step the drawn facing one tile toward the target at a fixed rate, so a
 	-- left->right turn visibly rotates through the diagonal/vertical sprites
@@ -414,8 +416,8 @@ function FlightMap:drawCountries(orientation)
 	end
 end
 
-local function drawAirplane(x, y, facing)
-	Plane.draw(x, y, facing)
+local function drawAirplane(x, y, facing, time, moving)
+	Plane.draw(x, y, facing, time, moving)
 end
 
 function FlightMap:drawWorld()
@@ -423,7 +425,7 @@ function FlightMap:drawWorld()
 	love.graphics.rectangle("fill", 0, 0, 640, 480)
 	drawStars(self.stars)
 	self:drawGlobe()
-	drawAirplane(GLOBE.x, GLOBE.y, self.facing)
+	drawAirplane(GLOBE.x, GLOBE.y, self.facing, self.time, self.moving)
 
 	-- Permanent five-slot progress panel at the top (spec §16).
 	ProgressPanel.draw(self.world.characters, self.mission:panelStates())

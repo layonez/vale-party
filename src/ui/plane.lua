@@ -86,16 +86,37 @@ function Plane.stepToward(current, target)
 	return RING[(from + step) % 8 + 1]
 end
 
--- Draw the plane centered at (x, y) facing `facing` (defaults to "s").
+-- Gentle "alive" idle animation: a slow vertical bob, a breathing scale pulse,
+-- and a small rotational wobble — a touch stronger while flying. Kept slow and
+-- low-amplitude per the child-friendly rules (no rapid or flashing motion).
+-- Pure (time in, offsets out) so it can be unit tested.
+---@param time number seconds
+---@param moving boolean whether the plane is currently flying
+---@return number dy vertical bob in pixels
+---@return number scaleMul scale multiplier around 1.0
+---@return number rot rotation in radians
+function Plane.animation(time, moving)
+	local dy = math.sin(time * 2.2) * 3 -- slow up/down float, +/-3 px
+	local scaleMul = 1 + math.sin(time * 1.6) * 0.03 -- breathing, +/-3%
+	local wobbleAmp = moving and 0.06 or 0.025 -- radians; more lively in flight
+	local rot = math.sin(time * (moving and 5 or 2.6)) * wobbleAmp
+	return dy, scaleMul, rot
+end
+
+-- Draw the plane centered at (x, y) facing `facing` (defaults to "s"). `time`
+-- drives the idle animation; `moving` makes the wobble a bit livelier in flight.
 ---@param x number
 ---@param y number
 ---@param facing string|nil
-function Plane.draw(x, y, facing)
+---@param time number|nil
+---@param moving boolean|nil
+function Plane.draw(x, y, facing, time, moving)
 	ensureLoaded()
 	local quad = quads[facing] or quads.s
-	local scale = DRAW_SIZE / CELL
+	local dy, scaleMul, rot = Plane.animation(time or 0, moving or false)
+	local scale = (DRAW_SIZE / CELL) * scaleMul
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.draw(image, quad, x, y, 0, scale, scale, CELL / 2, CELL / 2)
+	love.graphics.draw(image, quad, x, y + dy, rot, scale, scale, CELL / 2, CELL / 2)
 end
 
 return Plane
