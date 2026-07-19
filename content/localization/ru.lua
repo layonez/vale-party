@@ -11,4 +11,12 @@ return {
 	["garden.prompt"] = "Нажми A",
 	["language.ru"] = "Русский",
 	["language.de"] = "Deutsch",
+	["country.germany"] = "Германия",
+	["country.russia"] = "Россия",
+	["country.india"] = "Индия",
+	["country.japan"] = "Япония",
+	["country.brazil"] = "Бразилия",
+	["country.usa"] = "США",
+	["country.australia"] = "Австралия",
+	["country.egypt"] = "Египет",
 }

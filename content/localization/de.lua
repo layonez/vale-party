@@ -11,4 +11,12 @@ return {
 	["garden.prompt"] = "Drücke A",
 	["language.ru"] = "Русский",
 	["language.de"] = "Deutsch",
+	["country.germany"] = "Deutschland",
+	["country.russia"] = "Russland",
+	["country.india"] = "Indien",
+	["country.japan"] = "Japan",
+	["country.brazil"] = "Brasilien",
+	["country.usa"] = "USA",
+	["country.australia"] = "Australien",
+	["country.egypt"] = "Ägypten",
 }

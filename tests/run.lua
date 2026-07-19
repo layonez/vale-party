@@ -18,6 +18,8 @@ local Settings = require("src.core.settings")
 local Loc = require("src.core.localization")
 local Inter = require("src.entities.interactable")
 local Sphere = require("src.core.sphere")
+local World = require("src.core.world")
+local worldData = require("content.world")
 local function assertClose(a, b, eps)
 	assert(math.abs(a - b) < (eps or 0.0001), tostring(a) .. " ~= " .. tostring(b))
 end
@@ -106,6 +108,54 @@ test("orientation stays orthonormal after many turns", function()
 	-- Front vector must remain unit length (rows stay normalized).
 	local r = o[1]
 	assertClose(math.sqrt(r[1] * r[1] + r[2] * r[2] + r[3] * r[3]), 1, 0.0001)
+end)
+test("world looks up entities by id", function()
+	local w = World.new(worldData)
+	assertEq(w:country("brazil").id, "brazil")
+	assertEq(w:airport("brazil_airport").country_id, "brazil")
+	assertEq(w:mission("mission_1").target_country_id, "brazil")
+	assertEq(w:character("character_1").mission_id, "mission_1")
+	assertEq(w:country("nope"), nil)
+end)
+test("angular distance is zero at a point and 180 at its antipode", function()
+	assertClose(World.angularDistance(10, 20, 10, 20), 0)
+	assertClose(World.angularDistance(0, 0, 0, 180), 180)
+end)
+test("countryAt detects the country beneath a point and nil in open ocean", function()
+	local w = World.new(worldData)
+	local brazil = w:country("brazil")
+	-- Exactly over Brazil's region center.
+	assertEq(w:countryAt(brazil.region.latitude, brazil.region.longitude).id, "brazil")
+	-- Middle of the Pacific: no playable country.
+	assertEq(w:countryAt(0, -160), nil)
+end)
+test("country regions do not overlap", function()
+	local w = World.new(worldData)
+	for i = 1, #w.countries do
+		for j = i + 1, #w.countries do
+			local a, b = w.countries[i].region, w.countries[j].region
+			local d = World.angularDistance(a.latitude, a.longitude, b.latitude, b.longitude)
+			assert(
+				d > a.radius + b.radius,
+				w.countries[i].id .. " overlaps " .. w.countries[j].id .. " (gap " .. d .. ")"
+			)
+		end
+	end
+end)
+test("data integrity: five characters, and every reference resolves", function()
+	local w = World.new(worldData)
+	assertEq(#w.characters, 5)
+	assertEq(#w.missions, 5)
+	for _, m in ipairs(w.missions) do
+		assert(w:country(m.target_country_id), "mission target missing: " .. m.target_country_id)
+		assert(w:character(m.character_id), "mission character missing: " .. m.character_id)
+	end
+	for _, c in ipairs(w.characters) do
+		assert(w:mission(c.mission_id), "character mission missing: " .. c.mission_id)
+	end
+	for _, c in ipairs(w.countries) do
+		assert(w:airport(c.airport_id), "country airport missing: " .. c.airport_id)
+	end
 end)
 print(string.format("%d tests, %d failures", total, fail))
 os.exit(fail)
