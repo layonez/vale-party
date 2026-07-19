@@ -9,7 +9,7 @@ local Garden = {
 	obstacles = { { x = 246, y = 224, w = 120, h = 38 } },
 }
 
-function Garden:enter(app)
+function Garden:enter(_, app)
 	self.app = app
 	self.player = Player.new(120, 360)
 	self.flower = Flower.new(500, 285)
