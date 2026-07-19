@@ -27,7 +27,7 @@ function MainMenu:update()
 	end
 	if input:pressed("interact") then
 		if self.selected == 1 then
-			Gamestate.switch(require("src.scenes.garden"), self.app)
+			Gamestate.switch(require("src.scenes.flight_map"), self.app)
 		elseif self.selected == 2 then
 			self:toggleLanguage()
 		else

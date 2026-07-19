@@ -37,4 +37,19 @@ cat > dist/web/README.md <<'EOT'
 Serve this directory over HTTP. It contains the static love.js compatibility build generated from dist/valya-adventure.love and can be published directly by GitHub Pages.
 EOT
 
+# Inject browser test helpers (window.valya console commands). Harmless in
+# production — it only adds console helpers and never fires input on its own —
+# so it ships with every build to keep the served page and the test page
+# identical.
+cp platform/web/test-helpers.js dist/web/test-helpers.js
+node -e '
+  var fs = require("fs");
+  var f = "dist/web/index.html";
+  var s = fs.readFileSync(f, "utf8");
+  var tag = "<script src=\"test-helpers.js\"></script>";
+  if (s.indexOf(tag) !== -1) process.exit(0);
+  if (s.indexOf("</body>") === -1) { console.error("build-web: no </body> to inject test helpers"); process.exit(1); }
+  fs.writeFileSync(f, s.replace("</body>", "    " + tag + "\n  </body>"));
+'
+
 echo "Created runnable love.js web build in dist/web."

@@ -4,9 +4,9 @@ local Fonts = require("src.core.fonts")
 
 local Pause = {}
 
-function Pause:enter(_, app, garden)
+function Pause:enter(_, app, scene)
 	self.app = app
-	self.garden = garden
+	self.scene = scene
 	self.selected = 1
 end
 
@@ -27,7 +27,7 @@ function Pause:update()
 		if self.selected == 1 then
 			Gamestate.pop()
 		elseif self.selected == 2 then
-			Gamestate.switch(require("src.scenes.garden"), self.app)
+			Gamestate.switch(require("src.scenes.flight_map"), self.app)
 		else
 			Gamestate.switch(require("src.scenes.main_menu"), self.app)
 		end
@@ -36,7 +36,7 @@ end
 
 function Pause:draw()
 	self.app.drawScaled(function()
-		self.garden:drawWorld()
+		self.scene:drawWorld()
 		love.graphics.setColor(0, 0, 0, 0.48)
 		love.graphics.rectangle("fill", 0, 0, 640, 480)
 		love.graphics.setFont(Fonts.get(28))
