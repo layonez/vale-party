@@ -1,0 +1,12 @@
+{
+  "name": "valya-adventure",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser packaging tools for the Valya Adventure LÖVE MVP.",
+  "scripts": {
+    "build:web": "./scripts/build-web.sh"
+  },
+  "devDependencies": {
+    "love.js": "11.4.1"
+  }
+}

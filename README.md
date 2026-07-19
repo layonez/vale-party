@@ -29,7 +29,7 @@ Linux: install LÖVE 11.5 and run `./scripts/run-desktop.sh`. macOS: install LÖ
 
 `./scripts/build-love.sh` creates deterministic `dist/valya-adventure.love` and excludes tests, logs, editor files, and VCS metadata.
 
-`./scripts/build-web.sh` creates `dist/web` with the same `.love` package. The wasm love.js runtime is not vendored; provide a pinned compatible Davidobot/love.js release and serve with `python3 -m http.server 8000 -d dist/web`. Do not use `file://`.
+`./scripts/build-web.sh` creates a runnable love.js compatibility build in `dist/web` with the same `.love` package. Run `npm ci` first for the pinned packager, then serve with `python3 -m http.server 8000 -d dist/web`. Do not use `file://`. Pushes merged to `main` are automatically built and deployed to GitHub Pages by `.github/workflows/pages.yml`.
 
 `./scripts/build-stock.sh` creates `dist/stock/Roms/APPS/Valya Adventure.sh` and `ValyaAdventure/` with `game.love`, runtime/libs/saves/logs placeholders. Stock-firmware runtime integration is a scaffold pending physical RG35XX Plus validation; see `platform/stock/README.md`.
 
@@ -39,6 +39,6 @@ The code is intentionally small: `src/app.lua` owns canvas scaling, settings, lo
 
 ## Licenses and references
 
-Project code is MIT. Vendored Baton is MIT. Vendored HUMP Gamestate/Timer is MIT. LuaCATS LÖVE definitions are referenced for editor setup but not vendored. love.js is referenced for browser runtime generation but not vendored. No external art or copyrighted audio is included; placeholder graphics are LÖVE primitives and placeholder sound is generated at runtime.
+Project code is MIT. Vendored Baton is MIT. Vendored HUMP Gamestate/Timer is MIT. LuaCATS LÖVE definitions are referenced for editor setup but not vendored. love.js is pinned as an npm dev dependency for browser runtime generation but not committed as generated runtime files. No external art or copyrighted audio is included; placeholder graphics are LÖVE primitives and placeholder sound is generated at runtime.
 
 Reference review notes: love2d-cursor-template informed the simple Lua tooling/build layout; Baton is the semantic input abstraction; HUMP supplied only Gamestate/Timer; LuaCATS informed annotation style; exdial/anbernic-apps informed `Roms/APPS`; PortMaster docs informed local runtime/libs/log/save conventions; love.js remains the intended browser runtime; Phaser and Antura were treated only as UX/reference material, not runtime/architecture sources.
