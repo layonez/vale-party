@@ -1,0 +1,12 @@
+# SDL game controller mappings for Anbernic RG35XX Plus (H700) stock firmware.
+#
+# The launcher points SDL_GAMECONTROLLERCONFIG_FILE here so LOVE/SDL recognizes
+# the built-in buttons ("ANBERNIC-keys", exposed as js0) as a gamepad. Without a
+# matching GUID entry SDL treats it as a raw joystick, isGamepad() is false, and
+# LOVE/Baton's button:/axis: bindings receive nothing (symptom: menu renders but
+# no button does anything).
+#
+# This is the exact entry the H700 port ecosystem ships (PortMaster, PPSSPP).
+# GUID 19000000010000000100000000010000 = bus 0x0019, vendor/product 0x0001,
+# version 0x0100, matching /sys/class/input/input1/id on the device.
+19000000010000000100000000010000,ANBERNIC-keys,a:b0,b:b1,x:b3,y:b2,back:b8,guide:b6,start:b7,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,leftx:a0,lefty:a1,lefttrigger:b9,righttrigger:b10,platform:Linux,

@@ -18,11 +18,10 @@ fi
 # static files without cross-origin isolation headers for SharedArrayBuffer.
 $LOVEJS dist/valya-adventure.love dist/web -c -t "$GAME_TITLE"
 
-# love.js bundles LOVE 11.4, but conf.lua targets 11.5 for the desktop build.
-# That mismatch makes LOVE's SDL message box fire a blocking "Compatibility
-# Warning" alert() on every page load. Route only that specific message box to
-# console.warn so the browser build boots straight into the game; all other
-# message boxes (real errors) keep using alert().
+# conf.lua targets LOVE 11.4, matching love.js's bundled 11.4, so no version
+# mismatch fires. Keep routing any "Compatibility Warning" message box to
+# console.warn defensively so a future version bump can't reintroduce a blocking
+# alert() on page load; all other message boxes (real errors) keep using alert().
 node -e '
   var fs = require("fs");
   var f = "dist/web/love.js";

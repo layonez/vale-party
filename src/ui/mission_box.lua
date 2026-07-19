@@ -72,7 +72,16 @@ function MissionBox.draw(country, name, character, prompt)
 		local iw, ih = img:getDimensions()
 		local scale = (PORTRAIT - 6) / math.max(iw, ih)
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(img, px + PORTRAIT / 2, py + PORTRAIT / 2, 0, scale, scale, iw / 2, ih / 2)
+		love.graphics.draw(
+			img,
+			px + PORTRAIT / 2,
+			py + PORTRAIT / 2,
+			0,
+			scale,
+			scale,
+			iw / 2,
+			ih / 2
+		)
 	elseif character then
 		local c = character.color
 		love.graphics.setColor(c[1], c[2], c[3], 1)

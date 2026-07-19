@@ -21,6 +21,12 @@ function App.log(message)
 end
 
 function App.load()
+	-- On the handheld the launcher sets VALE_FULLSCREEN=1 so the 640x480 canvas
+	-- fills the panel; App.drawScaled letterboxes whatever the window reports.
+	if os.getenv("VALE_FULLSCREEN") then
+		pcall(love.window.setFullscreen, true, "desktop")
+	end
+
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	-- Use a Cyrillic-capable font everywhere; LOVE's built-in font renders
 	-- Russian text as tofu boxes.

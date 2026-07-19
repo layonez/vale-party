@@ -1,8 +1,8 @@
 # Valya Adventure agent guide
 
-Product goal: a tiny child-friendly LÖVE 11.5 MVP for desktop, browser via love.js, and an RG35XX Plus stock-firmware scaffold.
+Product goal: a tiny child-friendly LÖVE 11.4 MVP for desktop, browser via love.js, and a complete RG35XX Plus stock-firmware package.
 
-Design & decision docs live in [`docs/`](docs/README.md): [globe & movement](docs/globe-and-movement.md), [world content & saving](docs/world-content.md), [Flight Map scene & mission loop](docs/flight-map.md), and [testing & debug tooling](docs/testing-and-debug.md). The game spec is [`specs/flight_map_spec.md`](specs/flight_map_spec.md). Read these before changing the Flight Map.
+Design & decision docs live in [`docs/`](docs/README.md): [globe & movement](docs/globe-and-movement.md), [world content & saving](docs/world-content.md), [Flight Map scene & mission loop](docs/flight-map.md), [testing & debug tooling](docs/testing-and-debug.md), and [stock-firmware packaging](docs/stock-firmware-packaging.md). The game spec is [`specs/flight_map_spec.md`](specs/flight_map_spec.md). Read these before changing the Flight Map; read the stock-firmware doc before touching `scripts/build-stock.sh` or `platform/stock/`.
 
 Target device/resolution: Anbernic RG35XX Plus, fixed 640×480 logical canvas, 4:3 letterboxed scaling.
 
