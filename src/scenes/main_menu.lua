@@ -3,7 +3,7 @@ local Menu = require("src.ui.menu")
 
 local MainMenu = {}
 
-function MainMenu:enter(app)
+function MainMenu:enter(_, app)
 	self.app = app
 	self.selected = 1
 end
