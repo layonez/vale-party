@@ -165,6 +165,20 @@ test("circle points all sit at the given angular radius from the center", functi
 		assertClose(World.angularDistance(20, 40, p[1], p[2]), 10, 0.001)
 	end
 end)
+test("screen direction points right for a target due east and is visible", function()
+	local o = Sphere.orientationFor(0, 0)
+	local dx, dy, visible = Sphere.screenDirection(o, 0, 45)
+	assert(visible)
+	assert(dx > 0.9, "expected mostly-rightward dx, got " .. dx)
+	assertClose(dy, 0, 0.001)
+end)
+test("screen direction still aims toward a target behind the horizon", function()
+	local o = Sphere.orientationFor(0, 0)
+	-- Target at lon 135 is on the far hemisphere but still to the east/right.
+	local dx, _, visible = Sphere.screenDirection(o, 0, 135)
+	assert(not visible)
+	assert(dx > 0, "arrow should still point rightward toward an eastern target")
+end)
 test("recognition fires once after the dwell time, not before", function()
 	local r = Recognition.new(1.0)
 	assertEq(r:update("brazil", 0.5), nil) -- not yet

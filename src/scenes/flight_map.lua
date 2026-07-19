@@ -12,6 +12,8 @@ local Airport = require("src.ui.airport")
 local CharacterView = require("src.ui.character")
 local ProgressPanel = require("src.ui.progress_panel")
 local MissionState = require("src.core.mission_state")
+local MissionBox = require("src.ui.mission_box")
+local TargetArrow = require("src.ui.target_arrow")
 
 -- Flight Map: the main playable scene. The player flies a small airplane that
 -- stays fixed near the center of the screen while the globe rotates beneath it.
@@ -182,6 +184,33 @@ function FlightMap:update(dt)
 		end
 	end
 
+	-- Mission guidance: is the target country's region visible on screen? Use
+	-- the region center plus its outline samples, so a partial edge counts too.
+	self.targetVisible = false
+	local mission = self.mission:activeMission()
+	if mission then
+		local target = self.world:country(mission.target_country_id)
+		local _, _, centerVisible = Sphere.project(
+			self.orientation,
+			target.region.latitude,
+			target.region.longitude,
+			GLOBE.radius,
+			GLOBE.x,
+			GLOBE.y
+		)
+		self.targetVisible = centerVisible
+		if not self.targetVisible then
+			for _, p in ipairs(self.countryOutlines[target.id]) do
+				local _, _, v =
+					Sphere.project(self.orientation, p[1], p[2], GLOBE.radius, GLOBE.x, GLOBE.y)
+				if v then
+					self.targetVisible = true
+					break
+				end
+			end
+		end
+	end
+
 	self.time = self.time + dt
 end
 
@@ -264,12 +293,26 @@ function FlightMap:drawGlobe()
 	love.graphics.circle("line", GLOBE.x, GLOBE.y, GLOBE.radius)
 end
 
--- Outline each playable country's region. The recognised country (or the one
--- currently beneath the plane) gets a brighter, thicker highlight (spec §8).
+-- Outline each playable country's region. Highlights, brightest first:
+--   * mission target while the plane is over it (completion available, spec §15)
+--   * mission target while visible on screen (spec §13)
+--   * country currently recognised by dwelling (spec §8)
+--   * default subtle outline
 function FlightMap:drawCountries(orientation)
+	local mission = self.mission:activeMission()
+	local targetId = mission and mission.target_country_id or nil
 	for _, country in ipairs(self.world.countries) do
-		local recognized = self.recognition.recognizedId == country.id
-		if recognized then
+		local isTarget = country.id == targetId
+		local overTarget = isTarget and self.currentCountryId == country.id
+		if overTarget then
+			-- Pulsing, strongest highlight: pressing A here completes the mission.
+			local pulse = 0.7 + 0.3 * math.sin(self.time * 6)
+			love.graphics.setColor(0.5, 1, 0.5, pulse)
+			love.graphics.setLineWidth(5)
+		elseif isTarget and self.targetVisible then
+			love.graphics.setColor(0.5, 1, 0.6, 0.9)
+			love.graphics.setLineWidth(4)
+		elseif self.recognition.recognizedId == country.id then
 			love.graphics.setColor(1, 0.95, 0.5, 0.95)
 			love.graphics.setLineWidth(3)
 		else
@@ -300,6 +343,23 @@ function FlightMap:drawWorld()
 
 	-- Permanent five-slot progress panel at the top (spec §16).
 	ProgressPanel.draw(self.world.characters, self.mission:panelStates())
+
+	-- Mission guidance while a mission is active (spec §13, §14).
+	local mission = self.mission:activeMission()
+	if mission then
+		local target = self.world:country(mission.target_country_id)
+		-- Arrow points toward the target while it is behind the horizon; it
+		-- disappears once any part of the target is visible (highlight takes over).
+		if not self.targetVisible then
+			local dx, dy = Sphere.screenDirection(
+				self.orientation,
+				target.region.latitude,
+				target.region.longitude
+			)
+			TargetArrow.draw(dx, dy)
+		end
+		MissionBox.draw(target, self.app.loc:t(target.name_key))
+	end
 
 	-- Recognised country name, shown as a learning aid (spec §8). Play is fully
 	-- possible without reading, so this is supplementary.

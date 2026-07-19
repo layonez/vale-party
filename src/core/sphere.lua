@@ -198,4 +198,33 @@ function Sphere.circlePoints(centerLat, centerLon, angRadius, segments)
 	return points
 end
 
+local function normalize2(x, y)
+	local len = sqrt(x * x + y * y)
+	if len < 1e-9 then
+		return 0, 0
+	end
+	return x / len, y / len
+end
+
+---Screen-space direction from the globe center toward a world point, as a unit
+---vector in screen coordinates (y grows downward). Works even when the point is
+---behind the horizon: the (right, up) view components still give the azimuth to
+---turn toward, which is what the target arrow needs (spec §13). Returns dx, dy,
+---and whether the point is on the visible hemisphere.
+---@param orientation table
+---@param lat number
+---@param lon number
+---@return number dx
+---@return number dy
+---@return boolean visible
+function Sphere.screenDirection(orientation, lat, lon)
+	local x, y, z = Sphere.latLonToVec(lat, lon)
+	local r = orientation
+	local vx = r[1][1] * x + r[1][2] * y + r[1][3] * z -- depth
+	local vy = r[2][1] * x + r[2][2] * y + r[2][3] * z -- screen right
+	local vz = r[3][1] * x + r[3][2] * y + r[3][3] * z -- screen up
+	local dx, dy = normalize2(vy, -vz) -- screen y grows downward
+	return dx, dy, vx >= 0
+end
+
 return Sphere
