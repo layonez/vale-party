@@ -85,8 +85,16 @@ async function exists(p) {
 	}
 }
 
+// Per-role voice settings: narration + arrivals share the narrator profile;
+// pickup requests and drop-off thanks each get their own (pleading / cheerful).
+function settingsFor(role, cfg) {
+	if (role === "request") return cfg.settings.request;
+	if (role === "thanks") return cfg.settings.thanks;
+	return cfg.settings.narrator; // narration + arrival
+}
+
 async function tts(key, job, cfg) {
-	const settings = job.kind === "character" ? cfg.settings.character : cfg.settings.narrator;
+	const settings = settingsFor(job.role, cfg);
 	const url = `https://api.elevenlabs.io/v1/text-to-speech/${job.voiceId}?output_format=mp3_44100_128`;
 	const res = await fetch(url, {
 		method: "POST",
@@ -145,7 +153,7 @@ async function main() {
 				language: "ru",
 				voiceId: job.voiceId,
 				modelId: cfg.model,
-				settings: job.kind === "character" ? cfg.settings.character : cfg.settings.narrator,
+				settings: settingsFor(job.role, cfg),
 				role: job.role,
 				country: job.country ?? null,
 				status: DRAFT ? "draft" : "review",

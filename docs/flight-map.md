@@ -100,29 +100,64 @@ so a partial edge coming over the horizon counts.
 
 ## Voice hints (spec §8, §11)
 
-The game is for a pre-reader, so the key moments are also spoken in Russian.
-`Audio.playVoice(audio, lang, id[, quiet])` loads `assets/voice/<lang>/<id>.ogg`,
-caches each source, and plays it on a single shared voice channel so lines never
-talk over each other. A missing file falls back to the confirmation beep, unless
-`quiet` is set (additive cues that shouldn't beep in languages without a
-recording).
+The game is for a pre-reader, so the key moments are spoken in Russian. Playback
+runs on a single shared voice channel (`src/platform/audio.lua`) with **two
+priority tiers**:
 
-| Moment | Trigger | Voice id |
-| --- | --- | --- |
-| Start greeting | `FlightMap:enter` | `greeting` (quiet) |
-| Country recognized | dwell recognition | `voice.<country_id>` |
-| Friend accepted | fly within range of character | active mission id (`mission_1`…`mission_5`) |
-| Friend delivered | fly over target country (queued after country announcement) | `success` (quiet) |
-| All five done | fifth completion / debug finish (queued) | `celebration` (quiet) |
+- **Speech** — `Audio.playVoice` (immediate) and `Audio.queueVoice` (FIFO). The
+  greeting, a friend's pickup request, their drop-off thank-you, and the cycle
+  celebration. Speech plays in order and is never interrupted by an announcement.
+- **Ambient announcements** — `Audio.announce`. The country name spoken while
+  flying over it. Low priority: it yields to any speech (and is preempted the
+  instant speech is queued) and is rate-limited to **one every 4 s** after the
+  previous announcement ends, so crossing many small countries doesn't
+  machine-gun their names. A single "latest wins" pending slot means each fly-over
+  announces at most once.
 
-Drop-off and celebration cues are **queued** (`Audio.queueVoice`) rather than
-played immediately, so a country announcement already in progress finishes first.
-`Audio.updateVoice` polls the channel once per frame and flushes the queue when
-it goes silent.
+`Audio.updateVoice(audio, dt)` polls the channel once per frame, enforces the
+priority + cooldown, and starts the next line when the channel frees up.
 
-Recordings live under `assets/voice/ru/` as Vorbis `.ogg`. Because playback
-always falls back to a beep (or silence), the game runs fully without any voice
-files present — dropping in a `de/` set later needs no code change.
+| Moment | Trigger | Voice id | Tier |
+| --- | --- | --- | --- |
+| Start greeting | `FlightMap:enter` | `greeting` | speech |
+| Country recognized | dwell recognition | `voice.<country_id>` | announcement |
+| Friend accepted | fly within range of character | `mission.<target_country_id>` | speech |
+| Friend delivered | fly over target country | `thanks.<target_country_id>` | speech |
+| Destination named | after the thank-you | `voice.<target_country_id>` | announcement |
+| All five done | fifth completion / debug finish | `celebration` | speech |
+
+Voice lines are keyed by **target country**, not character slot: a slot's
+destination changes every round, so `mission.<country>` / `thanks.<country>` keep
+the spoken destination correct. The country → character-voice mapping mirrors the
+round columns in `content/world.lua`, so each friend keeps one voice whether asking
+to go home or thanking Valya on arrival.
+
+Because the drop-off zone is larger than the recognition region, the thank-you is
+queued **before** the arrival cue fires; as high-priority speech it plays in full
+first, and the destination is announced only after it (the finale skips the name
+and goes straight to the celebration). A missing file falls back to the
+confirmation beep — or silence for `quiet`/ambient cues — so the game runs fully
+without any voice files present; dropping in a `de/` set later needs no code change.
+
+### Generating the recordings
+
+Recordings live under `assets/voice/ru/` as Vorbis `.ogg`, produced offline by
+`scripts/voice/generate.mjs` from the text / voice / settings in
+`scripts/voice/lines.ru.json` (ElevenLabs `eleven_multilingual_v2`; requests use a
+soft "pleading" settings profile, thanks and arrivals a "cheerful" one). The
+narrator voice speaks the arrivals, greeting and celebration; the five character
+voices speak the requests and thanks. The API key lives in `.env` only and is never
+called from the game. Re-run after editing lines (idempotent — existing files are
+skipped unless forced):
+
+```
+node scripts/voice/generate.mjs          # fill gaps
+node scripts/voice/generate.mjs --force  # regenerate all
+node scripts/voice/generate.mjs --draft  # free-tier English placeholder voices
+```
+
+The script writes an mp3 master to `voice-src/ru/` (gitignored), converts it to the
+shipped `.ogg`, and records generation metadata in `assets/voice/ru/manifest.json`.
 
 ## Background music
 
