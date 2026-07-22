@@ -18,3 +18,4 @@ scripts/.cache/
 # these mp3 originals are kept locally only, for future re-encoding.
 voice-src/
 
+.env
