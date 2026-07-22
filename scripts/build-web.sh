@@ -36,6 +36,22 @@ cat > dist/web/README.md <<'EOT'
 Serve this directory over HTTP. It contains the static love.js compatibility build generated from dist/valya-adventure.love and can be published directly by GitHub Pages.
 EOT
 
+# Mobile touch styling: stop the page from scrolling/zooming when the on-screen
+# D-pad and A button (drawn by the game on web; see src/platform/touch.lua) are
+# dragged, and fit the 4:3 canvas to the viewport preserving aspect. Pure CSS —
+# the canvas backing store is untouched, so the game keeps letterboxing 640x480
+# internally and touch coordinates map back cleanly.
+node -e '
+  var fs = require("fs");
+  var f = "dist/web/index.html";
+  var s = fs.readFileSync(f, "utf8");
+  if (s.indexOf("valya-mobile") !== -1) process.exit(0);
+  var css = "html,body{margin:0;padding:0;height:100%;background:#0c1119;overflow:hidden;-webkit-user-select:none;user-select:none;}h1{display:none;}body{display:flex;align-items:center;justify-content:center;}#canvas{width:100vw;height:auto;max-width:calc(100vh*4/3);max-height:100vh;touch-action:none;-ms-touch-action:none;outline:none;}";
+  var tag = "<style id=\"valya-mobile\">" + css + "</style>";
+  if (s.indexOf("</head>") === -1) { console.error("build-web: no </head> for mobile style"); process.exit(1); }
+  fs.writeFileSync(f, s.replace("</head>", "    " + tag + "\n  </head>"));
+'
+
 # Inject browser test helpers (window.valya console commands). Harmless in
 # production — it only adds console helpers and never fires input on its own —
 # so it ships with every build to keep the served page and the test page

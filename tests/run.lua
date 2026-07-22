@@ -575,5 +575,51 @@ test("voice: gratitude plays fully before the country announcement, which has a 
 
 	love = prevLove
 end)
+test("touch controls: hit-test regions and press/hold/release edge state", function()
+	local Touch = require("src.platform.touch")
+	local t = Touch.new(640, 480)
+	-- Find a button's centre by action, to hit-test without hardcoding geometry.
+	local function centre(action)
+		for _, b in ipairs(t.buttons) do
+			if b.action == action then
+				return b.shape == "circle" and { b.cx, b.cy } or { b.x + b.w / 2, b.y + b.h / 2 }
+			end
+		end
+	end
+	-- Each button's centre resolves to its own action; empty space is nil.
+	for _, a in ipairs({ "move_up", "move_down", "move_left", "move_right", "interact" }) do
+		local c = centre(a)
+		assertEq(t:hitTest(c[1], c[2]), a)
+	end
+	assertEq(t:hitTest(320, 40), nil) -- top-centre: no control there
+
+	-- Press A: down and pressed on the first frame after the touch.
+	local a = centre("interact")
+	t:pressAt(1, a[1], a[2])
+	t:update()
+	assertEq(t:down("interact"), true)
+	assertEq(t:isPressed("interact"), true)
+	-- Still held next frame: down stays true but the edge (pressed) clears.
+	t:update()
+	assertEq(t:down("interact"), true)
+	assertEq(t:isPressed("interact"), false)
+	-- Release: no longer down.
+	t:release(1)
+	t:update()
+	assertEq(t:down("interact"), false)
+
+	-- Sliding one pointer across the d-pad switches direction; two pointers
+	-- (d-pad + A) are independent.
+	local up, down = centre("move_up"), centre("move_down")
+	t:pressAt(2, up[1], up[2])
+	t:pressAt(3, a[1], a[2])
+	t:update()
+	assertEq(t:down("move_up"), true)
+	assertEq(t:down("interact"), true)
+	t:moveAt(2, down[1], down[2])
+	t:update()
+	assertEq(t:down("move_up"), false)
+	assertEq(t:down("move_down"), true)
+end)
 print(string.format("%d tests, %d failures", total, fail))
 os.exit(fail)

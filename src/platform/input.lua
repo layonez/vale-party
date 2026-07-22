@@ -28,6 +28,28 @@ function Input.new()
 	})
 end
 
+-- Wrap a baton input with on-screen touch controls so `down`/`pressed` report a
+-- key/gamepad OR a touch button, and one `update` advances both. Scenes keep
+-- calling the same `input:down`/`input:pressed`/`input:update` API unchanged.
+-- Delegates everything else (e.g. `.joystick`) to baton via the metatable.
+---@param input table baton instance from Input.new
+---@param touch table Touch instance
+---@return table
+function Input.withTouch(input, touch)
+	local proxy = setmetatable({}, { __index = input })
+	function proxy:update()
+		input:update()
+		touch:update()
+	end
+	function proxy:down(name)
+		return input:down(name) or touch:down(name)
+	end
+	function proxy:pressed(name)
+		return input:pressed(name) or touch:isPressed(name)
+	end
+	return proxy
+end
+
 ---@param input table
 ---@return table movement
 function Input.snapshot(input)
