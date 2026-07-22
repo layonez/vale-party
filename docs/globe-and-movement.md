@@ -3,6 +3,18 @@
 How the player flies around the planet. Code: [`src/core/sphere.lua`](../src/core/sphere.lua),
 [`src/scenes/flight_map.lua`](../src/scenes/flight_map.lua).
 
+## Opening zoom animation
+
+When the Flight Map scene loads, the globe zooms in over **4 seconds** from a
+small distant view (`radius 210`, centered at `y=250`) to its full size
+(`radius 396`, centered at `y=320`). The transition uses a quadratic ease-out
+so it decelerates as it settles. The plane and HUD appear at their final sizes
+from the start; only the globe itself animates.
+
+`GLOBE` (the single mutable table the renderer reads each frame) is driven by
+`self.zoomT` (0→1). On `enter()` it is reset to the start values so restarting
+always replays the animation.
+
 ## Free 3D orientation, not a lat/lon camera
 
 **Decision:** The globe's state is a full 3×3 orientation matrix (world→view),
@@ -43,6 +55,15 @@ target arrow (spec §13) point toward a target that is not yet visible.
 Constant angular speed, no acceleration or inertia, stops immediately on
 release, no diagonal (spec §6). Conflicting directions resolve consistently
 (vertical wins). See `turnDelta` in the scene.
+
+**Latitude speed curve.** The same angular step covers different visual distances
+depending on where the plane sits: at the equator the globe surface is moving
+fastest, making diagonal runs feel sluggish compared to straight east/west
+sprints at mid-latitude. To even this out, the scene applies a `latSpeedFactor`
+that reads the current camera latitude and smoothly slows the step to **60%** at
+the equator (|lat| = 0°), recovering to 100% at |lat| = 50° and above. The
+transition is linear between those anchors, so the control always feels
+proportional to what the player sees.
 
 ## Plane sprite & facing
 

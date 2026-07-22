@@ -29,19 +29,18 @@ characters/missions.
 
 ## Character interaction range is angular, not pixels
 
-The plane picks up / hands off a character when the great-circle angular
-distance from its sub-point to the character is within `CHARACTER_RANGE` (in the
-scene). **This is degrees on the globe, and the on-screen radius is
-`globe.radius * sin(range)`** — so the numbers feel much smaller than they look:
-at radius 210, 7° ≈ 26px but 28° ≈ 105px. The range was widened to **28°** so
-pickup triggers when the enlarged sprite visually overlaps the plane, not only
-when dead-centred.
+The plane picks up a character when the great-circle angular distance from its
+sub-point to the character is within `CHARACTER_RANGE` (in the scene). **This is
+degrees on the globe, and the on-screen radius is `globe.radius * sin(range)`**
+— so the numbers feel much smaller than they look: at radius 396, 9° ≈ 62px.
+
+Pickup is **automatic** — no button press required. The scene checks the nearest
+character within range every frame during free flight and calls `accept()`
+immediately. `CHARACTER_RANGE` is **9°**, tight enough that you must visibly fly
+to a character rather than passing near them at distance.
 
 At that size the zones can overlap, so the scene picks the **nearest** character
-in range rather than the first one found. The five characters are ≥38.7° apart
-(closest pair), and two 28° zones would only both catch the plane within 36°, so
-in practice you are never "near" two at once — but nearest-wins keeps it correct
-if positions ever change.
+in range rather than the first one found.
 
 ## Detection regions are circles, and must not overlap
 

@@ -12,9 +12,10 @@ generated offline by [`scripts/gen-globe-assets.py`](../scripts/gen-globe-assets
 | File | Role |
 | --- | --- |
 | `scripts/gen-globe-assets.py` | Offline generator. Downloads Natural Earth 110m country polygons (public domain) and rasterizes them with **Pillow** (no GDAL) into aligned assets. |
-| `assets/globe/world_base.png` | 1024×512 equirectangular **visible** map: ocean + continent-shaded land + thin borders. Friendly, low-noise — educational, not a busy atlas. |
+| `assets/globe/world_base.png` | 1024×512 equirectangular **visible** map: ocean + per-country thematic fill + thin borders. ~177 countries each have a hand-curated calm, evocative color; micro-states and disputed territories share a soft lavender-grey. Friendly, low-noise — educational, not a busy atlas. |
 | `assets/globe/country_ids.png` | 1024×512 equirectangular **ID mask**: each country one flat unique RGB, ocean black. No antialiasing. |
 | `content/regions.lua` | Generated `color → { id, name, name_ru, name_de, iso, iso3, continent }` map. Includes Russian/German names straight from Natural Earth, ready for localization. |
+| `content/country_colors.lua` | Generated `ISO → {R, G, B}` table (0–255) for every country. Mirrors what was baked into `world_base.png`; available at runtime if needed for UI tinting. |
 | `src/core/globe_shader.lua` | The sphere renderer. `pcall`-guarded shader compile; nil on failure so the Flight Map falls back to the vector renderer. |
 | `src/core/globe_regions.lua` | Renderer-independent CPU picking: `lat/lon → equirect pixel → flat RGB → country id`. `.fromImageData` injection makes the math unit-testable headless. |
 
@@ -95,6 +96,9 @@ Only `python3` + Pillow are needed. The GeoJSON is cached under `scripts/.cache/
 (git-ignored, re-fetched on demand). Note: python.org's macOS Python often lacks
 CA certs, so the script falls back to `curl` for the download.
 
+The generator produces three outputs: `assets/globe/world_base.png`,
+`assets/globe/country_ids.png`, and `content/country_colors.lua`.
+
 Source data: **Natural Earth** (public domain, naturalearthdata.com).
 
 ## Known limits
@@ -104,8 +108,9 @@ Source data: **Natural Earth** (public domain, naturalearthdata.com).
   cleanly under desktop GL and WebGL, but per-pixel `asin`/`atan`/`sqrt` over the
   disc at 640×480 wants a real check on the Mali-G31. If it is too slow, drop to
   a 512×256 texture; if the shader fails to compile the vector fallback covers it.
-- **1024×512 softens small coastlines** at radius 210. Fine for a friendly
-  reference globe; regenerate at 2048×1024 if the device budget allows.
+- **1024×512 softens small coastlines** at the full display radius of 396. Fine
+  for a friendly reference globe; regenerate at 2048×1024 if the device budget
+  allows.
 - **Antarctica / country holes:** the generator fills outer rings only and skips
   holes (e.g. Lesotho) — acceptable at this resolution.
 - Natural Earth marks a few countries (France, Norway, Kosovo…) with

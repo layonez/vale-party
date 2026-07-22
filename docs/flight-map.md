@@ -28,8 +28,9 @@ The high-level states from spec §18 are split across two places:
 
 All cycle logic is a pure, tested module so the scene just drives it:
 
-- `accept(characterId)` — only in free flight; hides the other characters,
-  activates the panel slot, enters MISSION_ACTIVE.
+- `accept(characterId)` — only in free flight; triggered automatically when the
+  plane flies within range; hides the other characters, activates the panel slot,
+  enters MISSION_ACTIVE.
 - `cancel()` — B button; back to free flight, **not** completed, all unfinished
   characters restored (spec §6).
 - `complete()` — marks the character done (green check), clears the mission,
@@ -39,17 +40,18 @@ All cycle logic is a pure, tested module so the scene just drives it:
   uncompleted characters in free flight, and none during an active mission (the
   chosen character has "boarded"; the panel + target guidance carry it).
 
-## A is the single interaction button
+## Auto pickup and drop-off
 
-Per the child-friendly rules, **A** carries all interaction and its effect is
-state-dependent (spec §6):
+Interaction is fully automatic — no button press needed:
 
-- Free flight + near a character → **accept** that mission.
-- Mission active + over the target country → **complete** it.
-- Anywhere else → nothing.
+- Flying within `CHARACTER_RANGE` of an idle character **immediately accepts**
+  that mission (free-flight only; ignored if a mission is already active).
+- Once a mission is active, flying over the target country **immediately completes**
+  it when the plane's sub-point enters that country's detection region.
 
-A is edge-triggered (`input:pressed`), so **holding A never re-triggers** (spec
-§6). **B** cancels an active mission.
+**B** remains the only manual interaction: it cancels an active mission and
+returns to free flight. The hover blip still fires on entering a character's
+range, so the child hears/sees an arrival cue before the auto-accept fires.
 
 ## Characters, hover feedback, and highlight
 
@@ -109,9 +111,14 @@ recording).
 | --- | --- | --- |
 | Start greeting | `FlightMap:enter` | `greeting` (quiet) |
 | Country recognized | dwell recognition | `voice.<country_id>` |
-| Friend accepted | A near a character | active mission id (`mission_1`…`mission_5`) |
-| Friend delivered | A over the target | `success` (quiet) |
-| All five done | fifth completion / debug finish | `celebration` (quiet) |
+| Friend accepted | fly within range of character | active mission id (`mission_1`…`mission_5`) |
+| Friend delivered | fly over target country (queued after country announcement) | `success` (quiet) |
+| All five done | fifth completion / debug finish (queued) | `celebration` (quiet) |
+
+Drop-off and celebration cues are **queued** (`Audio.queueVoice`) rather than
+played immediately, so a country announcement already in progress finishes first.
+`Audio.updateVoice` polls the channel once per frame and flushes the queue when
+it goes silent.
 
 Recordings live under `assets/voice/ru/` as Vorbis `.ogg`. Because playback
 always falls back to a beep (or silence), the game runs fully without any voice
