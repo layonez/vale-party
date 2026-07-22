@@ -4,7 +4,9 @@
   "private": true,
   "description": "Browser packaging tools for the Valya Adventure LÖVE MVP.",
   "scripts": {
-    "build:web": "./scripts/build-web.sh"
+    "build:web": "./scripts/build-web.sh",
+    "serve:web": "python3 -m http.server 8000 -d dist/web",
+    "start:web": "npm run build:web && npm run serve:web"
   },
   "devDependencies": {
     "love.js": "11.4.1"
