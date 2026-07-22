@@ -98,6 +98,31 @@ test("orientation stays orthonormal after many turns", function()
 	local r = o[1]
 	assertClose(math.sqrt(r[1] * r[1] + r[2] * r[2] + r[3] * r[3]), 1, 0.0001)
 end)
+test("relevel rolls a tilted globe back so north projects straight up", function()
+	-- Start upright, roll it 30 deg off vertical. Releveling is proportional (it
+	-- fades near the poles), so it converges toward north-up over several frames.
+	local o = Sphere.orientationFor(20, 40)
+	o = Sphere.turn(o, "x", math.rad(30))
+	for _ = 1, 200 do
+		o = Sphere.relevel(o, math.rad(2))
+	end
+	-- North's screen-right component (row2 . north = o[2][3]) should be ~0, and
+	-- its screen-up component (o[3][3]) positive: north points up on screen.
+	assertClose(o[2][3], 0, 0.001)
+	assert(o[3][3] > 0, "north should project upward after releveling")
+	-- The sub-airplane point (front) must be unchanged by releveling.
+	local lat, lon = Sphere.front(o)
+	assertClose(lat, 20, 0.001)
+	assertClose(lon, 40, 0.001)
+end)
+test("relevel is a no-op at a pole and leaves the front point put", function()
+	-- Front exactly on the north pole: no meaningful screen "up" to level toward,
+	-- so relevel must not error or move the front point.
+	local o = Sphere.orientationFor(90, 0)
+	o = Sphere.relevel(o, math.rad(45))
+	local lat = Sphere.front(o)
+	assertClose(lat, 90, 0.001)
+end)
 test("world looks up entities by id", function()
 	local w = World.new(worldData)
 	assertEq(w:country("brazil").id, "brazil")

@@ -227,4 +227,40 @@ function Sphere.screenDirection(orientation, lat, lon)
 	return dx, dy, vx >= 0
 end
 
+---Gently roll the orientation so the world north pole projects toward screen-up,
+---shedding the roll drift ("tumbling") that accumulates when turns about
+---different screen axes compose. The correction is rate-limited to `maxStep`
+---radians and fades to zero as the view front nears a pole (where screen "up" is
+---undefined), so flying straight over a pole stays smooth instead of snapping.
+---The forward (sub-airplane) point is unchanged. Pure, for unit testing.
+---@param orientation table {fwd, right, up}
+---@param maxStep number max roll correction this call, radians (>= 0)
+---@return table orientation
+function Sphere.relevel(orientation, maxStep)
+	local r = orientation
+	-- World north (0,0,1) in view space is column 3 of R: its screen-right and
+	-- screen-up components. m is their magnitude = cos(front latitude): it shrinks
+	-- to 0 at a pole, which fades the correction out there.
+	local vr = r[2][3] -- screen-right component of north
+	local vu = r[3][3] -- screen-up component of north
+	local m = sqrt(vr * vr + vu * vu)
+	if m < 1e-6 then
+		return orientation -- at a pole: no meaningful "up" to level toward
+	end
+	-- Angle of north's screen projection away from straight up; a roll about the
+	-- forward axis by this angle brings north back to vertical.
+	local err = atan2(vr, vu)
+	local step = err
+	if step > maxStep then
+		step = maxStep
+	elseif step < -maxStep then
+		step = -maxStep
+	end
+	step = step * m
+	if step == 0 then
+		return orientation
+	end
+	return orthonormalize(mul(screenRotation("x", step), orientation))
+end
+
 return Sphere

@@ -23,10 +23,11 @@ local SaveGameLove = require("src.core.savegame_love")
 -- Flight Map: the main playable scene. The player flies a small airplane that
 -- stays fixed near the center of the screen while the globe rotates beneath it.
 --
--- Movement uses a free 3D orientation (see src/core/sphere.lua) rather than a
--- camera lat/lon. This avoids polar singularities: "up" rotates the globe about
--- the screen's horizontal axis, so you fly straight over a pole and keep going
--- instead of stalling there. The airplane stays pinned at the globe center.
+-- The globe rotates beneath a fixed airplane. We track a camera latitude/
+-- longitude and rebuild the orientation each frame (Sphere.orientationFor), so
+-- the world is always exactly upright and map-like with NO drift and no auto-
+-- leveling: "up"/"down" change latitude (clamped to a small polar cap so the
+-- pole is never a stuck point), "left"/"right" spin longitude around the axis.
 local FlightMap = {}
 
 -- Screen-space placement and size of the globe. The airplane sits at the globe
@@ -46,13 +47,28 @@ local CHARACTER_RANGE = 28
 local CELEBRATION_TIME = 4 -- seconds the cycle celebration plays before auto-ending (spec §17)
 local FACING_STEP_TIME = 0.09 -- seconds per one-tile step when the plane turns
 
+-- The globe turns on a FIXED, upright axis so it always reads like a map/globe
+-- (educational clarity). We track a camera latitude/longitude and rebuild the
+-- orientation each frame with Sphere.orientationFor, which keeps the north pole
+-- toward screen-up. Nothing accumulates, so there is no roll drift and no
+-- automatic re-leveling: "up"/"down" change latitude, "left"/"right" spin
+-- longitude, and the world is always exactly upright. "up" moves straight up on
+-- screen (the front-point meridian is vertical at the globe center), matching
+-- the D-pad, with no tilt.
+--   * MAX_LAT is a small polar cap: latitude clamps here so the pole singularity
+--     is never reached. A vertical push into the cap is redirected into longitude,
+--     so flying up glides you *around* the pole along the cap circle instead of
+--     stalling. Sits just poleward of all content (~76°N).
+local MAX_LAT = 80
+
 -- Debug-only auto-drift directions cycled by the dbg_drift key. Each entry is a
--- screen-axis turn {axis, sign}: "y" = up/down flight, "z" = left/right flight.
+-- lat/lon step direction (unit signs); the plane sprite turns to the resulting
+-- travel direction in the movement handler.
 local DRIFTS = {
-	{ "z", -1 }, -- east (globe spins so terrain moves left)
-	{ "y", 1 }, -- north
-	{ "z", 1 }, -- west
-	{ "y", -1 }, -- south
+	{ dLat = 0, dLon = 1 }, -- east
+	{ dLat = 1, dLon = 0 }, -- north
+	{ dLat = 0, dLon = -1 }, -- west
+	{ dLat = -1, dLon = 0 }, -- south
 }
 
 -- Deterministic starfield so the background does not flicker frame to frame.
@@ -102,7 +118,9 @@ function FlightMap:enter(_, app)
 	-- Restore the saved session if present (spec §20): airplane position, cycle
 	-- completion, and active mission. A fresh save just yields the start state.
 	local saved = SaveGameLove.load(app.log)
-	self.orientation = Sphere.orientationFor(saved.lat, saved.lon)
+	self.camLat = math.max(-MAX_LAT, math.min(MAX_LAT, saved.lat))
+	self.camLon = Sphere.normalizeLon(saved.lon)
+	self.orientation = Sphere.orientationFor(self.camLat, self.camLon)
 	self.mission:restore(saved.completed, saved.activeMissionId)
 
 	self.time = 0
@@ -131,11 +149,10 @@ end
 -- Persist the current session (spec §20): airplane front position, completed
 -- characters, and the active mission id.
 function FlightMap:save()
-	local lat, lon = Sphere.front(self.orientation)
 	local completed, activeMissionId = self.mission:snapshot()
 	SaveGameLove.save({
-		lat = lat,
-		lon = lon,
+		lat = self.camLat,
+		lon = self.camLon,
 		completed = completed,
 		activeMissionId = activeMissionId,
 	}, self.app.log)
@@ -146,19 +163,18 @@ function FlightMap:quit()
 	self:save()
 end
 
--- Read the d-pad into a screen-axis turn for this frame. Conflicting directions
--- resolve consistently (vertical wins) and there is no diagonal requirement.
--- Returns an axis ("y"/"z") and signed angle in radians, or nil when idle.
-local function turnDelta(input, dt)
-	local step = math.rad(MOVE_SPEED * dt)
+-- Read the d-pad into a lat/lon step direction for this frame (unit signs, scaled
+-- by MOVE_SPEED*dt in the caller). Conflicting directions resolve consistently
+-- (vertical wins). Returns dLat, dLon, or nil when idle.
+local function moveDelta(input)
 	if input:down("move_up") then
-		return "y", step
+		return 1, 0
 	elseif input:down("move_down") then
-		return "y", -step
+		return -1, 0
 	elseif input:down("move_right") then
-		return "z", -step
+		return 0, 1
 	elseif input:down("move_left") then
-		return "z", step
+		return 0, -1
 	end
 	return nil
 end
@@ -200,7 +216,9 @@ function FlightMap:update(dt)
 			self.drift = (self.drift + 1) % (#DRIFTS + 1)
 		end
 		if input:pressed("dbg_reset") then
-			self.orientation = Sphere.orientationFor(self.start.lat, self.start.lon)
+			self.camLat = self.start.lat
+			self.camLon = self.start.lon
+			self.orientation = Sphere.orientationFor(self.camLat, self.camLon)
 			self.drift = 0
 		end
 		-- Complete every remaining mission at once, then trigger the celebration,
@@ -220,21 +238,46 @@ function FlightMap:update(dt)
 		self.drift = 0
 	end
 
-	local axis, angle = turnDelta(input, dt)
+	local dLat, dLon = moveDelta(input)
 	-- Manual input always wins and cancels any active drift.
-	if axis then
+	if dLat then
 		self.drift = 0
 	elseif self.drift > 0 then
 		local dir = DRIFTS[self.drift]
-		axis, angle = dir[1], dir[2] * math.rad(MOVE_SPEED * dt)
+		dLat, dLon = dir.dLat, dir.dLon
 	end
-	if axis then
-		self.orientation = Sphere.turn(self.orientation, axis, angle)
-		-- Aim at the travel direction; the sprite spins toward it through the
-		-- intermediate compass tiles (below). Idle keeps the last target.
-		self.targetFacing = Plane.facingFor(axis, angle) or self.targetFacing
+	if dLat then
+		local step = MOVE_SPEED * dt
+		local newLat = self.camLat + dLat * step
+		local lonDelta = dLon * step
+		-- Glide along the polar cap: latitude clamps at the cap circle, and any
+		-- vertical push that would cross it is redirected into longitude, so a pure
+		-- up/down press flies you *around* the pole along the cap instead of
+		-- stalling. The pole is never reached, so the world stays exactly upright.
+		if newLat > MAX_LAT then
+			lonDelta = lonDelta + (newLat - MAX_LAT)
+			newLat = MAX_LAT
+		elseif newLat < -MAX_LAT then
+			lonDelta = lonDelta + (-MAX_LAT - newLat)
+			newLat = -MAX_LAT
+		end
+		local latDelta = newLat - self.camLat
+		self.camLat = newLat
+		self.camLon = Sphere.normalizeLon(self.camLon + lonDelta)
+		self.orientation = Sphere.orientationFor(self.camLat, self.camLon)
+		-- Face the ACTUAL travel direction, not the pressed key: while gliding
+		-- along the cap the motion is longitudinal, so the plane turns to fly along
+		-- the circle instead of pointing at the pole it can't reach. The sprite
+		-- spins toward this target through the intermediate compass tiles (below).
+		local facing
+		if lonDelta ~= 0 and math.abs(lonDelta) >= math.abs(latDelta) then
+			facing = Plane.facingFor("z", lonDelta > 0 and -1 or 1)
+		elseif latDelta ~= 0 then
+			facing = Plane.facingFor("y", latDelta > 0 and 1 or -1)
+		end
+		self.targetFacing = facing or self.targetFacing
 	end
-	self.moving = axis ~= nil
+	self.moving = dLat ~= nil
 
 	-- Step the drawn facing one tile toward the target at a fixed rate, so a
 	-- left->right turn visibly rotates through the diagonal/vertical sprites
@@ -245,8 +288,9 @@ function FlightMap:update(dt)
 		self.facing = Plane.stepToward(self.facing, self.targetFacing)
 	end
 
-	-- Country detection uses the world point beneath the airplane (view front).
-	local lat, lon = Sphere.front(self.orientation)
+	-- Country detection uses the world point beneath the airplane (the tracked
+	-- camera lat/lon, which is exactly the view front).
+	local lat, lon = self.camLat, self.camLon
 	local country = self.world:countryAt(lat, lon)
 	self.currentCountryId = country and country.id or nil
 	local recognized = self.recognition:update(self.currentCountryId, dt)
@@ -543,7 +587,7 @@ function FlightMap:drawWorld()
 
 	love.graphics.setFont(Fonts.get(14))
 	local driftNames = { "east", "north", "west", "south" }
-	local lat, lon = Sphere.front(self.orientation)
+	local lat, lon = self.camLat, self.camLon
 	self.app.drawDebug(
 		"flight_map",
 		string.format(
