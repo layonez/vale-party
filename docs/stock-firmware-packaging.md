@@ -111,10 +111,39 @@ driver already opens at panel resolution), and does **not** touch `dmenu.bin`.
 ## Debugging on the device over SSH
 
 The device runs an SSH server (enable via the `SSH_Server.sh` App Center app;
-Wi-Fi on; login `root` / `root`). Find it on the LAN by its
-`SSH-2.0-OpenSSH_8.9p1 Ubuntu` banner (the Anbernic is Ubuntu 22.04; other
-hosts differ). From macOS, `sshpass -p root ssh root@<ip>` works; the SSH server
-can rate-limit rapid reconnects, so pause between attempts.
+Wi-Fi on; login `root` / `root`). From macOS, `sshpass -p root ssh root@<ip>`
+works; the SSH server can rate-limit rapid reconnects, so pause between attempts.
+
+### Finding the device on the network
+
+Fastest: the stock firmware advertises itself over mDNS, so try the name first —
+no scanning needed:
+
+```sh
+ping -c1 anbernic.local                 # resolves to the current IP
+sshpass -p root ssh root@anbernic.local
+```
+
+If the name doesn't resolve, discover the IP directly:
+
+```sh
+# 1) mDNS lookup of just the address (no ping needed)
+dns-sd -Gv4 anbernic.local        # prints the IP; Ctrl-C when it appears
+
+# 2) fallback: TCP-scan the subnet for its SSH banner (no nmap needed).
+#    The Anbernic answers "SSH-2.0-OpenSSH_8.9p1 Ubuntu"; other hosts differ.
+net=$(ipconfig getifaddr en0 | sed 's/\.[0-9]*$//')      # e.g. 192.168.178
+seq 1 254 | xargs -P50 -I{} sh -c "nc -z -G2 $net.{} 22 2>/dev/null && echo $net.{}" \
+  | while read ip; do echo "$ip $(nc -w2 $ip 22 </dev/null 2>/dev/null | head -1)"; done
+```
+
+**Gotcha — Wi-Fi client isolation.** If `anbernic.local` resolves (mDNS is
+multicast and the AP relays it) but `ssh`/`nc`/`ping` all fail and `arp -n <ip>`
+shows `(incomplete)`, the router is blocking client-to-client unicast (AP /
+"client isolation", common on guest networks). The device is fine; the LAN path
+is not. Fix on the router: disable AP/client isolation, or put the Mac and the
+device on the same non-guest SSID. Sync over SSH is impossible until then — fall
+back to copying the package onto the SD card directly.
 
 **SSH cannot test the display.** EGL will not initialize from an SSH session —
 there is no console/session to bind to. This is not our bug: the *known-working*
