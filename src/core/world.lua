@@ -20,31 +20,95 @@ local function indexById(list)
 	return byId
 end
 
----@param data table content table with countries/airports/characters/missions
+-- The antipode of a lat/lon: the point on the exact opposite side of the globe.
+-- Characters are placed here relative to their drop-off country so the player
+-- must fly across the whole world to complete a delivery (content/world.lua).
+---@param lat number
+---@param lon number
+---@return number lat, number lon
+local function antipode(lat, lon)
+	return -lat, Sphere.normalizeLon(lon + 180)
+end
+
+---@param data table content table with countries/character_slots/rounds
 ---@return table world
 function World.new(data)
 	local self = setmetatable({}, World)
 	self.countries = data.countries
-	self.airports = data.airports
-	self.characters = data.characters
-	self.missions = data.missions
+	self.characterSlots = data.character_slots
+	self.rounds = data.rounds
 	self.countryById = indexById(data.countries)
-	self.airportById = indexById(data.airports)
-	self.characterById = indexById(data.characters)
-	self.missionById = indexById(data.missions)
+	-- Start on the first round; buildRound fills characters/missions + indexes.
+	self.roundIndex = 1
+	self:buildRound()
 	return self
+end
+
+-- (Re)build the current round's characters and missions from the round's target
+-- country ids and the fixed character slots. Each character is positioned at the
+-- antipode of its target country. Ids are stable across rounds (character_1..N,
+-- mission_1..N) so save data, sprites, and voice lines are reused every round;
+-- only positions and drop-off targets change.
+function World:buildRound()
+	local targets = self.rounds[self.roundIndex]
+	local characters, missions = {}, {}
+	for slot, countryId in ipairs(targets) do
+		local country = self.countryById[countryId]
+		local lat, lon = antipode(country.latitude, country.longitude)
+		local characterId = "character_" .. slot
+		local missionId = "mission_" .. slot
+		local appearance = self.characterSlots[slot]
+		characters[slot] = {
+			id = characterId,
+			color = appearance.color,
+			sprite = appearance.sprite,
+			latitude = lat,
+			longitude = lon,
+			mission_id = missionId,
+		}
+		missions[slot] = {
+			id = missionId,
+			character_id = characterId,
+			target_country_id = countryId,
+		}
+	end
+	self.characters = characters
+	self.missions = missions
+	self.characterById = indexById(characters)
+	self.missionById = indexById(missions)
+end
+
+---@return integer number of delivery rounds in the endless cycle
+function World:roundCount()
+	return #self.rounds
+end
+
+---@return integer the current 1-based round index
+function World:currentRound()
+	return self.roundIndex
+end
+
+-- Switch to round `index`, wrapping into range so the cycle is endless and any
+-- stale/out-of-range saved round resolves to a valid one. Rebuilds the round's
+-- characters and missions in place.
+---@param index number|nil
+function World:setRound(index)
+	local count = #self.rounds
+	index = math.floor(tonumber(index) or 1)
+	-- Wrap into 1..count (Lua has no modulo-into-1-based helper).
+	self.roundIndex = ((index - 1) % count) + 1
+	self:buildRound()
+end
+
+-- Advance to the next round, looping back to the first after the last.
+function World:advanceRound()
+	self:setRound(self.roundIndex + 1)
 end
 
 ---@param id string
 ---@return table|nil
 function World:country(id)
 	return self.countryById[id]
-end
-
----@param id string
----@return table|nil
-function World:airport(id)
-	return self.airportById[id]
 end
 
 ---@param id string

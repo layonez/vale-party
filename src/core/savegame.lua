@@ -8,12 +8,14 @@
 -- the save format simple and human-readable.
 local SaveGame = {}
 
--- A fresh save: airplane at the northern start, nothing completed, no mission.
+-- A fresh save: airplane at the northern start, first round, nothing completed,
+-- no mission.
 ---@return table
 function SaveGame.fresh()
 	return {
 		lat = 40,
 		lon = 10,
+		round = 1,
 		completed = {},
 		activeMissionId = nil,
 	}
@@ -33,6 +35,11 @@ function SaveGame.normalize(data)
 	end
 	if type(data.lon) == "number" then
 		out.lon = data.lon
+	end
+	-- Round is validated as a positive integer only; World:setRound wraps any
+	-- value that exceeds the actual round count, so a stale save never wedges.
+	if type(data.round) == "number" and data.round >= 1 then
+		out.round = math.floor(data.round)
 	end
 	if type(data.completed) == "table" then
 		out.completed = {}
@@ -72,9 +79,10 @@ function SaveGame.encode(save)
 		ids[#ids + 1] = string.format("%q", id)
 	end
 	return string.format(
-		"{lat=%s, lon=%s, completed={%s}, activeMissionId=%s}",
+		"{lat=%s, lon=%s, round=%s, completed={%s}, activeMissionId=%s}",
 		tostring(save.lat),
 		tostring(save.lon),
+		tostring(save.round),
 		table.concat(ids, ", "),
 		save.activeMissionId and string.format("%q", save.activeMissionId) or "nil"
 	)

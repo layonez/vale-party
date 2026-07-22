@@ -16,6 +16,21 @@ local Character = {}
 local BODY = 12 -- character radius in pixels (glow + vector fallback)
 local SPRITE_SIZE = 64 -- on-screen height of the portrait art (~60% larger for readability on small screens)
 
+-- Off-screen "finder" indicators (spec §10, exploration aid). When a character
+-- is not on screen — behind the horizon or projected outside the viewport,
+-- since the zoomed globe is larger than the 640×480 canvas — we draw a small
+-- portrait at a ring near the screen edge, in the character's screen direction,
+-- so the player always has a bearing toward every character to collect. The
+-- portrait grows as the plane gets closer (proximity from the projection depth),
+-- shrinking to its smallest at the exact opposite side of the globe.
+local FINDER_CX, FINDER_CY = 320, 240 -- screen-center the finder ring orbits
+local FINDER_ORBIT = 200 -- ring radius; keeps finders inside the 640×480 canvas
+local FINDER_MIN = 22 -- portrait height (px) when the character is far (antipode)
+local FINDER_MAX = 46 -- portrait height (px) when the character is just off screen
+-- A character counts as "on screen" (drawn on the globe) only when it is on the
+-- near hemisphere AND its projection sits within this inset of the canvas edge.
+local SCREEN_MARGIN = 44
+
 -- Path -> Image cache. Populated on first draw; nil entries mean "tried and the
 -- asset was missing", so we fall back to the vector dot without retrying.
 local images = {}
@@ -90,9 +105,64 @@ local function drawOne(x, y, color, time, strong, sprite, alpha)
 	end
 end
 
+-- Portrait height (px) for an off-screen finder given the projection depth
+-- `vx` = cos(angular distance from the plane): +1 at the sub-plane point, 0 at
+-- the horizon, -1 at the antipode. Grows toward the front (squared easing so it
+-- "pops" as you close in) and is smallest at the opposite side. Pure, so the
+-- proximity-scaling is unit-tested without a graphics context.
+---@param vx number projection depth in [-1, 1]
+---@return number height
+function Character.finderScale(vx)
+	local t = math.max(0, math.min(1, (vx + 1) / 2))
+	return FINDER_MIN + (FINDER_MAX - FINDER_MIN) * (t * t)
+end
+
+-- Draw an off-screen finder: a small portrait at the edge ring in screen
+-- direction (dx, dy) (y down), sized by projection depth `vx`, with a soft glow
+-- and a chevron pointing outward toward the character.
+local function drawFinder(dx, dy, vx, color, sprite, time)
+	if dx == 0 and dy == 0 then
+		dx, dy = 0, -1 -- exact antipode: direction is undefined, point it upward
+	end
+	local x = FINDER_CX + dx * FINDER_ORBIT
+	local y = FINDER_CY + dy * FINDER_ORBIT
+	local h = Character.finderScale(vx)
+	local pulse = 0.5 + 0.5 * math.sin(time * 3)
+
+	-- Soft tinted glow so the beacon reads over ocean and space.
+	love.graphics.setColor(color[1], color[2], color[3], 0.3 + 0.15 * pulse)
+	love.graphics.circle("fill", x, y, h * 0.7 + 2 * pulse)
+
+	-- Chevron just outside the portrait, pointing the way to fly.
+	local ang = math.atan2(dy, dx)
+	love.graphics.push()
+	love.graphics.translate(x, y)
+	love.graphics.rotate(ang)
+	local o = h * 0.72
+	love.graphics.setColor(1, 1, 1, 0.9)
+	love.graphics.polygon("fill", o + 8, 0, o, 5, o, -5)
+	love.graphics.pop()
+
+	local image = sprite and spriteImage(sprite)
+	if image then
+		local iw, ih = image:getDimensions()
+		local scale = h / ih
+		love.graphics.setColor(1, 1, 1, 1)
+		love.graphics.draw(image, x, y, 0, scale, scale, iw / 2, ih / 2)
+	else
+		love.graphics.setColor(color[1], color[2], color[3], 1)
+		love.graphics.circle("fill", x, y, h * 0.4)
+		love.graphics.setColor(0.12, 0.12, 0.16, 1)
+		love.graphics.setLineWidth(2)
+		love.graphics.circle("line", x, y, h * 0.4)
+	end
+end
+
 -- Draw the given characters for the current orientation. `nearId` (optional)
 -- is the id of the character the airplane is currently inside the interaction
--- area of, which gets a stronger glow. `globe` is {x, y, radius}.
+-- area of, which gets a stronger glow. `globe` is {x, y, radius}. Characters
+-- that project on screen are drawn on the globe; the rest get an edge finder
+-- (above) so the player always has a direction toward every one.
 ---@param characters table[]
 ---@param orientation table
 ---@param globe table
@@ -108,9 +178,17 @@ function Character.draw(characters, orientation, globe, time, nearId)
 			globe.x,
 			globe.y
 		)
-		if visible then
+		local onScreen = visible
+			and sx >= SCREEN_MARGIN
+			and sx <= 640 - SCREEN_MARGIN
+			and sy >= SCREEN_MARGIN
+			and sy <= 480 - SCREEN_MARGIN
+		if onScreen then
 			local alpha = smoothstep(0.02, 0.15, depth)
 			drawOne(sx, sy, character.color, time, character.id == nearId, character.sprite, alpha)
+		else
+			local dx, dy = Sphere.screenDirection(orientation, character.latitude, character.longitude)
+			drawFinder(dx, dy, depth, character.color, character.sprite, time)
 		end
 	end
 end

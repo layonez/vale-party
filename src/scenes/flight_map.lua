@@ -16,7 +16,7 @@ local CharacterView = require("src.ui.character")
 local ProgressPanel = require("src.ui.progress_panel")
 local MissionState = require("src.core.mission_state")
 local MissionBox = require("src.ui.mission_box")
-local TargetArrow = require("src.ui.target_arrow")
+local DropTarget = require("src.ui.drop_target")
 local Plane = require("src.ui.plane")
 local SaveGameLove = require("src.core.savegame_love")
 
@@ -33,7 +33,7 @@ local FlightMap = {}
 -- Globe target (zoomed-in) and starting (far) positions for the intro animation.
 -- GLOBE is mutated each frame during the zoom-in; after that it holds GLOBE_TARGET.
 local GLOBE_TARGET = { x = 320, y = 320, radius = 396 }
-local GLOBE_START  = { x = 320, y = 250, radius = 210 }
+local GLOBE_START = { x = 320, y = 250, radius = 210 }
 local GLOBE = { x = GLOBE_TARGET.x, y = GLOBE_TARGET.y, radius = GLOBE_TARGET.radius }
 local ZOOM_DURATION = 4 -- seconds for the opening zoom-in
 
@@ -43,6 +43,11 @@ local SEGMENTS = 48 -- samples per grid line
 -- Angular degrees within which a character is interactable (~105px on screen).
 -- Sized so pickup triggers when the sprite visually overlaps the plane.
 local CHARACTER_RANGE = 9
+-- Drop-off forgiveness: a delivery completes within this multiple of the target
+-- country's region radius. >1 makes the late rounds' tiny countries less fiddly
+-- to hit, while bigger countries stay proportionally easier (their radius is
+-- already larger). Applied only to the completion test, not the drawn region.
+local DROPOFF_RADIUS_SCALE = 1.6
 local CELEBRATION_TIME = 4 -- seconds the cycle celebration plays before auto-ending (spec §17)
 local FACING_STEP_TIME = 0.09 -- seconds per one-tile step when the plane turns
 
@@ -129,6 +134,10 @@ function FlightMap:enter(_, app)
 	self.camLat = math.max(-MAX_LAT, math.min(MAX_LAT, saved.lat))
 	self.camLon = Sphere.normalizeLon(saved.lon)
 	self.orientation = Sphere.orientationFor(self.camLat, self.camLon)
+	-- Restore the saved round BEFORE restoring mission progress: completed ids and
+	-- the active mission id are looked up against the round's characters/missions,
+	-- so the round's cast must be built first. setRound wraps a stale value.
+	self.world:setRound(saved.round)
 	self.mission:restore(saved.completed, saved.activeMissionId)
 
 	self.time = 0
@@ -164,6 +173,7 @@ function FlightMap:save()
 	SaveGameLove.save({
 		lat = self.camLat,
 		lon = self.camLon,
+		round = self.world:currentRound(),
 		completed = completed,
 		activeMissionId = activeMissionId,
 	}, self.app.log)
@@ -212,16 +222,19 @@ function FlightMap:update(dt)
 
 	-- Cycle celebration (spec §17): after the fifth mission, flight is paused
 	-- and a short celebration plays. It auto-ends after a duration, or A skips
-	-- it; then the cycle resets and free flight resumes.
+	-- it; then the game advances to the NEXT round — five new characters at new
+	-- positions with new drop-off countries — looping endlessly, and free flight
+	-- resumes.
 	if self.celebrationTime then
 		self.time = self.time + dt
 		self.celebrationTime = self.celebrationTime - dt
 		if self.celebrationTime <= 0 or input:pressed("interact") then
 			self.celebrationTime = nil
+			self.world:advanceRound()
 			self.mission:reset()
 			self.recognition = Recognition.new()
 			self.recognizedName = nil
-			self.app.log("cycle_reset")
+			self.app.log("round_advance:" .. self.world:currentRound())
 		end
 		return
 	end
@@ -319,7 +332,9 @@ function FlightMap:update(dt)
 	if recognized then
 		local named = self.world:country(recognized)
 		self.app.log("recognized:" .. recognized)
-		Audio.playVoice(self.app.audio, self.app.loc.language, "voice." .. recognized)
+		-- quiet=true: only the countries that have a recording speak; the rest of
+		-- the 25 stay silent instead of beeping every time you fly over them.
+		Audio.playVoice(self.app.audio, self.app.loc.language, "voice." .. recognized, true)
 		self.recognizedName = self.app.loc:t(named.name_key)
 	elseif not self.recognition.recognizedId then
 		self.recognizedName = nil
@@ -359,9 +374,14 @@ function FlightMap:update(dt)
 
 	-- Auto-dropoff: fly over the target country and the mission completes
 	-- automatically. isActive() turns false after completion, so this fires once.
+	-- We test the TARGET's own region directly rather than currentCountryId,
+	-- because with 25 countries some regions overlap and countryAt only returns
+	-- the first match — a direct test guarantees the drop-off always registers.
 	if self.mission:isActive() then
 		local mission = self.mission:activeMission()
-		if self.currentCountryId == mission.target_country_id then
+		local target = self.world:country(mission.target_country_id)
+		local tr = target.region
+		if World.angularDistance(lat, lon, tr.latitude, tr.longitude) <= tr.radius * DROPOFF_RADIUS_SCALE then
 			local doneCharacter = self.mission:complete()
 			if doneCharacter then
 				self.app.log("mission_complete:" .. doneCharacter)
@@ -569,15 +589,27 @@ function FlightMap:drawWorld()
 	local mission = self.mission:activeMission()
 	if mission then
 		local target = self.world:country(mission.target_country_id)
-		-- Arrow points toward the target while it is behind the horizon; it
-		-- disappears once any part of the target is visible (highlight takes over).
-		if not self.targetVisible then
+		-- Drop-off guidance, mirroring the character finders: a bobbing 3D pin at
+		-- the country center when it is on screen, or a proximity-scaled arrow on
+		-- the edge ring pointing the way when it is off screen.
+		local tsx, tsy, tvisible, tdepth = Sphere.project(
+			self.orientation,
+			target.region.latitude,
+			target.region.longitude,
+			GLOBE.radius,
+			GLOBE.x,
+			GLOBE.y
+		)
+		local centerOnScreen = tvisible and tsx >= 0 and tsx <= 640 and tsy >= 0 and tsy <= 480
+		if centerOnScreen then
+			DropTarget.drawPin(tsx, tsy, self.time)
+		else
 			local dx, dy = Sphere.screenDirection(
 				self.orientation,
 				target.region.latitude,
 				target.region.longitude
 			)
-			TargetArrow.draw(dx, dy)
+			DropTarget.drawFinder(dx, dy, tdepth, self.time)
 		end
 		local character = self.world:character(mission.character_id)
 		MissionBox.draw(

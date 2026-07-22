@@ -46,7 +46,8 @@ function love.errorhandler(msg)
 		love.graphics.origin()
 		love.graphics.clear(0.1, 0.12, 0.18)
 		love.graphics.printf(
-			"Что-то сломалось.\nНажми любую кнопку, чтобы выйти.\n\n" .. msg,
+			"Что-то сломалось.\nНажми любую кнопку, чтобы выйти.\n\n"
+				.. msg,
 			font,
 			40,
 			60,
@@ -59,7 +60,12 @@ function love.errorhandler(msg)
 	return function()
 		love.event.pump()
 		for e in love.event.poll() do
-			if e == "quit" or e == "keypressed" or e == "gamepadpressed" or e == "joystickpressed" then
+			if
+				e == "quit"
+				or e == "keypressed"
+				or e == "gamepadpressed"
+				or e == "joystickpressed"
+			then
 				return 1
 			end
 		end

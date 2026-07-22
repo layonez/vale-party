@@ -23,14 +23,11 @@ function MainMenu:update()
 	if input:pressed("debug") then
 		self.app.toggleDebug()
 	end
-	if input:pressed("move_down") then
+	if input:pressed("move_right") then
 		self.selected = math.min(3, self.selected + 1)
 	end
-	if input:pressed("move_up") then
+	if input:pressed("move_left") then
 		self.selected = math.max(1, self.selected - 1)
-	end
-	if input:pressed("move_left") or input:pressed("move_right") then
-		self:toggleLanguage()
 	end
 	if input:pressed("interact") then
 		if self.selected == 1 then
@@ -52,26 +49,23 @@ end
 function MainMenu:draw()
 	local app = self.app
 	app.drawScaled(function()
+		local pad = 20
 		local lw, lh = logo:getDimensions()
-		local scale = math.max(app.W / lw, app.H / lh)
+		local maxW = app.W - pad * 2
+		local scale = math.min(maxW / lw, (app.H * 0.75) / lh) * 1.3086
 		local lx = (app.W - lw * scale) / 2
-		local ly = (app.H - lh * scale) / 2
-		love.graphics.setColor(1, 1, 1, 0.3)
+		local ly = pad - app.H * 0.11
+		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.draw(logo, lx, ly, 0, scale, scale)
 
-		love.graphics.setFont(Fonts.get(32))
-		love.graphics.setColor(0.18, 0.48, 0.22)
-		love.graphics.printf(app.loc:t("title"), 40, 48, 560, "center")
-
 		love.graphics.setFont(Fonts.get(26))
-		local languageLabel = app.loc:t("menu.language")
-			.. ": "
-			.. app.loc:t("language." .. app.loc.language)
-		Menu.draw({
+		local btnH = 56
+		local btnY = app.H - btnH - pad
+		Menu.drawHorizontal({
 			{ label = app.loc:t("menu.start") },
-			{ label = languageLabel },
+			{ label = app.loc:t("language." .. app.loc.language) },
 			{ label = app.loc:t("menu.quit") },
-		}, self.selected, 170, 160, 300)
+		}, self.selected, pad, btnY, app.W - pad * 2, btnH)
 		app.drawDebug("main_menu")
 	end)
 end

@@ -23,6 +23,8 @@ local MissionState = require("src.core.mission_state")
 local SaveGame = require("src.core.savegame")
 local Plane = require("src.ui.plane")
 local GlobeRegions = require("src.core.globe_regions")
+local Character = require("src.ui.character")
+local DropTarget = require("src.ui.drop_target")
 local function assertClose(a, b, eps)
 	assert(math.abs(a - b) < (eps or 0.0001), tostring(a) .. " ~= " .. tostring(b))
 end
@@ -126,8 +128,8 @@ end)
 test("world looks up entities by id", function()
 	local w = World.new(worldData)
 	assertEq(w:country("brazil").id, "brazil")
-	assertEq(w:airport("brazil_airport").country_id, "brazil")
-	assertEq(w:mission("mission_1").target_country_id, "brazil")
+	-- Round 1 targets the five biggest countries; slot 1 is Russia.
+	assertEq(w:mission("mission_1").target_country_id, "russia")
 	assertEq(w:character("character_1").mission_id, "mission_1")
 	assertEq(w:country("nope"), nil)
 end)
@@ -143,20 +145,18 @@ test("countryAt detects the country beneath a point and nil in open ocean", func
 	-- Middle of the Pacific: no playable country.
 	assertEq(w:countryAt(0, -160), nil)
 end)
-test("country regions do not overlap", function()
+test("every country's own center resolves to that country", function()
+	-- With 25 countries some regions touch, so global non-overlap no longer
+	-- holds; drop-off tests the target region directly (flight_map) rather than
+	-- relying on countryAt. The invariant we DO keep is that each country's
+	-- center reads as itself, so recognition and highlighting stay correct.
 	local w = World.new(worldData)
-	for i = 1, #w.countries do
-		for j = i + 1, #w.countries do
-			local a, b = w.countries[i].region, w.countries[j].region
-			local d = World.angularDistance(a.latitude, a.longitude, b.latitude, b.longitude)
-			assert(
-				d > a.radius + b.radius,
-				w.countries[i].id .. " overlaps " .. w.countries[j].id .. " (gap " .. d .. ")"
-			)
-		end
+	for _, c in ipairs(w.countries) do
+		local at = w:countryAt(c.region.latitude, c.region.longitude)
+		assert(at and at.id == c.id, c.id .. " center resolved to " .. tostring(at and at.id))
 	end
 end)
-test("data integrity: five characters, and every reference resolves", function()
+test("data integrity: five characters/missions per round, every reference resolves", function()
 	local w = World.new(worldData)
 	assertEq(#w.characters, 5)
 	assertEq(#w.missions, 5)
@@ -167,9 +167,60 @@ test("data integrity: five characters, and every reference resolves", function()
 	for _, c in ipairs(w.characters) do
 		assert(w:mission(c.mission_id), "character mission missing: " .. c.mission_id)
 	end
-	for _, c in ipairs(w.countries) do
-		assert(w:airport(c.airport_id), "country airport missing: " .. c.airport_id)
+end)
+test("each character is placed at the antipode of its drop-off country", function()
+	local w = World.new(worldData)
+	for _, c in ipairs(w.characters) do
+		local target = w:country(w:mission(c.mission_id).target_country_id)
+		-- Antipode is exactly 180 degrees away on the globe.
+		assertClose(
+			World.angularDistance(c.latitude, c.longitude, target.latitude, target.longitude),
+			180,
+			0.001
+		)
 	end
+end)
+test("there are five rounds covering all 25 countries exactly once", function()
+	local w = World.new(worldData)
+	assertEq(w:roundCount(), 5)
+	assertEq(#w.countries, 25)
+	local seen = {}
+	for round = 1, w:roundCount() do
+		w:setRound(round)
+		assertEq(#w.missions, 5)
+		for _, m in ipairs(w.missions) do
+			assert(
+				not seen[m.target_country_id],
+				"country reused across rounds: " .. m.target_country_id
+			)
+			seen[m.target_country_id] = true
+		end
+	end
+	local count = 0
+	for _ in pairs(seen) do
+		count = count + 1
+	end
+	assertEq(count, 25)
+end)
+test("advancing rounds cycles targets and loops after the last", function()
+	local w = World.new(worldData)
+	assertEq(w:currentRound(), 1)
+	assertEq(w:mission("mission_1").target_country_id, "russia")
+	w:advanceRound()
+	assertEq(w:currentRound(), 2)
+	assertEq(w:mission("mission_1").target_country_id, "australia")
+	-- Advance past the last round: it wraps back to round 1.
+	w:setRound(w:roundCount())
+	w:advanceRound()
+	assertEq(w:currentRound(), 1)
+	assertEq(w:mission("mission_1").target_country_id, "russia")
+end)
+test("setRound wraps an out-of-range saved round into a valid one", function()
+	local w = World.new(worldData)
+	w:setRound(99) -- stale/oversized save
+	assert(w:currentRound() >= 1 and w:currentRound() <= w:roundCount())
+	w:setRound(0)
+	assert(w:currentRound() >= 1 and w:currentRound() <= w:roundCount())
 end)
 test("circle points all sit at the given angular radius from the center", function()
 	local pts = Sphere.circlePoints(20, 40, 10, 24)
@@ -291,20 +342,28 @@ test("savegame decode tolerates garbage and falls back to fresh", function()
 	assertEq(#s.completed, 0)
 	assertEq(s.activeMissionId, nil)
 end)
-test("savegame encode/decode round-trips position, completion, and mission", function()
+test("savegame encode/decode round-trips position, round, completion, and mission", function()
 	local original = {
 		lat = -12.5,
 		lon = 47,
+		round = 3,
 		completed = { "character_1", "character_3" },
 		activeMissionId = "mission_2",
 	}
 	local restored = SaveGame.decode(SaveGame.encode(original))
 	assertClose(restored.lat, -12.5)
 	assertClose(restored.lon, 47)
+	assertEq(restored.round, 3)
 	assertEq(#restored.completed, 2)
 	assertEq(restored.completed[1], "character_1")
 	assertEq(restored.completed[2], "character_3")
 	assertEq(restored.activeMissionId, "mission_2")
+end)
+test("savegame defaults round to 1 when missing or invalid", function()
+	assertEq(SaveGame.decode("not a table").round, 1)
+	assertEq(SaveGame.normalize({ round = 0 }).round, 1)
+	assertEq(SaveGame.normalize({ round = "x" }).round, 1)
+	assertEq(SaveGame.normalize({ round = 4 }).round, 4)
 end)
 test("savegame normalize clamps bad latitude and drops non-string ids", function()
 	local s = SaveGame.normalize({ lat = 999, lon = "x", completed = { "ok", 5, true } })
@@ -335,6 +394,24 @@ test("plane facing takes the shortest arc (n -> e goes clockwise via ne)", funct
 end)
 test("plane facing holds when already at the target", function()
 	assertEq(Plane.stepToward("e", "e"), "e")
+end)
+test("off-screen character finder grows toward the plane, smallest at the antipode", function()
+	-- depth vx: +1 at the sub-plane point, 0 at the horizon, -1 at the antipode.
+	local near = Character.finderScale(1)
+	local mid = Character.finderScale(0)
+	local far = Character.finderScale(-1)
+	assert(near > mid and mid > far, "finder must shrink with distance: " .. near .. "," .. mid .. "," .. far)
+	-- Clamps outside [-1, 1] so a tiny float overshoot never explodes the size.
+	assertEq(Character.finderScale(5), Character.finderScale(1))
+	assertEq(Character.finderScale(-5), Character.finderScale(-1))
+end)
+test("drop-off finder arrow grows toward the target, smallest at the antipode", function()
+	local near = DropTarget.finderScale(1)
+	local mid = DropTarget.finderScale(0)
+	local far = DropTarget.finderScale(-1)
+	assert(near > mid and mid > far, "drop arrow must shrink with distance")
+	assertEq(DropTarget.finderScale(9), DropTarget.finderScale(1)) -- clamped
+	assertEq(DropTarget.finderScale(-9), DropTarget.finderScale(-1))
 end)
 test("plane idle animation stays small and lively while moving", function()
 	-- Amplitudes stay gentle (child-friendly: no big or flashing motion).
