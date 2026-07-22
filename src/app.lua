@@ -17,7 +17,12 @@ local App = {
 
 ---@param message string
 function App.log(message)
-	print(os.date("!%Y-%m-%dT%H:%M:%SZ") .. " " .. message)
+	io.write(os.date("!%Y-%m-%dT%H:%M:%SZ") .. " " .. message .. "\n")
+	-- Flush immediately: on the handheld stdout is redirected to a file and thus
+	-- block-buffered, so without this the action trail never reaches the log if
+	-- the game later hangs or is killed (exactly the case we debug end-screen
+	-- input with). Cheap at our log volume.
+	io.flush()
 end
 
 function App.load()

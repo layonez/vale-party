@@ -28,10 +28,18 @@ local function spriteImage(path)
 	return images[path] or nil
 end
 
+-- Smooth fade: 0 at `a`, 1 at `b`, cubic in between.
+local function smoothstep(a, b, x)
+	local t = math.max(0, math.min(1, (x - a) / (b - a)))
+	return t * t * (3 - 2 * t)
+end
+
 -- Draw one character at screen (x, y). `time` drives the glow pulse; `strong`
 -- brightens it when the airplane is inside the interaction area (spec §11).
 -- `sprite` is the portrait path; when it is missing we draw the simple dot.
-local function drawOne(x, y, color, time, strong, sprite)
+-- `alpha` (0..1) scales all drawing opacity for horizon fade.
+local function drawOne(x, y, color, time, strong, sprite, alpha)
+	alpha = alpha or 1
 	local pulse = 0.5 + 0.5 * math.sin(time * 3)
 	-- Faster, fuller pulse when hovered so the highlight visibly throbs.
 	local hoverPulse = 0.5 + 0.5 * math.sin(time * 6)
@@ -40,16 +48,16 @@ local function drawOne(x, y, color, time, strong, sprite)
 		-- Hovered: a bright, layered halo that pulses. Outer soft ring + a
 		-- crisper bright rim make the character read as "ready to interact".
 		local haloR = SPRITE_SIZE * 0.7 + 6 * hoverPulse
-		love.graphics.setColor(color[1], color[2], color[3], 0.35 + 0.2 * hoverPulse)
+		love.graphics.setColor(color[1], color[2], color[3], (0.35 + 0.2 * hoverPulse) * alpha)
 		love.graphics.circle("fill", x, y, haloR)
-		love.graphics.setColor(1, 1, 1, 0.55 + 0.35 * hoverPulse)
+		love.graphics.setColor(1, 1, 1, (0.55 + 0.35 * hoverPulse) * alpha)
 		love.graphics.setLineWidth(2.5)
 		love.graphics.circle("line", x, y, haloR)
 	else
 		-- Idle: the original subtle breathing glow.
 		local glow = 0.35 + 0.25 * pulse
 		local glowR = BODY + 6 + 3 * pulse
-		love.graphics.setColor(color[1], color[2], color[3], glow * 0.5)
+		love.graphics.setColor(color[1], color[2], color[3], glow * 0.5 * alpha)
 		love.graphics.circle("fill", x, y, glowR)
 	end
 
@@ -63,20 +71,20 @@ local function drawOne(x, y, color, time, strong, sprite)
 		local scaleMul = strong and (1.12 + 0.06 * hoverPulse) or 1
 		local scale = (SPRITE_SIZE / ih) * scaleMul
 		if strong then
-			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.setColor(1, 1, 1, alpha)
 		else
-			love.graphics.setColor(0.82, 0.82, 0.82, 1)
+			love.graphics.setColor(0.82, 0.82, 0.82, alpha)
 		end
 		love.graphics.draw(image, x, y, 0, scale, scale, iw / 2, ih / 2)
 	else
 		-- Vector fallback (no graphics context or missing art): a simple face so
 		-- it still reads as a character, not a dot.
-		love.graphics.setColor(color[1], color[2], color[3], 1)
+		love.graphics.setColor(color[1], color[2], color[3], alpha)
 		love.graphics.circle("fill", x, y, BODY)
-		love.graphics.setColor(0.12, 0.12, 0.16, 1)
+		love.graphics.setColor(0.12, 0.12, 0.16, alpha)
 		love.graphics.setLineWidth(2)
 		love.graphics.circle("line", x, y, BODY)
-		love.graphics.setColor(0.12, 0.12, 0.16, 1)
+		love.graphics.setColor(0.12, 0.12, 0.16, alpha)
 		love.graphics.circle("fill", x - 4, y - 2, 1.8)
 		love.graphics.circle("fill", x + 4, y - 2, 1.8)
 	end
@@ -92,7 +100,7 @@ end
 ---@param nearId string|nil
 function Character.draw(characters, orientation, globe, time, nearId)
 	for _, character in ipairs(characters) do
-		local sx, sy, visible = Sphere.project(
+		local sx, sy, visible, depth = Sphere.project(
 			orientation,
 			character.latitude,
 			character.longitude,
@@ -101,7 +109,8 @@ function Character.draw(characters, orientation, globe, time, nearId)
 			globe.y
 		)
 		if visible then
-			drawOne(sx, sy, character.color, time, character.id == nearId, character.sprite)
+			local alpha = smoothstep(0.02, 0.15, depth)
+			drawOne(sx, sy, character.color, time, character.id == nearId, character.sprite, alpha)
 		end
 	end
 end

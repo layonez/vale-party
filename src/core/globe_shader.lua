@@ -172,7 +172,7 @@ function GlobeShader.new(baseTexPath, idTexPath, log)
 			self.shader:send("uIdTexel", { 1 / idTex:getWidth(), 1 / idTex:getHeight() })
 			-- Border band thickness in id-mask texels. Traced along the real
 			-- coastline for a bold, high-contrast outline at a 1024x512 mask.
-			self.shader:send("uBorderW", 4.0)
+			self.shader:send("uBorderW", 2.0)
 		else
 			log("globe_idmask_load_failed:" .. tostring(idTex))
 		end

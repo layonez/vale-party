@@ -162,7 +162,7 @@ function Sphere.project(orientation, lat, lon, radius, cx, cy)
 	local vx = r[1][1] * x + r[1][2] * y + r[1][3] * z -- depth (toward viewer)
 	local vy = r[2][1] * x + r[2][2] * y + r[2][3] * z -- screen right
 	local vz = r[3][1] * x + r[3][2] * y + r[3][3] * z -- screen up
-	return cx + radius * vy, cy - radius * vz, vx >= 0
+	return cx + radius * vy, cy - radius * vz, vx >= 0, vx
 end
 
 ---Sample a small circle on the sphere: the set of points at angular distance

@@ -120,4 +120,30 @@ function M.stopMusic(a)
 		a.music:stop()
 	end
 end
+
+-- Queue a voice line to play as soon as the current voice channel goes silent.
+-- If something is already queued the new request replaces it (latest wins).
+-- Use this for secondary cues (drop-off confirmation) so they never interrupt
+-- a higher-priority announcement already in progress.
+function M.queueVoice(a, lang, id, quiet)
+	if not love.audio then
+		return
+	end
+	a.voicePending = { lang = lang, id = id, quiet = quiet }
+end
+
+-- Poll the voice channel; call once per frame from the scene update. Plays the
+-- queued line as soon as the current voice source goes silent.
+function M.updateVoice(a)
+	if not a.voicePending then
+		return
+	end
+	if a.voice and a.voice:isPlaying() then
+		return
+	end
+	local p = a.voicePending
+	a.voicePending = nil
+	M.playVoice(a, p.lang, p.id, p.quiet)
+end
+
 return M

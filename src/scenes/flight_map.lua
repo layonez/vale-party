@@ -30,22 +30,30 @@ local SaveGameLove = require("src.core.savegame_love")
 -- pole is never a stuck point), "left"/"right" spin longitude around the axis.
 local FlightMap = {}
 
--- Screen-space placement and size of the globe. The airplane sits at the globe
--- center so it reads as "above" the planet surface.
-local GLOBE = {
-	x = 320,
-	y = 250,
-	radius = 210,
-}
+-- Globe target (zoomed-in) and starting (far) positions for the intro animation.
+-- GLOBE is mutated each frame during the zoom-in; after that it holds GLOBE_TARGET.
+local GLOBE_TARGET = { x = 320, y = 320, radius = 396 }
+local GLOBE_START  = { x = 320, y = 250, radius = 210 }
+local GLOBE = { x = GLOBE_TARGET.x, y = GLOBE_TARGET.y, radius = GLOBE_TARGET.radius }
+local ZOOM_DURATION = 4 -- seconds for the opening zoom-in
 
 local MOVE_SPEED = 45 -- degrees per second; constant, no acceleration/inertia
 local GRID_STEP = 30 -- degrees between grid lines
 local SEGMENTS = 48 -- samples per grid line
 -- Angular degrees within which a character is interactable (~105px on screen).
 -- Sized so pickup triggers when the sprite visually overlaps the plane.
-local CHARACTER_RANGE = 28
+local CHARACTER_RANGE = 9
 local CELEBRATION_TIME = 4 -- seconds the cycle celebration plays before auto-ending (spec §17)
 local FACING_STEP_TIME = 0.09 -- seconds per one-tile step when the plane turns
+
+-- Speed curve: the zoomed-in globe makes angular movement cover more pixels,
+-- and the effect is strongest at the equator where longitude rings are widest.
+-- This factor eases from 60% speed at lat=0 up to 100% at lat=50° and beyond,
+-- so equatorial flight feels natural while polar flight keeps full pace.
+local function latSpeedFactor(lat)
+	local t = math.min(1, math.abs(lat) / 50)
+	return 0.6 + 0.4 * t
+end
 
 -- The globe turns on a FIXED, upright axis so it always reads like a map/globe
 -- (educational clarity). We track a camera latitude/longitude and rebuild the
@@ -124,6 +132,9 @@ function FlightMap:enter(_, app)
 	self.mission:restore(saved.completed, saved.activeMissionId)
 
 	self.time = 0
+	self.zoomT = 0
+	GLOBE.radius = GLOBE_START.radius
+	GLOBE.y = GLOBE_START.y
 	self.currentCountryId = nil
 	self.nearCharacterId = nil
 	self.facing = "s" -- plane faces the viewer by default (spec §4)
@@ -183,9 +194,20 @@ function FlightMap:update(dt)
 	local input = self.app.input
 	input:update()
 	Input.logActions(input, self.app.log)
+	Audio.updateVoice(self.app.audio)
 
 	if input:pressed("debug") then
 		self.app.toggleDebug()
+	end
+
+	-- Opening zoom-in: ease from GLOBE_START to GLOBE_TARGET over ZOOM_DURATION.
+	-- Quadratic ease-out (fast start, gentle settle) so it reads as a camera
+	-- pulling into the scene rather than a mechanical linear clock.
+	if self.zoomT < 1 then
+		self.zoomT = math.min(1, self.zoomT + dt / ZOOM_DURATION)
+		local ease = self.zoomT * (2 - self.zoomT)
+		GLOBE.radius = GLOBE_START.radius + (GLOBE_TARGET.radius - GLOBE_START.radius) * ease
+		GLOBE.y = GLOBE_START.y + (GLOBE_TARGET.y - GLOBE_START.y) * ease
 	end
 
 	-- Cycle celebration (spec §17): after the fifth mission, flight is paused
@@ -247,7 +269,7 @@ function FlightMap:update(dt)
 		dLat, dLon = dir.dLat, dir.dLon
 	end
 	if dLat then
-		local step = MOVE_SPEED * dt
+		local step = MOVE_SPEED * dt * latSpeedFactor(self.camLat)
 		local newLat = self.camLat + dLat * step
 		local lonDelta = dLon * step
 		-- Glide along the polar cap: latitude clamps at the cap circle, and any
@@ -324,41 +346,37 @@ function FlightMap:update(dt)
 	end
 
 	-- A is the single interaction button (spec §6). Its effect depends on state:
-	-- accept a nearby character's mission in free flight, or complete the active
-	-- mission when over the target country. Edge-triggered, so holding A does not
-	-- re-trigger.
-	if input:pressed("interact") then
-		if self.mission:isActive() then
-			local mission = self.mission:activeMission()
-			if self.currentCountryId == mission.target_country_id then
-				local doneCharacter = self.mission:complete()
-				if doneCharacter then
-					self.app.log("mission_complete:" .. doneCharacter)
-					-- Fifth completion starts the cycle celebration (spec §17): let
-					-- the celebration line ("Все друзья дома!") carry the finale;
-					-- otherwise the friend cheers home ("Ура! Мы дома!").
-					if self.mission:allCompleted() then
-						self.celebrationTime = CELEBRATION_TIME
-						self.app.log("cycle_celebration")
-						Audio.playVoice(self.app.audio, self.app.loc.language, "celebration", true)
-					else
-						Audio.playVoice(self.app.audio, self.app.loc.language, "success", true)
-					end
+	-- Auto-pickup: fly close enough to a character and the mission starts
+	-- automatically. The character is removed from visibleCharacters() on
+	-- acceptance, so nearCharacterId becomes nil next frame — no double-trigger.
+	if not self.mission:isActive() and self.nearCharacterId then
+		if self.mission:accept(self.nearCharacterId) then
+			self.app.log("mission_accept:" .. self.nearCharacterId)
+			local accepted = self.mission:activeMission()
+			Audio.playVoice(self.app.audio, self.app.loc.language, accepted.id)
+		end
+	end
+
+	-- Auto-dropoff: fly over the target country and the mission completes
+	-- automatically. isActive() turns false after completion, so this fires once.
+	if self.mission:isActive() then
+		local mission = self.mission:activeMission()
+		if self.currentCountryId == mission.target_country_id then
+			local doneCharacter = self.mission:complete()
+			if doneCharacter then
+				self.app.log("mission_complete:" .. doneCharacter)
+				if self.mission:allCompleted() then
+					self.celebrationTime = CELEBRATION_TIME
+					self.app.log("cycle_celebration")
+					Audio.queueVoice(self.app.audio, self.app.loc.language, "celebration", true)
+				else
+					Audio.queueVoice(self.app.audio, self.app.loc.language, "success", true)
 				end
-			end
-		elseif self.nearCharacterId then
-			if self.mission:accept(self.nearCharacterId) then
-				self.app.log("mission_accept:" .. self.nearCharacterId)
-				-- The friend speaks their request ("Отвези меня в ..."); its id is
-				-- the accepted mission id. Falls back to the beep if unrecorded.
-				local accepted = self.mission:activeMission()
-				Audio.playVoice(self.app.audio, self.app.loc.language, accepted.id)
 			end
 		end
 	end
 
-	-- B cancels the active mission (spec §6): back to free flight, mission not
-	-- completed, all unfinished characters restored.
+	-- B still cancels the active mission manually if needed.
 	if input:pressed("back") and self.mission:isActive() then
 		if self.mission:cancel() then
 			self.app.log("mission_cancel")
@@ -368,11 +386,13 @@ function FlightMap:update(dt)
 
 	-- Mission guidance: is the target country's region visible on screen? Use
 	-- the region center plus its outline samples, so a partial edge counts too.
+	-- With the zoomed globe the sphere extends beyond the 640×480 viewport, so
+	-- being on the front hemisphere is not sufficient — we also check screen bounds.
 	self.targetVisible = false
 	local mission = self.mission:activeMission()
 	if mission then
 		local target = self.world:country(mission.target_country_id)
-		local _, _, centerVisible = Sphere.project(
+		local sx, sy, onFront = Sphere.project(
 			self.orientation,
 			target.region.latitude,
 			target.region.longitude,
@@ -380,12 +400,12 @@ function FlightMap:update(dt)
 			GLOBE.x,
 			GLOBE.y
 		)
-		self.targetVisible = centerVisible
+		self.targetVisible = onFront and sx >= 0 and sx <= 640 and sy >= 0 and sy <= 480
 		if not self.targetVisible then
 			for _, p in ipairs(self.countryOutlines[target.id]) do
-				local _, _, v =
+				local px, py, v =
 					Sphere.project(self.orientation, p[1], p[2], GLOBE.radius, GLOBE.x, GLOBE.y)
-				if v then
+				if v and px >= 0 and px <= 640 and py >= 0 and py <= 480 then
 					self.targetVisible = true
 					break
 				end
@@ -583,6 +603,31 @@ function FlightMap:drawWorld()
 	-- Cycle celebration overlay (spec §17): shown after all five are done.
 	if self.celebrationTime then
 		self:drawCelebration()
+	end
+
+	-- TEMP diagnostic HUD (always visible, even with debug off): lets us read the
+	-- exact end-of-game state on the device without SSH. Remove once the
+	-- end-screen input issue is resolved.
+	do
+		local m = self.mission
+		local am = m:activeMission()
+		love.graphics.setFont(Fonts.get(12))
+		love.graphics.setColor(0, 0, 0, 0.6)
+		love.graphics.rectangle("fill", 4, 452, 632, 24)
+		love.graphics.setColor(1, 1, 0.6)
+		love.graphics.print(
+			string.format(
+				"state=%s over=%s target=%s celeb=%s done=%s A=%s",
+				m.state,
+				self.currentCountryId or "-",
+				am and am.target_country_id or "-",
+				self.celebrationTime and string.format("%.1f", self.celebrationTime) or "-",
+				tostring(m:allCompleted()),
+				(self._aFlash or 0) > 0 and "PRESSED" or "-"
+			),
+			10,
+			456
+		)
 	end
 
 	love.graphics.setFont(Fonts.get(14))
