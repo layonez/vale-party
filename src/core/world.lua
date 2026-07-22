@@ -47,8 +47,10 @@ end
 -- (Re)build the current round's characters and missions from the round's target
 -- country ids and the fixed character slots. Each character is positioned at the
 -- antipode of its target country. Ids are stable across rounds (character_1..N,
--- mission_1..N) so save data, sprites, and voice lines are reused every round;
--- only positions and drop-off targets change.
+-- mission_1..N) so save data and per-slot sprites are reused every round; only
+-- positions and drop-off targets change. Voice lines, by contrast, are keyed by
+-- the target country (mission.<country>/thanks.<country> in src/platform/audio),
+-- so the spoken destination always matches the current round's actual target.
 function World:buildRound()
 	local targets = self.rounds[self.roundIndex]
 	local characters, missions = {}, {}

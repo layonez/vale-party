@@ -78,6 +78,13 @@ function M.playVoice(a, lang, id, quiet)
 		src:stop()
 		src:play()
 		a.voice = src
+		-- Remember what is playing so updateVoice can (a) start the arrival-announcement
+		-- cooldown when a "voice.<country>" line ends and (b) tell an interruptible
+		-- ambient announcement from a directly-played line. Playing directly always
+		-- takes over the channel, so this is never an ambient announcement until the
+		-- ambient path flags it below.
+		a.currentVoiceId = id
+		a.announcing = false
 		return true
 	end
 	if quiet then
@@ -121,29 +128,95 @@ function M.stopMusic(a)
 	end
 end
 
--- Queue a voice line to play as soon as the current voice channel goes silent.
--- If something is already queued the new request replaces it (latest wins).
--- Use this for secondary cues (drop-off confirmation) so they never interrupt
--- a higher-priority announcement already in progress.
+-- Seconds that must pass after a country announcement finishes before another
+-- may start, so flying across many small countries doesn't machine-gun their
+-- names (requested behaviour). Applies only to ambient arrival announcements.
+local ANNOUNCE_COOLDOWN = 4
+
+-- Queue a high-priority spoken line to play as soon as the voice channel is free.
+-- Queued lines play in order (FIFO), so a chain like the character's drop-off
+-- thanks followed by the cycle celebration plays back-to-back without either
+-- being cut off. Speech always takes precedence over ambient announcements
+-- (see M.announce): a queued line preempts an announcement mid-word.
 function M.queueVoice(a, lang, id, quiet)
 	if not love.audio then
 		return
 	end
-	a.voicePending = { lang = lang, id = id, quiet = quiet }
+	a.voiceQueue = a.voiceQueue or {}
+	a.voiceQueue[#a.voiceQueue + 1] = { lang = lang, id = id, quiet = quiet }
 end
 
--- Poll the voice channel; call once per frame from the scene update. Plays the
--- queued line as soon as the current voice source goes silent.
-function M.updateVoice(a)
-	if not a.voicePending then
+-- Request a low-priority ambient country announcement ("это <страна>!"). Unlike
+-- queueVoice this never interrupts and is never guaranteed: it plays only when no
+-- speech is playing or queued AND the post-announcement cooldown has elapsed, and
+-- it is preempted the instant any speech is queued. Latest request wins (only the
+-- most recently flown-over country matters), so a single pending slot is enough —
+-- which also means a country is announced at most once per fly-over, never twice.
+function M.announce(a, lang, id)
+	if not love.audio then
 		return
 	end
-	if a.voice and a.voice:isPlaying() then
+	a.announcePending = { lang = lang, id = id }
+end
+
+-- Drop any pending/played ambient announcement state (e.g. on a round change) so a
+-- stale country name can't bleed into the next round. Leaves queued speech alone.
+function M.clearAnnouncement(a)
+	a.announcePending = nil
+	a.announcing = false
+end
+
+-- Poll the voice channel; call once per frame from the scene update with the
+-- frame dt. Enforces speech-over-announcement priority and the announcement
+-- cooldown, and starts the next line whenever the channel frees up.
+function M.updateVoice(a, dt)
+	dt = dt or 0
+	local playing = a.voice and a.voice:isPlaying()
+
+	-- A country announcement (ambient or a directly-played "voice.*" line) that has
+	-- just ended starts the cooldown before the next announcement may play.
+	if a.currentVoiceId and not playing then
+		if string.sub(a.currentVoiceId, 1, 6) == "voice." then
+			a.announceCooldown = ANNOUNCE_COOLDOWN
+		end
+		a.currentVoiceId = nil
+		a.announcing = false
+	end
+	if a.announceCooldown and a.announceCooldown > 0 then
+		a.announceCooldown = math.max(0, a.announceCooldown - dt)
+	end
+
+	local speechWaiting = a.voiceQueue and #a.voiceQueue > 0
+
+	if playing then
+		-- Speech takes precedence: a waiting line preempts an ambient announcement
+		-- (and only an ambient one — never another spoken line). Otherwise let the
+		-- current line finish before starting anything new.
+		if a.announcing and speechWaiting then
+			a.voice:stop()
+			a.announcing = false
+			a.announceCooldown = ANNOUNCE_COOLDOWN
+		else
+			return
+		end
+	end
+
+	-- Priority 1: queued speech (drop-off thanks, cycle celebration, …).
+	if speechWaiting then
+		local p = table.remove(a.voiceQueue, 1)
+		M.playVoice(a, p.lang, p.id, p.quiet)
 		return
 	end
-	local p = a.voicePending
-	a.voicePending = nil
-	M.playVoice(a, p.lang, p.id, p.quiet)
+
+	-- Priority 2: ambient country announcement, only once the cooldown has elapsed.
+	if a.announcePending and (not a.announceCooldown or a.announceCooldown <= 0) then
+		local p = a.announcePending
+		a.announcePending = nil
+		-- quiet: countries without a recording stay silent instead of beeping.
+		if M.playVoice(a, p.lang, p.id, true) then
+			a.announcing = true
+		end
+	end
 end
 
 return M

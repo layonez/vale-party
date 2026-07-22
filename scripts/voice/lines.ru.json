@@ -1,0 +1,61 @@
+{
+  "language": "ru",
+  "model": "eleven_multilingual_v2",
+  "note": "Russian voice content for Vale Party. Narration (arrivals, greeting, celebration) uses the narrator voice; each character slot keeps one distinct voice across rounds. The country->character-voice mapping mirrors content/world.lua rounds (round r, slot s -> rounds[r][s]), so a character always sounds the same whether asking to go home or thanking Valya on arrival.",
+  "voices": {
+    "narrator": "pPdl9cQBQq4p6mRkZy2Z",
+    "c1": "6A9D8WSMm4rFsg2DWFeE",
+    "c2": "pM78bgjPVk0JXtaEnFoj",
+    "c3": "TPIitICAZ8CqlGZ81AKm",
+    "c4": "mOTbMAOniC3yoEvgo4bi",
+    "c5": "RLRdvNFwJJct2XZOgfzy"
+  },
+  "draft_note": "Free-tier premade (English) substitutes used with --draft, since the real voices above are library voices that ElevenLabs blocks over the API on the free plan. These speak Russian via eleven_multilingual_v2 with an English accent — placeholder only, NOT for release. Drop --draft on a paid plan to use the real voices.",
+  "draft_voices": {
+    "narrator": "JBFqnCBsd6RMkjVDRZzb",
+    "c1": "FGY2WhTYpPnrIDTdsKH5",
+    "c2": "cgSgspJ2msm6clMCkdW9",
+    "c3": "TX3LPaxmHKxFdv7VOQHJ",
+    "c4": "Xb7hH8MSUJpSbSDYk0k2",
+    "c5": "IKne3meq5aSn9XLyUdCD"
+  },
+  "settings": {
+    "narrator": { "stability": 0.7, "similarity_boost": 0.65, "style": 0.1, "speed": 0.95, "use_speaker_boost": true },
+    "character": { "stability": 0.45, "similarity_boost": 0.75, "style": 0.35, "speed": 1.0, "use_speaker_boost": true }
+  },
+  "narration": [
+    { "id": "greeting", "text": "Привет, Валюша! Давай поможем твоим друзьям вернуться домой!" },
+    { "id": "celebration", "text": "Ура-а-а! Все друзья дома! Ты настоящая помощница, Валюша!" }
+  ],
+  "countries": [
+    { "id": "russia",       "voice": "c1", "request": "Отвези меня домой, в снежную Россию!",          "thanks": "Ура, Россия! Спасибо тебе, Валюша!",            "arrival": "Смотри — это Россия!" },
+    { "id": "canada",       "voice": "c2", "request": "Помоги мне добраться до Канады, пожалуйста!",     "thanks": "Мы в Канаде! Спасибо, ты лучшая!",              "arrival": "А вот и Канада!" },
+    { "id": "usa",          "voice": "c3", "request": "Мне нужно домой — в Америку!",                    "thanks": "Америка, ура! Спасибо тебе большое!",           "arrival": "Это Америка!" },
+    { "id": "china",        "voice": "c4", "request": "Отвези меня, пожалуйста, в Китай!",               "thanks": "Вот и Китай! Спасибо, Валюша!",                 "arrival": "Смотри — это Китай!" },
+    { "id": "brazil",       "voice": "c5", "request": "Хочу домой, в тёплую Бразилию!",                  "thanks": "Ура, Бразилия! Спасибо тебе!",                  "arrival": "Это Бразилия!" },
+
+    { "id": "australia",    "voice": "c1", "request": "Отвези меня в далёкую Австралию!",                "thanks": "Мы в Австралии! Спасибо, подружка!",            "arrival": "А это Австралия!" },
+    { "id": "india",        "voice": "c2", "request": "Помоги мне добраться до Индии!",                  "thanks": "Индия, ура! Спасибо тебе большое!",             "arrival": "Смотри — это Индия!" },
+    { "id": "argentina",    "voice": "c3", "request": "Мне нужно домой, в Аргентину!",                   "thanks": "Вот и Аргентина! Спасибо, Валюша!",             "arrival": "Это Аргентина!" },
+    { "id": "kazakhstan",   "voice": "c4", "request": "Отвези меня, пожалуйста, в Казахстан!",           "thanks": "Ура, Казахстан! Спасибо тебе!",                 "arrival": "А вот и Казахстан!" },
+    { "id": "algeria",      "voice": "c5", "request": "Хочу домой — в жаркий Алжир!",                    "thanks": "Мы в Алжире! Спасибо, ты молодец!",             "arrival": "Это Алжир!" },
+
+    { "id": "dr_congo",     "voice": "c1", "request": "Отвези меня домой, в Конго!",                     "thanks": "Вот и Конго! Спасибо тебе, Валюша!",            "arrival": "Смотри — это Конго!" },
+    { "id": "saudi_arabia", "voice": "c2", "request": "Помоги мне добраться до Саудовской Аравии!",      "thanks": "Мы в Аравии! Спасибо тебе большое!",            "arrival": "Это Саудовская Аравия!" },
+    { "id": "mexico",       "voice": "c3", "request": "Отвези меня, пожалуйста, в Мексику!",             "thanks": "Ура, Мексика! Спасибо, подружка!",              "arrival": "А вот и Мексика!" },
+    { "id": "indonesia",    "voice": "c4", "request": "Мне нужно домой — в Индонезию!",                  "thanks": "Вот и Индонезия! Спасибо тебе!",                "arrival": "Это Индонезия!" },
+    { "id": "sudan",        "voice": "c5", "request": "Отвези меня, пожалуйста, в Судан!",               "thanks": "Мы в Судане! Спасибо, ты лучшая!",              "arrival": "Смотри — это Судан!" },
+
+    { "id": "libya",        "voice": "c1", "request": "Хочу домой, в тёплую Ливию!",                     "thanks": "Ура, Ливия! Спасибо тебе, Валюша!",             "arrival": "Это Ливия!" },
+    { "id": "iran",         "voice": "c2", "request": "Помоги мне добраться до Ирана!",                  "thanks": "Вот и Иран! Спасибо тебе большое!",             "arrival": "А вот и Иран!" },
+    { "id": "mongolia",     "voice": "c3", "request": "Отвези меня, пожалуйста, в Монголию!",            "thanks": "Мы в Монголии! Спасибо, подружка!",             "arrival": "Смотри — это Монголия!" },
+    { "id": "peru",         "voice": "c4", "request": "Мне нужно домой — в Перу!",                       "thanks": "Ура, Перу! Спасибо тебе!",                      "arrival": "Это Перу!" },
+    { "id": "chad",         "voice": "c5", "request": "Отвези меня, пожалуйста, в Чад!",                 "thanks": "Вот и Чад! Спасибо, ты молодец!",               "arrival": "А вот и Чад!" },
+
+    { "id": "niger",        "voice": "c1", "request": "Хочу домой, в жаркий Нигер!",                     "thanks": "Мы в Нигере! Спасибо тебе, Валюша!",            "arrival": "Это Нигер!" },
+    { "id": "angola",       "voice": "c2", "request": "Помоги мне добраться до Анголы!",                 "thanks": "Ангола, ура! Спасибо тебе большое!",            "arrival": "Смотри — это Ангола!" },
+    { "id": "mali",         "voice": "c3", "request": "Отвези меня, пожалуйста, в Мали!",                "thanks": "Вот и Мали! Спасибо, подружка!",                "arrival": "А вот и Мали!" },
+    { "id": "south_africa", "voice": "c4", "request": "Мне нужно домой — в Южную Африку!",               "thanks": "Мы в Южной Африке! Спасибо тебе!",              "arrival": "Это Южная Африка!" },
+    { "id": "colombia",     "voice": "c5", "request": "Отвези меня, пожалуйста, в Колумбию!",            "thanks": "Ура, Колумбия! Спасибо, ты лучшая!",            "arrival": "Смотри — это Колумбия!" }
+  ]
+}

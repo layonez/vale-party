@@ -487,5 +487,93 @@ test("globe regions rounds 0..1 float pixels and wraps the dateline", function()
 	assert(py >= 0 and py <= h - 1, "py out of bounds: " .. py)
 	assert(px >= 0 and px <= w - 1, "px out of bounds: " .. px)
 end)
+test("every country and narration cue has a Russian voice asset", function()
+	-- Guards against drift between content/world.lua and assets/voice/ru: the
+	-- flight map plays voice.<country> on flyover, mission.<country> on pickup and
+	-- thanks.<country> on drop-off, so each of the 25 countries needs all three.
+	local function exists(path)
+		local f = io.open(path, "r")
+		if f then
+			f:close()
+			return true
+		end
+		return false
+	end
+	for _, country in ipairs(worldData.countries) do
+		for _, prefix in ipairs({ "voice", "mission", "thanks" }) do
+			local path = "assets/voice/ru/" .. prefix .. "." .. country.id .. ".ogg"
+			assert(exists(path), "missing voice asset: " .. path)
+		end
+	end
+	for _, id in ipairs({ "greeting", "celebration" }) do
+		assert(exists("assets/voice/ru/" .. id .. ".ogg"), "missing narration asset: " .. id .. ".ogg")
+	end
+end)
+test("voice: gratitude plays fully before the country announcement, which has a cooldown", function()
+	-- Minimal LÖVE audio mock: a source tracks only whether it is "playing";
+	-- finishing a line is simulated by flipping that flag off.
+	local prevLove = love
+	love = {
+		audio = {
+			newSource = function()
+				local s = { playing = false }
+				function s:play()
+					self.playing = true
+				end
+				function s:stop()
+					self.playing = false
+				end
+				function s:isPlaying()
+					return self.playing
+				end
+				return s
+			end,
+		},
+		filesystem = {
+			getInfo = function()
+				return { type = "file" }
+			end,
+		},
+	}
+	local Audio = require("src.platform.audio")
+	local a = Audio.new(function() end)
+	local function finish(id)
+		a.voiceCache["ru/" .. id].playing = false
+	end
+	local function nowPlaying()
+		return (a.voice and a.voice:isPlaying()) and a.currentVoiceId or nil
+	end
+
+	-- Drop-off: the thank-you is queued (speech) and the destination is announced
+	-- (ambient) on the same frame. Speech wins — the thank-you plays first.
+	Audio.queueVoice(a, "ru", "thanks.brazil", true)
+	Audio.announce(a, "ru", "voice.brazil")
+	Audio.updateVoice(a, 0)
+	assertEq(nowPlaying(), "thanks.brazil")
+	-- While it plays, the announcement waits and never interrupts it.
+	Audio.updateVoice(a, 0.5)
+	assertEq(nowPlaying(), "thanks.brazil")
+	-- Only once the thank-you ends does the country announcement play.
+	finish("thanks.brazil")
+	Audio.updateVoice(a, 0)
+	assertEq(nowPlaying(), "voice.brazil")
+
+	-- Cooldown: a second country cannot be announced until 4s after the first ends.
+	finish("voice.brazil")
+	Audio.announce(a, "ru", "voice.argentina")
+	Audio.updateVoice(a, 0) -- observes the end, starts the cooldown
+	assertEq(nowPlaying(), nil)
+	Audio.updateVoice(a, 3.0)
+	assertEq(nowPlaying(), nil)
+	Audio.updateVoice(a, 1.5) -- 4s elapsed
+	assertEq(nowPlaying(), "voice.argentina")
+
+	-- Speech preempts an ambient announcement already in progress.
+	Audio.queueVoice(a, "ru", "thanks.argentina", true)
+	Audio.updateVoice(a, 0)
+	assertEq(nowPlaying(), "thanks.argentina")
+
+	love = prevLove
+end)
 print(string.format("%d tests, %d failures", total, fail))
 os.exit(fail)

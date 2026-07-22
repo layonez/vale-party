@@ -204,7 +204,7 @@ function FlightMap:update(dt)
 	local input = self.app.input
 	input:update()
 	Input.logActions(input, self.app.log)
-	Audio.updateVoice(self.app.audio)
+	Audio.updateVoice(self.app.audio, dt)
 
 	if input:pressed("debug") then
 		self.app.toggleDebug()
@@ -233,6 +233,7 @@ function FlightMap:update(dt)
 			self.world:advanceRound()
 			self.mission:reset()
 			self.recognition = Recognition.new()
+			Audio.clearAnnouncement(self.app.audio)
 			self.recognizedName = nil
 			self.app.log("round_advance:" .. self.world:currentRound())
 		end
@@ -332,9 +333,11 @@ function FlightMap:update(dt)
 	if recognized then
 		local named = self.world:country(recognized)
 		self.app.log("recognized:" .. recognized)
-		-- quiet=true: only the countries that have a recording speak; the rest of
-		-- the 25 stay silent instead of beeping every time you fly over them.
-		Audio.playVoice(self.app.audio, self.app.loc.language, "voice." .. recognized, true)
+		-- Ambient announcement: yields to any spoken line (e.g. a drop-off thank-you
+		-- in progress) and is rate-limited to one every few seconds, so crossing many
+		-- countries never machine-guns their names. Only countries with a recording
+		-- speak; the rest stay silent instead of beeping.
+		Audio.announce(self.app.audio, self.app.loc.language, "voice." .. recognized)
 		self.recognizedName = self.app.loc:t(named.name_key)
 	elseif not self.recognition.recognizedId then
 		self.recognizedName = nil
@@ -368,7 +371,11 @@ function FlightMap:update(dt)
 		if self.mission:accept(self.nearCharacterId) then
 			self.app.log("mission_accept:" .. self.nearCharacterId)
 			local accepted = self.mission:activeMission()
-			Audio.playVoice(self.app.audio, self.app.loc.language, accepted.id)
+			-- The character asks to be taken to their actual drop-off country, in
+			-- their own voice (voice per character slot). Keyed by target country —
+			-- not the mission slot — since a slot targets a different country each
+			-- round (assets/voice/<lang>/mission.<country>.ogg).
+			Audio.playVoice(self.app.audio, self.app.loc.language, "mission." .. accepted.target_country_id)
 		end
 	end
 
@@ -385,12 +392,23 @@ function FlightMap:update(dt)
 			local doneCharacter = self.mission:complete()
 			if doneCharacter then
 				self.app.log("mission_complete:" .. doneCharacter)
+				-- The delivered character thanks Valya in their own voice. This is
+				-- queued speech, so it takes precedence over — and plays fully before —
+				-- the country announcement, even though the drop zone is larger than the
+				-- recognition region and the arrival cue may fire around the same time.
+				Audio.queueVoice(self.app.audio, self.app.loc.language, "thanks." .. mission.target_country_id, true)
 				if self.mission:allCompleted() then
 					self.celebrationTime = CELEBRATION_TIME
 					self.app.log("cycle_celebration")
+					-- Cycle finale: the narrator's celebration follows the thanks; no
+					-- country name in between (the celebration is the payoff here).
 					Audio.queueVoice(self.app.audio, self.app.loc.language, "celebration", true)
 				else
-					Audio.queueVoice(self.app.audio, self.app.loc.language, "success", true)
+					-- Announce the destination only AFTER the gratitude. As an ambient
+					-- announcement it waits for the thanks to finish; the single pending
+					-- slot also means it plays once even if the fly-over cue requests the
+					-- same country too.
+					Audio.announce(self.app.audio, self.app.loc.language, "voice." .. mission.target_country_id)
 				end
 			end
 		end

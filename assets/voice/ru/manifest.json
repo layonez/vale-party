@@ -1,0 +1,1465 @@
+{
+  "mission.russia": {
+    "file": "assets/voice/ru/mission.russia.ogg",
+    "master": "voice-src/ru/mission.russia.mp3",
+    "text": "Отвези меня домой, в снежную Россию!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "russia",
+    "status": "draft",
+    "draft": true
+  },
+  "greeting": {
+    "file": "assets/voice/ru/greeting.ogg",
+    "master": "voice-src/ru/greeting.mp3",
+    "text": "Привет, Валюша! Давай поможем твоим друзьям вернуться домой!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "narration",
+    "country": null,
+    "status": "draft",
+    "draft": true
+  },
+  "celebration": {
+    "file": "assets/voice/ru/celebration.ogg",
+    "master": "voice-src/ru/celebration.mp3",
+    "text": "Ура-а-а! Все друзья дома! Ты настоящая помощница, Валюша!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "narration",
+    "country": null,
+    "status": "draft",
+    "draft": true
+  },
+  "voice.russia": {
+    "file": "assets/voice/ru/voice.russia.ogg",
+    "master": "voice-src/ru/voice.russia.mp3",
+    "text": "Смотри — это Россия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "russia",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.russia": {
+    "file": "assets/voice/ru/thanks.russia.ogg",
+    "master": "voice-src/ru/thanks.russia.mp3",
+    "text": "Ура, Россия! Спасибо тебе, Валюша!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "russia",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.canada": {
+    "file": "assets/voice/ru/voice.canada.ogg",
+    "master": "voice-src/ru/voice.canada.mp3",
+    "text": "А вот и Канада!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "canada",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.canada": {
+    "file": "assets/voice/ru/mission.canada.ogg",
+    "master": "voice-src/ru/mission.canada.mp3",
+    "text": "Помоги мне добраться до Канады, пожалуйста!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "canada",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.canada": {
+    "file": "assets/voice/ru/thanks.canada.ogg",
+    "master": "voice-src/ru/thanks.canada.mp3",
+    "text": "Мы в Канаде! Спасибо, ты лучшая!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "canada",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.usa": {
+    "file": "assets/voice/ru/voice.usa.ogg",
+    "master": "voice-src/ru/voice.usa.mp3",
+    "text": "Это Америка!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "usa",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.usa": {
+    "file": "assets/voice/ru/mission.usa.ogg",
+    "master": "voice-src/ru/mission.usa.mp3",
+    "text": "Мне нужно домой — в Америку!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "usa",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.usa": {
+    "file": "assets/voice/ru/thanks.usa.ogg",
+    "master": "voice-src/ru/thanks.usa.mp3",
+    "text": "Америка, ура! Спасибо тебе большое!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "usa",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.china": {
+    "file": "assets/voice/ru/voice.china.ogg",
+    "master": "voice-src/ru/voice.china.mp3",
+    "text": "Смотри — это Китай!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "china",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.china": {
+    "file": "assets/voice/ru/mission.china.ogg",
+    "master": "voice-src/ru/mission.china.mp3",
+    "text": "Отвези меня, пожалуйста, в Китай!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "china",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.china": {
+    "file": "assets/voice/ru/thanks.china.ogg",
+    "master": "voice-src/ru/thanks.china.mp3",
+    "text": "Вот и Китай! Спасибо, Валюша!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "china",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.brazil": {
+    "file": "assets/voice/ru/voice.brazil.ogg",
+    "master": "voice-src/ru/voice.brazil.mp3",
+    "text": "Это Бразилия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "brazil",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.brazil": {
+    "file": "assets/voice/ru/mission.brazil.ogg",
+    "master": "voice-src/ru/mission.brazil.mp3",
+    "text": "Хочу домой, в тёплую Бразилию!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "brazil",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.brazil": {
+    "file": "assets/voice/ru/thanks.brazil.ogg",
+    "master": "voice-src/ru/thanks.brazil.mp3",
+    "text": "Ура, Бразилия! Спасибо тебе!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "brazil",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.australia": {
+    "file": "assets/voice/ru/voice.australia.ogg",
+    "master": "voice-src/ru/voice.australia.mp3",
+    "text": "А это Австралия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "australia",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.australia": {
+    "file": "assets/voice/ru/mission.australia.ogg",
+    "master": "voice-src/ru/mission.australia.mp3",
+    "text": "Отвези меня в далёкую Австралию!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "australia",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.australia": {
+    "file": "assets/voice/ru/thanks.australia.ogg",
+    "master": "voice-src/ru/thanks.australia.mp3",
+    "text": "Мы в Австралии! Спасибо, подружка!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "australia",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.india": {
+    "file": "assets/voice/ru/voice.india.ogg",
+    "master": "voice-src/ru/voice.india.mp3",
+    "text": "Смотри — это Индия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "india",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.india": {
+    "file": "assets/voice/ru/mission.india.ogg",
+    "master": "voice-src/ru/mission.india.mp3",
+    "text": "Помоги мне добраться до Индии!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "india",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.india": {
+    "file": "assets/voice/ru/thanks.india.ogg",
+    "master": "voice-src/ru/thanks.india.mp3",
+    "text": "Индия, ура! Спасибо тебе большое!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "india",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.argentina": {
+    "file": "assets/voice/ru/voice.argentina.ogg",
+    "master": "voice-src/ru/voice.argentina.mp3",
+    "text": "Это Аргентина!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "argentina",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.argentina": {
+    "file": "assets/voice/ru/mission.argentina.ogg",
+    "master": "voice-src/ru/mission.argentina.mp3",
+    "text": "Мне нужно домой, в Аргентину!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "argentina",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.argentina": {
+    "file": "assets/voice/ru/thanks.argentina.ogg",
+    "master": "voice-src/ru/thanks.argentina.mp3",
+    "text": "Вот и Аргентина! Спасибо, Валюша!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "argentina",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.kazakhstan": {
+    "file": "assets/voice/ru/voice.kazakhstan.ogg",
+    "master": "voice-src/ru/voice.kazakhstan.mp3",
+    "text": "А вот и Казахстан!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "kazakhstan",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.kazakhstan": {
+    "file": "assets/voice/ru/mission.kazakhstan.ogg",
+    "master": "voice-src/ru/mission.kazakhstan.mp3",
+    "text": "Отвези меня, пожалуйста, в Казахстан!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "kazakhstan",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.kazakhstan": {
+    "file": "assets/voice/ru/thanks.kazakhstan.ogg",
+    "master": "voice-src/ru/thanks.kazakhstan.mp3",
+    "text": "Ура, Казахстан! Спасибо тебе!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "kazakhstan",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.algeria": {
+    "file": "assets/voice/ru/voice.algeria.ogg",
+    "master": "voice-src/ru/voice.algeria.mp3",
+    "text": "Это Алжир!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "algeria",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.algeria": {
+    "file": "assets/voice/ru/mission.algeria.ogg",
+    "master": "voice-src/ru/mission.algeria.mp3",
+    "text": "Хочу домой — в жаркий Алжир!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "algeria",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.algeria": {
+    "file": "assets/voice/ru/thanks.algeria.ogg",
+    "master": "voice-src/ru/thanks.algeria.mp3",
+    "text": "Мы в Алжире! Спасибо, ты молодец!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "algeria",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.dr_congo": {
+    "file": "assets/voice/ru/voice.dr_congo.ogg",
+    "master": "voice-src/ru/voice.dr_congo.mp3",
+    "text": "Смотри — это Конго!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "dr_congo",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.dr_congo": {
+    "file": "assets/voice/ru/mission.dr_congo.ogg",
+    "master": "voice-src/ru/mission.dr_congo.mp3",
+    "text": "Отвези меня домой, в Конго!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "dr_congo",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.dr_congo": {
+    "file": "assets/voice/ru/thanks.dr_congo.ogg",
+    "master": "voice-src/ru/thanks.dr_congo.mp3",
+    "text": "Вот и Конго! Спасибо тебе, Валюша!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "dr_congo",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.saudi_arabia": {
+    "file": "assets/voice/ru/voice.saudi_arabia.ogg",
+    "master": "voice-src/ru/voice.saudi_arabia.mp3",
+    "text": "Это Саудовская Аравия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "saudi_arabia",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.saudi_arabia": {
+    "file": "assets/voice/ru/mission.saudi_arabia.ogg",
+    "master": "voice-src/ru/mission.saudi_arabia.mp3",
+    "text": "Помоги мне добраться до Саудовской Аравии!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "saudi_arabia",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.saudi_arabia": {
+    "file": "assets/voice/ru/thanks.saudi_arabia.ogg",
+    "master": "voice-src/ru/thanks.saudi_arabia.mp3",
+    "text": "Мы в Аравии! Спасибо тебе большое!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "saudi_arabia",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.mexico": {
+    "file": "assets/voice/ru/voice.mexico.ogg",
+    "master": "voice-src/ru/voice.mexico.mp3",
+    "text": "А вот и Мексика!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "mexico",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.mexico": {
+    "file": "assets/voice/ru/mission.mexico.ogg",
+    "master": "voice-src/ru/mission.mexico.mp3",
+    "text": "Отвези меня, пожалуйста, в Мексику!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "mexico",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.mexico": {
+    "file": "assets/voice/ru/thanks.mexico.ogg",
+    "master": "voice-src/ru/thanks.mexico.mp3",
+    "text": "Ура, Мексика! Спасибо, подружка!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "mexico",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.indonesia": {
+    "file": "assets/voice/ru/voice.indonesia.ogg",
+    "master": "voice-src/ru/voice.indonesia.mp3",
+    "text": "Это Индонезия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "indonesia",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.indonesia": {
+    "file": "assets/voice/ru/mission.indonesia.ogg",
+    "master": "voice-src/ru/mission.indonesia.mp3",
+    "text": "Мне нужно домой — в Индонезию!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "indonesia",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.indonesia": {
+    "file": "assets/voice/ru/thanks.indonesia.ogg",
+    "master": "voice-src/ru/thanks.indonesia.mp3",
+    "text": "Вот и Индонезия! Спасибо тебе!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "indonesia",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.sudan": {
+    "file": "assets/voice/ru/voice.sudan.ogg",
+    "master": "voice-src/ru/voice.sudan.mp3",
+    "text": "Смотри — это Судан!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "sudan",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.sudan": {
+    "file": "assets/voice/ru/mission.sudan.ogg",
+    "master": "voice-src/ru/mission.sudan.mp3",
+    "text": "Отвези меня, пожалуйста, в Судан!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "sudan",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.sudan": {
+    "file": "assets/voice/ru/thanks.sudan.ogg",
+    "master": "voice-src/ru/thanks.sudan.mp3",
+    "text": "Мы в Судане! Спасибо, ты лучшая!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "sudan",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.libya": {
+    "file": "assets/voice/ru/voice.libya.ogg",
+    "master": "voice-src/ru/voice.libya.mp3",
+    "text": "Это Ливия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "libya",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.libya": {
+    "file": "assets/voice/ru/mission.libya.ogg",
+    "master": "voice-src/ru/mission.libya.mp3",
+    "text": "Хочу домой, в тёплую Ливию!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "libya",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.libya": {
+    "file": "assets/voice/ru/thanks.libya.ogg",
+    "master": "voice-src/ru/thanks.libya.mp3",
+    "text": "Ура, Ливия! Спасибо тебе, Валюша!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "libya",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.iran": {
+    "file": "assets/voice/ru/voice.iran.ogg",
+    "master": "voice-src/ru/voice.iran.mp3",
+    "text": "А вот и Иран!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "iran",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.iran": {
+    "file": "assets/voice/ru/mission.iran.ogg",
+    "master": "voice-src/ru/mission.iran.mp3",
+    "text": "Помоги мне добраться до Ирана!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "iran",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.iran": {
+    "file": "assets/voice/ru/thanks.iran.ogg",
+    "master": "voice-src/ru/thanks.iran.mp3",
+    "text": "Вот и Иран! Спасибо тебе большое!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "iran",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.mongolia": {
+    "file": "assets/voice/ru/voice.mongolia.ogg",
+    "master": "voice-src/ru/voice.mongolia.mp3",
+    "text": "Смотри — это Монголия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "mongolia",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.mongolia": {
+    "file": "assets/voice/ru/mission.mongolia.ogg",
+    "master": "voice-src/ru/mission.mongolia.mp3",
+    "text": "Отвези меня, пожалуйста, в Монголию!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "mongolia",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.mongolia": {
+    "file": "assets/voice/ru/thanks.mongolia.ogg",
+    "master": "voice-src/ru/thanks.mongolia.mp3",
+    "text": "Мы в Монголии! Спасибо, подружка!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "mongolia",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.peru": {
+    "file": "assets/voice/ru/voice.peru.ogg",
+    "master": "voice-src/ru/voice.peru.mp3",
+    "text": "Это Перу!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "peru",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.peru": {
+    "file": "assets/voice/ru/mission.peru.ogg",
+    "master": "voice-src/ru/mission.peru.mp3",
+    "text": "Мне нужно домой — в Перу!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "peru",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.peru": {
+    "file": "assets/voice/ru/thanks.peru.ogg",
+    "master": "voice-src/ru/thanks.peru.mp3",
+    "text": "Ура, Перу! Спасибо тебе!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "peru",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.chad": {
+    "file": "assets/voice/ru/voice.chad.ogg",
+    "master": "voice-src/ru/voice.chad.mp3",
+    "text": "А вот и Чад!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "chad",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.chad": {
+    "file": "assets/voice/ru/mission.chad.ogg",
+    "master": "voice-src/ru/mission.chad.mp3",
+    "text": "Отвези меня, пожалуйста, в Чад!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "chad",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.chad": {
+    "file": "assets/voice/ru/thanks.chad.ogg",
+    "master": "voice-src/ru/thanks.chad.mp3",
+    "text": "Вот и Чад! Спасибо, ты молодец!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "chad",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.niger": {
+    "file": "assets/voice/ru/voice.niger.ogg",
+    "master": "voice-src/ru/voice.niger.mp3",
+    "text": "Это Нигер!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "niger",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.niger": {
+    "file": "assets/voice/ru/mission.niger.ogg",
+    "master": "voice-src/ru/mission.niger.mp3",
+    "text": "Хочу домой, в жаркий Нигер!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "niger",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.niger": {
+    "file": "assets/voice/ru/thanks.niger.ogg",
+    "master": "voice-src/ru/thanks.niger.mp3",
+    "text": "Мы в Нигере! Спасибо тебе, Валюша!",
+    "language": "ru",
+    "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "niger",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.angola": {
+    "file": "assets/voice/ru/voice.angola.ogg",
+    "master": "voice-src/ru/voice.angola.mp3",
+    "text": "Смотри — это Ангола!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "angola",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.angola": {
+    "file": "assets/voice/ru/mission.angola.ogg",
+    "master": "voice-src/ru/mission.angola.mp3",
+    "text": "Помоги мне добраться до Анголы!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "angola",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.angola": {
+    "file": "assets/voice/ru/thanks.angola.ogg",
+    "master": "voice-src/ru/thanks.angola.mp3",
+    "text": "Ангола, ура! Спасибо тебе большое!",
+    "language": "ru",
+    "voiceId": "cgSgspJ2msm6clMCkdW9",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "angola",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.mali": {
+    "file": "assets/voice/ru/voice.mali.ogg",
+    "master": "voice-src/ru/voice.mali.mp3",
+    "text": "А вот и Мали!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "mali",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.mali": {
+    "file": "assets/voice/ru/mission.mali.ogg",
+    "master": "voice-src/ru/mission.mali.mp3",
+    "text": "Отвези меня, пожалуйста, в Мали!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "mali",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.mali": {
+    "file": "assets/voice/ru/thanks.mali.ogg",
+    "master": "voice-src/ru/thanks.mali.mp3",
+    "text": "Вот и Мали! Спасибо, подружка!",
+    "language": "ru",
+    "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "mali",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.south_africa": {
+    "file": "assets/voice/ru/voice.south_africa.ogg",
+    "master": "voice-src/ru/voice.south_africa.mp3",
+    "text": "Это Южная Африка!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "south_africa",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.south_africa": {
+    "file": "assets/voice/ru/mission.south_africa.ogg",
+    "master": "voice-src/ru/mission.south_africa.mp3",
+    "text": "Мне нужно домой — в Южную Африку!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "south_africa",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.south_africa": {
+    "file": "assets/voice/ru/thanks.south_africa.ogg",
+    "master": "voice-src/ru/thanks.south_africa.mp3",
+    "text": "Мы в Южной Африке! Спасибо тебе!",
+    "language": "ru",
+    "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "south_africa",
+    "status": "draft",
+    "draft": true
+  },
+  "voice.colombia": {
+    "file": "assets/voice/ru/voice.colombia.ogg",
+    "master": "voice-src/ru/voice.colombia.mp3",
+    "text": "Смотри — это Колумбия!",
+    "language": "ru",
+    "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.7,
+      "similarity_boost": 0.65,
+      "style": 0.1,
+      "speed": 0.95,
+      "use_speaker_boost": true
+    },
+    "role": "arrival",
+    "country": "colombia",
+    "status": "draft",
+    "draft": true
+  },
+  "mission.colombia": {
+    "file": "assets/voice/ru/mission.colombia.ogg",
+    "master": "voice-src/ru/mission.colombia.mp3",
+    "text": "Отвези меня, пожалуйста, в Колумбию!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "request",
+    "country": "colombia",
+    "status": "draft",
+    "draft": true
+  },
+  "thanks.colombia": {
+    "file": "assets/voice/ru/thanks.colombia.ogg",
+    "master": "voice-src/ru/thanks.colombia.mp3",
+    "text": "Ура, Колумбия! Спасибо, ты лучшая!",
+    "language": "ru",
+    "voiceId": "IKne3meq5aSn9XLyUdCD",
+    "modelId": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "speed": 1,
+      "use_speaker_boost": true
+    },
+    "role": "thanks",
+    "country": "colombia",
+    "status": "draft",
+    "draft": true
+  }
+}
