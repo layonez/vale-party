@@ -5,6 +5,8 @@ local Audio = require("src.platform.audio")
 
 local MainMenu = {}
 
+local logo = love.graphics.newImage("assets/sprites/logo.png")
+
 function MainMenu:enter(_, app)
 	self.app = app
 	self.selected = 1
@@ -50,6 +52,13 @@ end
 function MainMenu:draw()
 	local app = self.app
 	app.drawScaled(function()
+		local lw, lh = logo:getDimensions()
+		local scale = math.max(app.W / lw, app.H / lh)
+		local lx = (app.W - lw * scale) / 2
+		local ly = (app.H - lh * scale) / 2
+		love.graphics.setColor(1, 1, 1, 0.3)
+		love.graphics.draw(logo, lx, ly, 0, scale, scale)
+
 		love.graphics.setFont(Fonts.get(32))
 		love.graphics.setColor(0.18, 0.48, 0.22)
 		love.graphics.printf(app.loc:t("title"), 40, 48, 560, "center")

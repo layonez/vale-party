@@ -7,2304 +7,711 @@
 local byColor = {}
 local list = {}
 
-local e = {
-	id = "afghanistan",
-	name = "Afghanistan",
-	name_ru = "Афганистан",
-	name_de = "Afghanistan",
-	iso = "AF",
-	iso3 = "AFG",
-	continent = "Asia",
-	color = { 48, 30, 30 },
-}
+local e = { id = "afghanistan", name = "Afghanistan", name_ru = "Афганистан", name_de = "Afghanistan", iso = "AF", iso3 = "AFG", continent = "Asia", color = { 48, 30, 30 } }
 byColor["48,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "albania",
-	name = "Albania",
-	name_ru = "Албания",
-	name_de = "Albanien",
-	iso = "AL",
-	iso3 = "ALB",
-	continent = "Europe",
-	color = { 66, 30, 30 },
-}
+local e = { id = "albania", name = "Albania", name_ru = "Албания", name_de = "Albanien", iso = "AL", iso3 = "ALB", continent = "Europe", color = { 66, 30, 30 } }
 byColor["66,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "algeria",
-	name = "Algeria",
-	name_ru = "Алжир",
-	name_de = "Algerien",
-	iso = "DZ",
-	iso3 = "DZA",
-	continent = "Africa",
-	color = { 84, 30, 30 },
-}
+local e = { id = "algeria", name = "Algeria", name_ru = "Алжир", name_de = "Algerien", iso = "DZ", iso3 = "DZA", continent = "Africa", color = { 84, 30, 30 } }
 byColor["84,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "angola",
-	name = "Angola",
-	name_ru = "Ангола",
-	name_de = "Angola",
-	iso = "AO",
-	iso3 = "AGO",
-	continent = "Africa",
-	color = { 102, 30, 30 },
-}
+local e = { id = "angola", name = "Angola", name_ru = "Ангола", name_de = "Angola", iso = "AO", iso3 = "AGO", continent = "Africa", color = { 102, 30, 30 } }
 byColor["102,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "antarctica",
-	name = "Antarctica",
-	name_ru = "Антарктида",
-	name_de = "Antarktika",
-	iso = "AQ",
-	iso3 = "ATA",
-	continent = "Antarctica",
-	color = { 120, 30, 30 },
-}
+local e = { id = "antarctica", name = "Antarctica", name_ru = "Антарктида", name_de = "Antarktika", iso = "AQ", iso3 = "ATA", continent = "Antarctica", color = { 120, 30, 30 } }
 byColor["120,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "argentina",
-	name = "Argentina",
-	name_ru = "Аргентина",
-	name_de = "Argentinien",
-	iso = "AR",
-	iso3 = "ARG",
-	continent = "South America",
-	color = { 138, 30, 30 },
-}
+local e = { id = "argentina", name = "Argentina", name_ru = "Аргентина", name_de = "Argentinien", iso = "AR", iso3 = "ARG", continent = "South America", color = { 138, 30, 30 } }
 byColor["138,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "armenia",
-	name = "Armenia",
-	name_ru = "Армения",
-	name_de = "Armenien",
-	iso = "AM",
-	iso3 = "ARM",
-	continent = "Asia",
-	color = { 156, 30, 30 },
-}
+local e = { id = "armenia", name = "Armenia", name_ru = "Армения", name_de = "Armenien", iso = "AM", iso3 = "ARM", continent = "Asia", color = { 156, 30, 30 } }
 byColor["156,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "australia",
-	name = "Australia",
-	name_ru = "Австралия",
-	name_de = "Australien",
-	iso = "AU",
-	iso3 = "AUS",
-	continent = "Oceania",
-	color = { 174, 30, 30 },
-}
+local e = { id = "australia", name = "Australia", name_ru = "Австралия", name_de = "Australien", iso = "AU", iso3 = "AUS", continent = "Oceania", color = { 174, 30, 30 } }
 byColor["174,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "austria",
-	name = "Austria",
-	name_ru = "Австрия",
-	name_de = "Österreich",
-	iso = "AT",
-	iso3 = "AUT",
-	continent = "Europe",
-	color = { 192, 30, 30 },
-}
+local e = { id = "austria", name = "Austria", name_ru = "Австрия", name_de = "Österreich", iso = "AT", iso3 = "AUT", continent = "Europe", color = { 192, 30, 30 } }
 byColor["192,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "azerbaijan",
-	name = "Azerbaijan",
-	name_ru = "Азербайджан",
-	name_de = "Aserbaidschan",
-	iso = "AZ",
-	iso3 = "AZE",
-	continent = "Asia",
-	color = { 210, 30, 30 },
-}
+local e = { id = "azerbaijan", name = "Azerbaijan", name_ru = "Азербайджан", name_de = "Aserbaidschan", iso = "AZ", iso3 = "AZE", continent = "Asia", color = { 210, 30, 30 } }
 byColor["210,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "bahamas",
-	name = "Bahamas",
-	name_ru = "Багамские Острова",
-	name_de = "Bahamas",
-	iso = "BS",
-	iso3 = "BHS",
-	continent = "North America",
-	color = { 228, 30, 30 },
-}
+local e = { id = "bahamas", name = "Bahamas", name_ru = "Багамские Острова", name_de = "Bahamas", iso = "BS", iso3 = "BHS", continent = "North America", color = { 228, 30, 30 } }
 byColor["228,30,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "bangladesh",
-	name = "Bangladesh",
-	name_ru = "Бангладеш",
-	name_de = "Bangladesch",
-	iso = "BD",
-	iso3 = "BGD",
-	continent = "Asia",
-	color = { 30, 48, 30 },
-}
+local e = { id = "bangladesh", name = "Bangladesh", name_ru = "Бангладеш", name_de = "Bangladesch", iso = "BD", iso3 = "BGD", continent = "Asia", color = { 30, 48, 30 } }
 byColor["30,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "belarus",
-	name = "Belarus",
-	name_ru = "Белоруссия",
-	name_de = "Belarus",
-	iso = "BY",
-	iso3 = "BLR",
-	continent = "Europe",
-	color = { 48, 48, 30 },
-}
+local e = { id = "belarus", name = "Belarus", name_ru = "Белоруссия", name_de = "Belarus", iso = "BY", iso3 = "BLR", continent = "Europe", color = { 48, 48, 30 } }
 byColor["48,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "belgium",
-	name = "Belgium",
-	name_ru = "Бельгия",
-	name_de = "Belgien",
-	iso = "BE",
-	iso3 = "BEL",
-	continent = "Europe",
-	color = { 66, 48, 30 },
-}
+local e = { id = "belgium", name = "Belgium", name_ru = "Бельгия", name_de = "Belgien", iso = "BE", iso3 = "BEL", continent = "Europe", color = { 66, 48, 30 } }
 byColor["66,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "belize",
-	name = "Belize",
-	name_ru = "Белиз",
-	name_de = "Belize",
-	iso = "BZ",
-	iso3 = "BLZ",
-	continent = "North America",
-	color = { 84, 48, 30 },
-}
+local e = { id = "belize", name = "Belize", name_ru = "Белиз", name_de = "Belize", iso = "BZ", iso3 = "BLZ", continent = "North America", color = { 84, 48, 30 } }
 byColor["84,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "benin",
-	name = "Benin",
-	name_ru = "Бенин",
-	name_de = "Benin",
-	iso = "BJ",
-	iso3 = "BEN",
-	continent = "Africa",
-	color = { 102, 48, 30 },
-}
+local e = { id = "benin", name = "Benin", name_ru = "Бенин", name_de = "Benin", iso = "BJ", iso3 = "BEN", continent = "Africa", color = { 102, 48, 30 } }
 byColor["102,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "bhutan",
-	name = "Bhutan",
-	name_ru = "Бутан",
-	name_de = "Bhutan",
-	iso = "BT",
-	iso3 = "BTN",
-	continent = "Asia",
-	color = { 120, 48, 30 },
-}
+local e = { id = "bhutan", name = "Bhutan", name_ru = "Бутан", name_de = "Bhutan", iso = "BT", iso3 = "BTN", continent = "Asia", color = { 120, 48, 30 } }
 byColor["120,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "bolivia",
-	name = "Bolivia",
-	name_ru = "Боливия",
-	name_de = "Bolivien",
-	iso = "BO",
-	iso3 = "BOL",
-	continent = "South America",
-	color = { 138, 48, 30 },
-}
+local e = { id = "bolivia", name = "Bolivia", name_ru = "Боливия", name_de = "Bolivien", iso = "BO", iso3 = "BOL", continent = "South America", color = { 138, 48, 30 } }
 byColor["138,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "bosnia_and_herz",
-	name = "Bosnia and Herz.",
-	name_ru = "Босния и Герцеговина",
-	name_de = "Bosnien und Herzegowina",
-	iso = "BA",
-	iso3 = "BIH",
-	continent = "Europe",
-	color = { 156, 48, 30 },
-}
+local e = { id = "bosnia_and_herz", name = "Bosnia and Herz.", name_ru = "Босния и Герцеговина", name_de = "Bosnien und Herzegowina", iso = "BA", iso3 = "BIH", continent = "Europe", color = { 156, 48, 30 } }
 byColor["156,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "botswana",
-	name = "Botswana",
-	name_ru = "Ботсвана",
-	name_de = "Botswana",
-	iso = "BW",
-	iso3 = "BWA",
-	continent = "Africa",
-	color = { 174, 48, 30 },
-}
+local e = { id = "botswana", name = "Botswana", name_ru = "Ботсвана", name_de = "Botswana", iso = "BW", iso3 = "BWA", continent = "Africa", color = { 174, 48, 30 } }
 byColor["174,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "brazil",
-	name = "Brazil",
-	name_ru = "Бразилия",
-	name_de = "Brasilien",
-	iso = "BR",
-	iso3 = "BRA",
-	continent = "South America",
-	color = { 192, 48, 30 },
-}
+local e = { id = "brazil", name = "Brazil", name_ru = "Бразилия", name_de = "Brasilien", iso = "BR", iso3 = "BRA", continent = "South America", color = { 192, 48, 30 } }
 byColor["192,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "brunei",
-	name = "Brunei",
-	name_ru = "Бруней",
-	name_de = "Brunei",
-	iso = "BN",
-	iso3 = "BRN",
-	continent = "Asia",
-	color = { 210, 48, 30 },
-}
+local e = { id = "brunei", name = "Brunei", name_ru = "Бруней", name_de = "Brunei", iso = "BN", iso3 = "BRN", continent = "Asia", color = { 210, 48, 30 } }
 byColor["210,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "bulgaria",
-	name = "Bulgaria",
-	name_ru = "Болгария",
-	name_de = "Bulgarien",
-	iso = "BG",
-	iso3 = "BGR",
-	continent = "Europe",
-	color = { 228, 48, 30 },
-}
+local e = { id = "bulgaria", name = "Bulgaria", name_ru = "Болгария", name_de = "Bulgarien", iso = "BG", iso3 = "BGR", continent = "Europe", color = { 228, 48, 30 } }
 byColor["228,48,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "burkina_faso",
-	name = "Burkina Faso",
-	name_ru = "Буркина-Фасо",
-	name_de = "Burkina Faso",
-	iso = "BF",
-	iso3 = "BFA",
-	continent = "Africa",
-	color = { 30, 66, 30 },
-}
+local e = { id = "burkina_faso", name = "Burkina Faso", name_ru = "Буркина-Фасо", name_de = "Burkina Faso", iso = "BF", iso3 = "BFA", continent = "Africa", color = { 30, 66, 30 } }
 byColor["30,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "burundi",
-	name = "Burundi",
-	name_ru = "Бурунди",
-	name_de = "Burundi",
-	iso = "BI",
-	iso3 = "BDI",
-	continent = "Africa",
-	color = { 48, 66, 30 },
-}
+local e = { id = "burundi", name = "Burundi", name_ru = "Бурунди", name_de = "Burundi", iso = "BI", iso3 = "BDI", continent = "Africa", color = { 48, 66, 30 } }
 byColor["48,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "cambodia",
-	name = "Cambodia",
-	name_ru = "Камбоджа",
-	name_de = "Kambodscha",
-	iso = "KH",
-	iso3 = "KHM",
-	continent = "Asia",
-	color = { 66, 66, 30 },
-}
+local e = { id = "cambodia", name = "Cambodia", name_ru = "Камбоджа", name_de = "Kambodscha", iso = "KH", iso3 = "KHM", continent = "Asia", color = { 66, 66, 30 } }
 byColor["66,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "cameroon",
-	name = "Cameroon",
-	name_ru = "Камерун",
-	name_de = "Kamerun",
-	iso = "CM",
-	iso3 = "CMR",
-	continent = "Africa",
-	color = { 84, 66, 30 },
-}
+local e = { id = "cameroon", name = "Cameroon", name_ru = "Камерун", name_de = "Kamerun", iso = "CM", iso3 = "CMR", continent = "Africa", color = { 84, 66, 30 } }
 byColor["84,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "canada",
-	name = "Canada",
-	name_ru = "Канада",
-	name_de = "Kanada",
-	iso = "CA",
-	iso3 = "CAN",
-	continent = "North America",
-	color = { 102, 66, 30 },
-}
+local e = { id = "canada", name = "Canada", name_ru = "Канада", name_de = "Kanada", iso = "CA", iso3 = "CAN", continent = "North America", color = { 102, 66, 30 } }
 byColor["102,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "central_african_rep",
-	name = "Central African Rep.",
-	name_ru = "Центральноафриканская Республика",
-	name_de = "Zentralafrikanische Republik",
-	iso = "CF",
-	iso3 = "CAF",
-	continent = "Africa",
-	color = { 120, 66, 30 },
-}
+local e = { id = "central_african_rep", name = "Central African Rep.", name_ru = "Центральноафриканская Республика", name_de = "Zentralafrikanische Republik", iso = "CF", iso3 = "CAF", continent = "Africa", color = { 120, 66, 30 } }
 byColor["120,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "chad",
-	name = "Chad",
-	name_ru = "Чад",
-	name_de = "Tschad",
-	iso = "TD",
-	iso3 = "TCD",
-	continent = "Africa",
-	color = { 138, 66, 30 },
-}
+local e = { id = "chad", name = "Chad", name_ru = "Чад", name_de = "Tschad", iso = "TD", iso3 = "TCD", continent = "Africa", color = { 138, 66, 30 } }
 byColor["138,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "chile",
-	name = "Chile",
-	name_ru = "Чили",
-	name_de = "Chile",
-	iso = "CL",
-	iso3 = "CHL",
-	continent = "South America",
-	color = { 156, 66, 30 },
-}
+local e = { id = "chile", name = "Chile", name_ru = "Чили", name_de = "Chile", iso = "CL", iso3 = "CHL", continent = "South America", color = { 156, 66, 30 } }
 byColor["156,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "china",
-	name = "China",
-	name_ru = "Китайская Народная Республика",
-	name_de = "Volksrepublik China",
-	iso = "CN",
-	iso3 = "CHN",
-	continent = "Asia",
-	color = { 174, 66, 30 },
-}
+local e = { id = "china", name = "China", name_ru = "Китайская Народная Республика", name_de = "Volksrepublik China", iso = "CN", iso3 = "CHN", continent = "Asia", color = { 174, 66, 30 } }
 byColor["174,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "colombia",
-	name = "Colombia",
-	name_ru = "Колумбия",
-	name_de = "Kolumbien",
-	iso = "CO",
-	iso3 = "COL",
-	continent = "South America",
-	color = { 192, 66, 30 },
-}
+local e = { id = "colombia", name = "Colombia", name_ru = "Колумбия", name_de = "Kolumbien", iso = "CO", iso3 = "COL", continent = "South America", color = { 192, 66, 30 } }
 byColor["192,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "congo",
-	name = "Congo",
-	name_ru = "Республика Конго",
-	name_de = "Republik Kongo",
-	iso = "CG",
-	iso3 = "COG",
-	continent = "Africa",
-	color = { 210, 66, 30 },
-}
+local e = { id = "congo", name = "Congo", name_ru = "Республика Конго", name_de = "Republik Kongo", iso = "CG", iso3 = "COG", continent = "Africa", color = { 210, 66, 30 } }
 byColor["210,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "costa_rica",
-	name = "Costa Rica",
-	name_ru = "Коста-Рика",
-	name_de = "Costa Rica",
-	iso = "CR",
-	iso3 = "CRI",
-	continent = "North America",
-	color = { 228, 66, 30 },
-}
+local e = { id = "costa_rica", name = "Costa Rica", name_ru = "Коста-Рика", name_de = "Costa Rica", iso = "CR", iso3 = "CRI", continent = "North America", color = { 228, 66, 30 } }
 byColor["228,66,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "croatia",
-	name = "Croatia",
-	name_ru = "Хорватия",
-	name_de = "Kroatien",
-	iso = "HR",
-	iso3 = "HRV",
-	continent = "Europe",
-	color = { 30, 84, 30 },
-}
+local e = { id = "croatia", name = "Croatia", name_ru = "Хорватия", name_de = "Kroatien", iso = "HR", iso3 = "HRV", continent = "Europe", color = { 30, 84, 30 } }
 byColor["30,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "cuba",
-	name = "Cuba",
-	name_ru = "Куба",
-	name_de = "Kuba",
-	iso = "CU",
-	iso3 = "CUB",
-	continent = "North America",
-	color = { 48, 84, 30 },
-}
+local e = { id = "cuba", name = "Cuba", name_ru = "Куба", name_de = "Kuba", iso = "CU", iso3 = "CUB", continent = "North America", color = { 48, 84, 30 } }
 byColor["48,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "cyprus",
-	name = "Cyprus",
-	name_ru = "Кипр",
-	name_de = "Republik Zypern",
-	iso = "CY",
-	iso3 = "CYP",
-	continent = "Asia",
-	color = { 66, 84, 30 },
-}
+local e = { id = "cyprus", name = "Cyprus", name_ru = "Кипр", name_de = "Republik Zypern", iso = "CY", iso3 = "CYP", continent = "Asia", color = { 66, 84, 30 } }
 byColor["66,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "czechia",
-	name = "Czechia",
-	name_ru = "Чехия",
-	name_de = "Tschechien",
-	iso = "CZ",
-	iso3 = "CZE",
-	continent = "Europe",
-	color = { 84, 84, 30 },
-}
+local e = { id = "czechia", name = "Czechia", name_ru = "Чехия", name_de = "Tschechien", iso = "CZ", iso3 = "CZE", continent = "Europe", color = { 84, 84, 30 } }
 byColor["84,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "côte_d_ivoire",
-	name = "Côte d'Ivoire",
-	name_ru = "Кот-д’Ивуар",
-	name_de = "Elfenbeinküste",
-	iso = "CI",
-	iso3 = "CIV",
-	continent = "Africa",
-	color = { 102, 84, 30 },
-}
+local e = { id = "côte_d_ivoire", name = "Côte d'Ivoire", name_ru = "Кот-д’Ивуар", name_de = "Elfenbeinküste", iso = "CI", iso3 = "CIV", continent = "Africa", color = { 102, 84, 30 } }
 byColor["102,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "dem_rep_congo",
-	name = "Dem. Rep. Congo",
-	name_ru = "Демократическая Республика Конго",
-	name_de = "Demokratische Republik Kongo",
-	iso = "CD",
-	iso3 = "COD",
-	continent = "Africa",
-	color = { 120, 84, 30 },
-}
+local e = { id = "dem_rep_congo", name = "Dem. Rep. Congo", name_ru = "Демократическая Республика Конго", name_de = "Demokratische Republik Kongo", iso = "CD", iso3 = "COD", continent = "Africa", color = { 120, 84, 30 } }
 byColor["120,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "denmark",
-	name = "Denmark",
-	name_ru = "Дания",
-	name_de = "Dänemark",
-	iso = "DK",
-	iso3 = "DNK",
-	continent = "Europe",
-	color = { 138, 84, 30 },
-}
+local e = { id = "denmark", name = "Denmark", name_ru = "Дания", name_de = "Dänemark", iso = "DK", iso3 = "DNK", continent = "Europe", color = { 138, 84, 30 } }
 byColor["138,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "djibouti",
-	name = "Djibouti",
-	name_ru = "Джибути",
-	name_de = "Dschibuti",
-	iso = "DJ",
-	iso3 = "DJI",
-	continent = "Africa",
-	color = { 156, 84, 30 },
-}
+local e = { id = "djibouti", name = "Djibouti", name_ru = "Джибути", name_de = "Dschibuti", iso = "DJ", iso3 = "DJI", continent = "Africa", color = { 156, 84, 30 } }
 byColor["156,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "dominican_rep",
-	name = "Dominican Rep.",
-	name_ru = "Доминиканская Республика",
-	name_de = "Dominikanische Republik",
-	iso = "DO",
-	iso3 = "DOM",
-	continent = "North America",
-	color = { 174, 84, 30 },
-}
+local e = { id = "dominican_rep", name = "Dominican Rep.", name_ru = "Доминиканская Республика", name_de = "Dominikanische Republik", iso = "DO", iso3 = "DOM", continent = "North America", color = { 174, 84, 30 } }
 byColor["174,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "ecuador",
-	name = "Ecuador",
-	name_ru = "Эквадор",
-	name_de = "Ecuador",
-	iso = "EC",
-	iso3 = "ECU",
-	continent = "South America",
-	color = { 192, 84, 30 },
-}
+local e = { id = "ecuador", name = "Ecuador", name_ru = "Эквадор", name_de = "Ecuador", iso = "EC", iso3 = "ECU", continent = "South America", color = { 192, 84, 30 } }
 byColor["192,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "egypt",
-	name = "Egypt",
-	name_ru = "Египет",
-	name_de = "Ägypten",
-	iso = "EG",
-	iso3 = "EGY",
-	continent = "Africa",
-	color = { 210, 84, 30 },
-}
+local e = { id = "egypt", name = "Egypt", name_ru = "Египет", name_de = "Ägypten", iso = "EG", iso3 = "EGY", continent = "Africa", color = { 210, 84, 30 } }
 byColor["210,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "el_salvador",
-	name = "El Salvador",
-	name_ru = "Сальвадор",
-	name_de = "El Salvador",
-	iso = "SV",
-	iso3 = "SLV",
-	continent = "North America",
-	color = { 228, 84, 30 },
-}
+local e = { id = "el_salvador", name = "El Salvador", name_ru = "Сальвадор", name_de = "El Salvador", iso = "SV", iso3 = "SLV", continent = "North America", color = { 228, 84, 30 } }
 byColor["228,84,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "eq_guinea",
-	name = "Eq. Guinea",
-	name_ru = "Экваториальная Гвинея",
-	name_de = "Äquatorialguinea",
-	iso = "GQ",
-	iso3 = "GNQ",
-	continent = "Africa",
-	color = { 30, 102, 30 },
-}
+local e = { id = "eq_guinea", name = "Eq. Guinea", name_ru = "Экваториальная Гвинея", name_de = "Äquatorialguinea", iso = "GQ", iso3 = "GNQ", continent = "Africa", color = { 30, 102, 30 } }
 byColor["30,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "eritrea",
-	name = "Eritrea",
-	name_ru = "Эритрея",
-	name_de = "Eritrea",
-	iso = "ER",
-	iso3 = "ERI",
-	continent = "Africa",
-	color = { 48, 102, 30 },
-}
+local e = { id = "eritrea", name = "Eritrea", name_ru = "Эритрея", name_de = "Eritrea", iso = "ER", iso3 = "ERI", continent = "Africa", color = { 48, 102, 30 } }
 byColor["48,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "estonia",
-	name = "Estonia",
-	name_ru = "Эстония",
-	name_de = "Estland",
-	iso = "EE",
-	iso3 = "EST",
-	continent = "Europe",
-	color = { 66, 102, 30 },
-}
+local e = { id = "estonia", name = "Estonia", name_ru = "Эстония", name_de = "Estland", iso = "EE", iso3 = "EST", continent = "Europe", color = { 66, 102, 30 } }
 byColor["66,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "eswatini",
-	name = "eSwatini",
-	name_ru = "Эсватини",
-	name_de = "Eswatini",
-	iso = "SZ",
-	iso3 = "SWZ",
-	continent = "Africa",
-	color = { 84, 102, 30 },
-}
+local e = { id = "eswatini", name = "eSwatini", name_ru = "Эсватини", name_de = "Eswatini", iso = "SZ", iso3 = "SWZ", continent = "Africa", color = { 84, 102, 30 } }
 byColor["84,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "ethiopia",
-	name = "Ethiopia",
-	name_ru = "Эфиопия",
-	name_de = "Äthiopien",
-	iso = "ET",
-	iso3 = "ETH",
-	continent = "Africa",
-	color = { 102, 102, 30 },
-}
+local e = { id = "ethiopia", name = "Ethiopia", name_ru = "Эфиопия", name_de = "Äthiopien", iso = "ET", iso3 = "ETH", continent = "Africa", color = { 102, 102, 30 } }
 byColor["102,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "falkland_is",
-	name = "Falkland Is.",
-	name_ru = "Фолклендские острова",
-	name_de = "Falklandinseln",
-	iso = "FK",
-	iso3 = "FLK",
-	continent = "South America",
-	color = { 120, 102, 30 },
-}
+local e = { id = "falkland_is", name = "Falkland Is.", name_ru = "Фолклендские острова", name_de = "Falklandinseln", iso = "FK", iso3 = "FLK", continent = "South America", color = { 120, 102, 30 } }
 byColor["120,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "fiji",
-	name = "Fiji",
-	name_ru = "Фиджи",
-	name_de = "Fidschi",
-	iso = "FJ",
-	iso3 = "FJI",
-	continent = "Oceania",
-	color = { 138, 102, 30 },
-}
+local e = { id = "fiji", name = "Fiji", name_ru = "Фиджи", name_de = "Fidschi", iso = "FJ", iso3 = "FJI", continent = "Oceania", color = { 138, 102, 30 } }
 byColor["138,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "finland",
-	name = "Finland",
-	name_ru = "Финляндия",
-	name_de = "Finnland",
-	iso = "FI",
-	iso3 = "FIN",
-	continent = "Europe",
-	color = { 156, 102, 30 },
-}
+local e = { id = "finland", name = "Finland", name_ru = "Финляндия", name_de = "Finnland", iso = "FI", iso3 = "FIN", continent = "Europe", color = { 156, 102, 30 } }
 byColor["156,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "fr_s_antarctic_lands",
-	name = "Fr. S. Antarctic Lands",
-	name_ru = "Французские Южные и Антарктические территории",
-	name_de = "Französische Süd- und Antarktisgebiete",
-	iso = "TF",
-	iso3 = "ATF",
-	continent = "Seven seas (open ocean)",
-	color = { 174, 102, 30 },
-}
+local e = { id = "fr_s_antarctic_lands", name = "Fr. S. Antarctic Lands", name_ru = "Французские Южные и Антарктические территории", name_de = "Französische Süd- und Antarktisgebiete", iso = "TF", iso3 = "ATF", continent = "Seven seas (open ocean)", color = { 174, 102, 30 } }
 byColor["174,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "france",
-	name = "France",
-	name_ru = "Франция",
-	name_de = "Frankreich",
-	iso = "-99",
-	iso3 = "-99",
-	continent = "Europe",
-	color = { 192, 102, 30 },
-}
+local e = { id = "france", name = "France", name_ru = "Франция", name_de = "Frankreich", iso = "-99", iso3 = "-99", continent = "Europe", color = { 192, 102, 30 } }
 byColor["192,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "gabon",
-	name = "Gabon",
-	name_ru = "Габон",
-	name_de = "Gabun",
-	iso = "GA",
-	iso3 = "GAB",
-	continent = "Africa",
-	color = { 210, 102, 30 },
-}
+local e = { id = "gabon", name = "Gabon", name_ru = "Габон", name_de = "Gabun", iso = "GA", iso3 = "GAB", continent = "Africa", color = { 210, 102, 30 } }
 byColor["210,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "gambia",
-	name = "Gambia",
-	name_ru = "Гамбия",
-	name_de = "Gambia",
-	iso = "GM",
-	iso3 = "GMB",
-	continent = "Africa",
-	color = { 228, 102, 30 },
-}
+local e = { id = "gambia", name = "Gambia", name_ru = "Гамбия", name_de = "Gambia", iso = "GM", iso3 = "GMB", continent = "Africa", color = { 228, 102, 30 } }
 byColor["228,102,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "georgia",
-	name = "Georgia",
-	name_ru = "Грузия",
-	name_de = "Georgien",
-	iso = "GE",
-	iso3 = "GEO",
-	continent = "Asia",
-	color = { 30, 120, 30 },
-}
+local e = { id = "georgia", name = "Georgia", name_ru = "Грузия", name_de = "Georgien", iso = "GE", iso3 = "GEO", continent = "Asia", color = { 30, 120, 30 } }
 byColor["30,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "germany",
-	name = "Germany",
-	name_ru = "Германия",
-	name_de = "Deutschland",
-	iso = "DE",
-	iso3 = "DEU",
-	continent = "Europe",
-	color = { 48, 120, 30 },
-}
+local e = { id = "germany", name = "Germany", name_ru = "Германия", name_de = "Deutschland", iso = "DE", iso3 = "DEU", continent = "Europe", color = { 48, 120, 30 } }
 byColor["48,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "ghana",
-	name = "Ghana",
-	name_ru = "Гана",
-	name_de = "Ghana",
-	iso = "GH",
-	iso3 = "GHA",
-	continent = "Africa",
-	color = { 66, 120, 30 },
-}
+local e = { id = "ghana", name = "Ghana", name_ru = "Гана", name_de = "Ghana", iso = "GH", iso3 = "GHA", continent = "Africa", color = { 66, 120, 30 } }
 byColor["66,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "greece",
-	name = "Greece",
-	name_ru = "Греция",
-	name_de = "Griechenland",
-	iso = "GR",
-	iso3 = "GRC",
-	continent = "Europe",
-	color = { 84, 120, 30 },
-}
+local e = { id = "greece", name = "Greece", name_ru = "Греция", name_de = "Griechenland", iso = "GR", iso3 = "GRC", continent = "Europe", color = { 84, 120, 30 } }
 byColor["84,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "greenland",
-	name = "Greenland",
-	name_ru = "Гренландия",
-	name_de = "Grönland",
-	iso = "GL",
-	iso3 = "GRL",
-	continent = "North America",
-	color = { 102, 120, 30 },
-}
+local e = { id = "greenland", name = "Greenland", name_ru = "Гренландия", name_de = "Grönland", iso = "GL", iso3 = "GRL", continent = "North America", color = { 102, 120, 30 } }
 byColor["102,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "guatemala",
-	name = "Guatemala",
-	name_ru = "Гватемала",
-	name_de = "Guatemala",
-	iso = "GT",
-	iso3 = "GTM",
-	continent = "North America",
-	color = { 120, 120, 30 },
-}
+local e = { id = "guatemala", name = "Guatemala", name_ru = "Гватемала", name_de = "Guatemala", iso = "GT", iso3 = "GTM", continent = "North America", color = { 120, 120, 30 } }
 byColor["120,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "guinea",
-	name = "Guinea",
-	name_ru = "Гвинея",
-	name_de = "Guinea",
-	iso = "GN",
-	iso3 = "GIN",
-	continent = "Africa",
-	color = { 138, 120, 30 },
-}
+local e = { id = "guinea", name = "Guinea", name_ru = "Гвинея", name_de = "Guinea", iso = "GN", iso3 = "GIN", continent = "Africa", color = { 138, 120, 30 } }
 byColor["138,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "guinea_bissau",
-	name = "Guinea-Bissau",
-	name_ru = "Гвинея-Бисау",
-	name_de = "Guinea-Bissau",
-	iso = "GW",
-	iso3 = "GNB",
-	continent = "Africa",
-	color = { 156, 120, 30 },
-}
+local e = { id = "guinea_bissau", name = "Guinea-Bissau", name_ru = "Гвинея-Бисау", name_de = "Guinea-Bissau", iso = "GW", iso3 = "GNB", continent = "Africa", color = { 156, 120, 30 } }
 byColor["156,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "guyana",
-	name = "Guyana",
-	name_ru = "Гайана",
-	name_de = "Guyana",
-	iso = "GY",
-	iso3 = "GUY",
-	continent = "South America",
-	color = { 174, 120, 30 },
-}
+local e = { id = "guyana", name = "Guyana", name_ru = "Гайана", name_de = "Guyana", iso = "GY", iso3 = "GUY", continent = "South America", color = { 174, 120, 30 } }
 byColor["174,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "haiti",
-	name = "Haiti",
-	name_ru = "Республика Гаити",
-	name_de = "Haiti",
-	iso = "HT",
-	iso3 = "HTI",
-	continent = "North America",
-	color = { 192, 120, 30 },
-}
+local e = { id = "haiti", name = "Haiti", name_ru = "Республика Гаити", name_de = "Haiti", iso = "HT", iso3 = "HTI", continent = "North America", color = { 192, 120, 30 } }
 byColor["192,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "honduras",
-	name = "Honduras",
-	name_ru = "Гондурас",
-	name_de = "Honduras",
-	iso = "HN",
-	iso3 = "HND",
-	continent = "North America",
-	color = { 210, 120, 30 },
-}
+local e = { id = "honduras", name = "Honduras", name_ru = "Гондурас", name_de = "Honduras", iso = "HN", iso3 = "HND", continent = "North America", color = { 210, 120, 30 } }
 byColor["210,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "hungary",
-	name = "Hungary",
-	name_ru = "Венгрия",
-	name_de = "Ungarn",
-	iso = "HU",
-	iso3 = "HUN",
-	continent = "Europe",
-	color = { 228, 120, 30 },
-}
+local e = { id = "hungary", name = "Hungary", name_ru = "Венгрия", name_de = "Ungarn", iso = "HU", iso3 = "HUN", continent = "Europe", color = { 228, 120, 30 } }
 byColor["228,120,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "iceland",
-	name = "Iceland",
-	name_ru = "Исландия",
-	name_de = "Island",
-	iso = "IS",
-	iso3 = "ISL",
-	continent = "Europe",
-	color = { 30, 138, 30 },
-}
+local e = { id = "iceland", name = "Iceland", name_ru = "Исландия", name_de = "Island", iso = "IS", iso3 = "ISL", continent = "Europe", color = { 30, 138, 30 } }
 byColor["30,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "india",
-	name = "India",
-	name_ru = "Индия",
-	name_de = "Indien",
-	iso = "IN",
-	iso3 = "IND",
-	continent = "Asia",
-	color = { 48, 138, 30 },
-}
+local e = { id = "india", name = "India", name_ru = "Индия", name_de = "Indien", iso = "IN", iso3 = "IND", continent = "Asia", color = { 48, 138, 30 } }
 byColor["48,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "indonesia",
-	name = "Indonesia",
-	name_ru = "Индонезия",
-	name_de = "Indonesien",
-	iso = "ID",
-	iso3 = "IDN",
-	continent = "Asia",
-	color = { 66, 138, 30 },
-}
+local e = { id = "indonesia", name = "Indonesia", name_ru = "Индонезия", name_de = "Indonesien", iso = "ID", iso3 = "IDN", continent = "Asia", color = { 66, 138, 30 } }
 byColor["66,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "iran",
-	name = "Iran",
-	name_ru = "Иран",
-	name_de = "Iran",
-	iso = "IR",
-	iso3 = "IRN",
-	continent = "Asia",
-	color = { 84, 138, 30 },
-}
+local e = { id = "iran", name = "Iran", name_ru = "Иран", name_de = "Iran", iso = "IR", iso3 = "IRN", continent = "Asia", color = { 84, 138, 30 } }
 byColor["84,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "iraq",
-	name = "Iraq",
-	name_ru = "Ирак",
-	name_de = "Irak",
-	iso = "IQ",
-	iso3 = "IRQ",
-	continent = "Asia",
-	color = { 102, 138, 30 },
-}
+local e = { id = "iraq", name = "Iraq", name_ru = "Ирак", name_de = "Irak", iso = "IQ", iso3 = "IRQ", continent = "Asia", color = { 102, 138, 30 } }
 byColor["102,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "ireland",
-	name = "Ireland",
-	name_ru = "Ирландия",
-	name_de = "Irland",
-	iso = "IE",
-	iso3 = "IRL",
-	continent = "Europe",
-	color = { 120, 138, 30 },
-}
+local e = { id = "ireland", name = "Ireland", name_ru = "Ирландия", name_de = "Irland", iso = "IE", iso3 = "IRL", continent = "Europe", color = { 120, 138, 30 } }
 byColor["120,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "israel",
-	name = "Israel",
-	name_ru = "Израиль",
-	name_de = "Israel",
-	iso = "IL",
-	iso3 = "ISR",
-	continent = "Asia",
-	color = { 138, 138, 30 },
-}
+local e = { id = "israel", name = "Israel", name_ru = "Израиль", name_de = "Israel", iso = "IL", iso3 = "ISR", continent = "Asia", color = { 138, 138, 30 } }
 byColor["138,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "italy",
-	name = "Italy",
-	name_ru = "Италия",
-	name_de = "Italien",
-	iso = "IT",
-	iso3 = "ITA",
-	continent = "Europe",
-	color = { 156, 138, 30 },
-}
+local e = { id = "italy", name = "Italy", name_ru = "Италия", name_de = "Italien", iso = "IT", iso3 = "ITA", continent = "Europe", color = { 156, 138, 30 } }
 byColor["156,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "jamaica",
-	name = "Jamaica",
-	name_ru = "Ямайка",
-	name_de = "Jamaika",
-	iso = "JM",
-	iso3 = "JAM",
-	continent = "North America",
-	color = { 174, 138, 30 },
-}
+local e = { id = "jamaica", name = "Jamaica", name_ru = "Ямайка", name_de = "Jamaika", iso = "JM", iso3 = "JAM", continent = "North America", color = { 174, 138, 30 } }
 byColor["174,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "japan",
-	name = "Japan",
-	name_ru = "Япония",
-	name_de = "Japan",
-	iso = "JP",
-	iso3 = "JPN",
-	continent = "Asia",
-	color = { 192, 138, 30 },
-}
+local e = { id = "japan", name = "Japan", name_ru = "Япония", name_de = "Japan", iso = "JP", iso3 = "JPN", continent = "Asia", color = { 192, 138, 30 } }
 byColor["192,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "jordan",
-	name = "Jordan",
-	name_ru = "Иордания",
-	name_de = "Jordanien",
-	iso = "JO",
-	iso3 = "JOR",
-	continent = "Asia",
-	color = { 210, 138, 30 },
-}
+local e = { id = "jordan", name = "Jordan", name_ru = "Иордания", name_de = "Jordanien", iso = "JO", iso3 = "JOR", continent = "Asia", color = { 210, 138, 30 } }
 byColor["210,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "kazakhstan",
-	name = "Kazakhstan",
-	name_ru = "Казахстан",
-	name_de = "Kasachstan",
-	iso = "KZ",
-	iso3 = "KAZ",
-	continent = "Asia",
-	color = { 228, 138, 30 },
-}
+local e = { id = "kazakhstan", name = "Kazakhstan", name_ru = "Казахстан", name_de = "Kasachstan", iso = "KZ", iso3 = "KAZ", continent = "Asia", color = { 228, 138, 30 } }
 byColor["228,138,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "kenya",
-	name = "Kenya",
-	name_ru = "Кения",
-	name_de = "Kenia",
-	iso = "KE",
-	iso3 = "KEN",
-	continent = "Africa",
-	color = { 30, 156, 30 },
-}
+local e = { id = "kenya", name = "Kenya", name_ru = "Кения", name_de = "Kenia", iso = "KE", iso3 = "KEN", continent = "Africa", color = { 30, 156, 30 } }
 byColor["30,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "kosovo",
-	name = "Kosovo",
-	name_ru = "Республика Косово",
-	name_de = "Kosovo",
-	iso = "-99",
-	iso3 = "-99",
-	continent = "Europe",
-	color = { 48, 156, 30 },
-}
+local e = { id = "kosovo", name = "Kosovo", name_ru = "Республика Косово", name_de = "Kosovo", iso = "-99", iso3 = "-99", continent = "Europe", color = { 48, 156, 30 } }
 byColor["48,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "kuwait",
-	name = "Kuwait",
-	name_ru = "Кувейт",
-	name_de = "Kuwait",
-	iso = "KW",
-	iso3 = "KWT",
-	continent = "Asia",
-	color = { 66, 156, 30 },
-}
+local e = { id = "kuwait", name = "Kuwait", name_ru = "Кувейт", name_de = "Kuwait", iso = "KW", iso3 = "KWT", continent = "Asia", color = { 66, 156, 30 } }
 byColor["66,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "kyrgyzstan",
-	name = "Kyrgyzstan",
-	name_ru = "Киргизия",
-	name_de = "Kirgisistan",
-	iso = "KG",
-	iso3 = "KGZ",
-	continent = "Asia",
-	color = { 84, 156, 30 },
-}
+local e = { id = "kyrgyzstan", name = "Kyrgyzstan", name_ru = "Киргизия", name_de = "Kirgisistan", iso = "KG", iso3 = "KGZ", continent = "Asia", color = { 84, 156, 30 } }
 byColor["84,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "laos",
-	name = "Laos",
-	name_ru = "Лаос",
-	name_de = "Laos",
-	iso = "LA",
-	iso3 = "LAO",
-	continent = "Asia",
-	color = { 102, 156, 30 },
-}
+local e = { id = "laos", name = "Laos", name_ru = "Лаос", name_de = "Laos", iso = "LA", iso3 = "LAO", continent = "Asia", color = { 102, 156, 30 } }
 byColor["102,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "latvia",
-	name = "Latvia",
-	name_ru = "Латвия",
-	name_de = "Lettland",
-	iso = "LV",
-	iso3 = "LVA",
-	continent = "Europe",
-	color = { 120, 156, 30 },
-}
+local e = { id = "latvia", name = "Latvia", name_ru = "Латвия", name_de = "Lettland", iso = "LV", iso3 = "LVA", continent = "Europe", color = { 120, 156, 30 } }
 byColor["120,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "lebanon",
-	name = "Lebanon",
-	name_ru = "Ливан",
-	name_de = "Libanon",
-	iso = "LB",
-	iso3 = "LBN",
-	continent = "Asia",
-	color = { 138, 156, 30 },
-}
+local e = { id = "lebanon", name = "Lebanon", name_ru = "Ливан", name_de = "Libanon", iso = "LB", iso3 = "LBN", continent = "Asia", color = { 138, 156, 30 } }
 byColor["138,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "lesotho",
-	name = "Lesotho",
-	name_ru = "Лесото",
-	name_de = "Lesotho",
-	iso = "LS",
-	iso3 = "LSO",
-	continent = "Africa",
-	color = { 156, 156, 30 },
-}
+local e = { id = "lesotho", name = "Lesotho", name_ru = "Лесото", name_de = "Lesotho", iso = "LS", iso3 = "LSO", continent = "Africa", color = { 156, 156, 30 } }
 byColor["156,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "liberia",
-	name = "Liberia",
-	name_ru = "Либерия",
-	name_de = "Liberia",
-	iso = "LR",
-	iso3 = "LBR",
-	continent = "Africa",
-	color = { 174, 156, 30 },
-}
+local e = { id = "liberia", name = "Liberia", name_ru = "Либерия", name_de = "Liberia", iso = "LR", iso3 = "LBR", continent = "Africa", color = { 174, 156, 30 } }
 byColor["174,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "libya",
-	name = "Libya",
-	name_ru = "Ливия",
-	name_de = "Libyen",
-	iso = "LY",
-	iso3 = "LBY",
-	continent = "Africa",
-	color = { 192, 156, 30 },
-}
+local e = { id = "libya", name = "Libya", name_ru = "Ливия", name_de = "Libyen", iso = "LY", iso3 = "LBY", continent = "Africa", color = { 192, 156, 30 } }
 byColor["192,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "lithuania",
-	name = "Lithuania",
-	name_ru = "Литва",
-	name_de = "Litauen",
-	iso = "LT",
-	iso3 = "LTU",
-	continent = "Europe",
-	color = { 210, 156, 30 },
-}
+local e = { id = "lithuania", name = "Lithuania", name_ru = "Литва", name_de = "Litauen", iso = "LT", iso3 = "LTU", continent = "Europe", color = { 210, 156, 30 } }
 byColor["210,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "luxembourg",
-	name = "Luxembourg",
-	name_ru = "Люксембург",
-	name_de = "Luxemburg",
-	iso = "LU",
-	iso3 = "LUX",
-	continent = "Europe",
-	color = { 228, 156, 30 },
-}
+local e = { id = "luxembourg", name = "Luxembourg", name_ru = "Люксембург", name_de = "Luxemburg", iso = "LU", iso3 = "LUX", continent = "Europe", color = { 228, 156, 30 } }
 byColor["228,156,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "madagascar",
-	name = "Madagascar",
-	name_ru = "Мадагаскар",
-	name_de = "Madagaskar",
-	iso = "MG",
-	iso3 = "MDG",
-	continent = "Africa",
-	color = { 30, 174, 30 },
-}
+local e = { id = "madagascar", name = "Madagascar", name_ru = "Мадагаскар", name_de = "Madagaskar", iso = "MG", iso3 = "MDG", continent = "Africa", color = { 30, 174, 30 } }
 byColor["30,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "malawi",
-	name = "Malawi",
-	name_ru = "Малави",
-	name_de = "Malawi",
-	iso = "MW",
-	iso3 = "MWI",
-	continent = "Africa",
-	color = { 48, 174, 30 },
-}
+local e = { id = "malawi", name = "Malawi", name_ru = "Малави", name_de = "Malawi", iso = "MW", iso3 = "MWI", continent = "Africa", color = { 48, 174, 30 } }
 byColor["48,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "malaysia",
-	name = "Malaysia",
-	name_ru = "Малайзия",
-	name_de = "Malaysia",
-	iso = "MY",
-	iso3 = "MYS",
-	continent = "Asia",
-	color = { 66, 174, 30 },
-}
+local e = { id = "malaysia", name = "Malaysia", name_ru = "Малайзия", name_de = "Malaysia", iso = "MY", iso3 = "MYS", continent = "Asia", color = { 66, 174, 30 } }
 byColor["66,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "mali",
-	name = "Mali",
-	name_ru = "Мали",
-	name_de = "Mali",
-	iso = "ML",
-	iso3 = "MLI",
-	continent = "Africa",
-	color = { 84, 174, 30 },
-}
+local e = { id = "mali", name = "Mali", name_ru = "Мали", name_de = "Mali", iso = "ML", iso3 = "MLI", continent = "Africa", color = { 84, 174, 30 } }
 byColor["84,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "mauritania",
-	name = "Mauritania",
-	name_ru = "Мавритания",
-	name_de = "Mauretanien",
-	iso = "MR",
-	iso3 = "MRT",
-	continent = "Africa",
-	color = { 102, 174, 30 },
-}
+local e = { id = "mauritania", name = "Mauritania", name_ru = "Мавритания", name_de = "Mauretanien", iso = "MR", iso3 = "MRT", continent = "Africa", color = { 102, 174, 30 } }
 byColor["102,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "mexico",
-	name = "Mexico",
-	name_ru = "Мексика",
-	name_de = "Mexiko",
-	iso = "MX",
-	iso3 = "MEX",
-	continent = "North America",
-	color = { 120, 174, 30 },
-}
+local e = { id = "mexico", name = "Mexico", name_ru = "Мексика", name_de = "Mexiko", iso = "MX", iso3 = "MEX", continent = "North America", color = { 120, 174, 30 } }
 byColor["120,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "moldova",
-	name = "Moldova",
-	name_ru = "Молдавия",
-	name_de = "Republik Moldau",
-	iso = "MD",
-	iso3 = "MDA",
-	continent = "Europe",
-	color = { 138, 174, 30 },
-}
+local e = { id = "moldova", name = "Moldova", name_ru = "Молдавия", name_de = "Republik Moldau", iso = "MD", iso3 = "MDA", continent = "Europe", color = { 138, 174, 30 } }
 byColor["138,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "mongolia",
-	name = "Mongolia",
-	name_ru = "Монголия",
-	name_de = "Mongolei",
-	iso = "MN",
-	iso3 = "MNG",
-	continent = "Asia",
-	color = { 156, 174, 30 },
-}
+local e = { id = "mongolia", name = "Mongolia", name_ru = "Монголия", name_de = "Mongolei", iso = "MN", iso3 = "MNG", continent = "Asia", color = { 156, 174, 30 } }
 byColor["156,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "montenegro",
-	name = "Montenegro",
-	name_ru = "Черногория",
-	name_de = "Montenegro",
-	iso = "ME",
-	iso3 = "MNE",
-	continent = "Europe",
-	color = { 174, 174, 30 },
-}
+local e = { id = "montenegro", name = "Montenegro", name_ru = "Черногория", name_de = "Montenegro", iso = "ME", iso3 = "MNE", continent = "Europe", color = { 174, 174, 30 } }
 byColor["174,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "morocco",
-	name = "Morocco",
-	name_ru = "Марокко",
-	name_de = "Marokko",
-	iso = "MA",
-	iso3 = "MAR",
-	continent = "Africa",
-	color = { 192, 174, 30 },
-}
+local e = { id = "morocco", name = "Morocco", name_ru = "Марокко", name_de = "Marokko", iso = "MA", iso3 = "MAR", continent = "Africa", color = { 192, 174, 30 } }
 byColor["192,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "mozambique",
-	name = "Mozambique",
-	name_ru = "Мозамбик",
-	name_de = "Mosambik",
-	iso = "MZ",
-	iso3 = "MOZ",
-	continent = "Africa",
-	color = { 210, 174, 30 },
-}
+local e = { id = "mozambique", name = "Mozambique", name_ru = "Мозамбик", name_de = "Mosambik", iso = "MZ", iso3 = "MOZ", continent = "Africa", color = { 210, 174, 30 } }
 byColor["210,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "myanmar",
-	name = "Myanmar",
-	name_ru = "Мьянма",
-	name_de = "Myanmar",
-	iso = "MM",
-	iso3 = "MMR",
-	continent = "Asia",
-	color = { 228, 174, 30 },
-}
+local e = { id = "myanmar", name = "Myanmar", name_ru = "Мьянма", name_de = "Myanmar", iso = "MM", iso3 = "MMR", continent = "Asia", color = { 228, 174, 30 } }
 byColor["228,174,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "n_cyprus",
-	name = "N. Cyprus",
-	name_ru = "Турецкая Республика Северного Кипра",
-	name_de = "Türkische Republik Nordzypern",
-	iso = "-99",
-	iso3 = "-99",
-	continent = "Asia",
-	color = { 30, 192, 30 },
-}
+local e = { id = "n_cyprus", name = "N. Cyprus", name_ru = "Турецкая Республика Северного Кипра", name_de = "Türkische Republik Nordzypern", iso = "-99", iso3 = "-99", continent = "Asia", color = { 30, 192, 30 } }
 byColor["30,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "namibia",
-	name = "Namibia",
-	name_ru = "Намибия",
-	name_de = "Namibia",
-	iso = "NA",
-	iso3 = "NAM",
-	continent = "Africa",
-	color = { 48, 192, 30 },
-}
+local e = { id = "namibia", name = "Namibia", name_ru = "Намибия", name_de = "Namibia", iso = "NA", iso3 = "NAM", continent = "Africa", color = { 48, 192, 30 } }
 byColor["48,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "nepal",
-	name = "Nepal",
-	name_ru = "Непал",
-	name_de = "Nepal",
-	iso = "NP",
-	iso3 = "NPL",
-	continent = "Asia",
-	color = { 66, 192, 30 },
-}
+local e = { id = "nepal", name = "Nepal", name_ru = "Непал", name_de = "Nepal", iso = "NP", iso3 = "NPL", continent = "Asia", color = { 66, 192, 30 } }
 byColor["66,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "netherlands",
-	name = "Netherlands",
-	name_ru = "Нидерланды",
-	name_de = "Niederlande",
-	iso = "NL",
-	iso3 = "NLD",
-	continent = "Europe",
-	color = { 84, 192, 30 },
-}
+local e = { id = "netherlands", name = "Netherlands", name_ru = "Нидерланды", name_de = "Niederlande", iso = "NL", iso3 = "NLD", continent = "Europe", color = { 84, 192, 30 } }
 byColor["84,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "new_caledonia",
-	name = "New Caledonia",
-	name_ru = "Новая Каледония",
-	name_de = "Neukaledonien",
-	iso = "NC",
-	iso3 = "NCL",
-	continent = "Oceania",
-	color = { 102, 192, 30 },
-}
+local e = { id = "new_caledonia", name = "New Caledonia", name_ru = "Новая Каледония", name_de = "Neukaledonien", iso = "NC", iso3 = "NCL", continent = "Oceania", color = { 102, 192, 30 } }
 byColor["102,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "new_zealand",
-	name = "New Zealand",
-	name_ru = "Новая Зеландия",
-	name_de = "Neuseeland",
-	iso = "NZ",
-	iso3 = "NZL",
-	continent = "Oceania",
-	color = { 120, 192, 30 },
-}
+local e = { id = "new_zealand", name = "New Zealand", name_ru = "Новая Зеландия", name_de = "Neuseeland", iso = "NZ", iso3 = "NZL", continent = "Oceania", color = { 120, 192, 30 } }
 byColor["120,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "nicaragua",
-	name = "Nicaragua",
-	name_ru = "Никарагуа",
-	name_de = "Nicaragua",
-	iso = "NI",
-	iso3 = "NIC",
-	continent = "North America",
-	color = { 138, 192, 30 },
-}
+local e = { id = "nicaragua", name = "Nicaragua", name_ru = "Никарагуа", name_de = "Nicaragua", iso = "NI", iso3 = "NIC", continent = "North America", color = { 138, 192, 30 } }
 byColor["138,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "niger",
-	name = "Niger",
-	name_ru = "Нигер",
-	name_de = "Niger",
-	iso = "NE",
-	iso3 = "NER",
-	continent = "Africa",
-	color = { 156, 192, 30 },
-}
+local e = { id = "niger", name = "Niger", name_ru = "Нигер", name_de = "Niger", iso = "NE", iso3 = "NER", continent = "Africa", color = { 156, 192, 30 } }
 byColor["156,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "nigeria",
-	name = "Nigeria",
-	name_ru = "Нигерия",
-	name_de = "Nigeria",
-	iso = "NG",
-	iso3 = "NGA",
-	continent = "Africa",
-	color = { 174, 192, 30 },
-}
+local e = { id = "nigeria", name = "Nigeria", name_ru = "Нигерия", name_de = "Nigeria", iso = "NG", iso3 = "NGA", continent = "Africa", color = { 174, 192, 30 } }
 byColor["174,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "north_korea",
-	name = "North Korea",
-	name_ru = "КНДР",
-	name_de = "Nordkorea",
-	iso = "KP",
-	iso3 = "PRK",
-	continent = "Asia",
-	color = { 192, 192, 30 },
-}
+local e = { id = "north_korea", name = "North Korea", name_ru = "КНДР", name_de = "Nordkorea", iso = "KP", iso3 = "PRK", continent = "Asia", color = { 192, 192, 30 } }
 byColor["192,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "north_macedonia",
-	name = "North Macedonia",
-	name_ru = "Северная Македония",
-	name_de = "Nordmazedonien",
-	iso = "MK",
-	iso3 = "MKD",
-	continent = "Europe",
-	color = { 210, 192, 30 },
-}
+local e = { id = "north_macedonia", name = "North Macedonia", name_ru = "Северная Македония", name_de = "Nordmazedonien", iso = "MK", iso3 = "MKD", continent = "Europe", color = { 210, 192, 30 } }
 byColor["210,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "norway",
-	name = "Norway",
-	name_ru = "Норвегия",
-	name_de = "Norwegen",
-	iso = "-99",
-	iso3 = "-99",
-	continent = "Europe",
-	color = { 228, 192, 30 },
-}
+local e = { id = "norway", name = "Norway", name_ru = "Норвегия", name_de = "Norwegen", iso = "-99", iso3 = "-99", continent = "Europe", color = { 228, 192, 30 } }
 byColor["228,192,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "oman",
-	name = "Oman",
-	name_ru = "Оман",
-	name_de = "Oman",
-	iso = "OM",
-	iso3 = "OMN",
-	continent = "Asia",
-	color = { 30, 210, 30 },
-}
+local e = { id = "oman", name = "Oman", name_ru = "Оман", name_de = "Oman", iso = "OM", iso3 = "OMN", continent = "Asia", color = { 30, 210, 30 } }
 byColor["30,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "pakistan",
-	name = "Pakistan",
-	name_ru = "Пакистан",
-	name_de = "Pakistan",
-	iso = "PK",
-	iso3 = "PAK",
-	continent = "Asia",
-	color = { 48, 210, 30 },
-}
+local e = { id = "pakistan", name = "Pakistan", name_ru = "Пакистан", name_de = "Pakistan", iso = "PK", iso3 = "PAK", continent = "Asia", color = { 48, 210, 30 } }
 byColor["48,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "palestine",
-	name = "Palestine",
-	name_ru = "Палестина",
-	name_de = "Palästina",
-	iso = "PS",
-	iso3 = "PSE",
-	continent = "Asia",
-	color = { 66, 210, 30 },
-}
+local e = { id = "palestine", name = "Palestine", name_ru = "Палестина", name_de = "Palästina", iso = "PS", iso3 = "PSE", continent = "Asia", color = { 66, 210, 30 } }
 byColor["66,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "panama",
-	name = "Panama",
-	name_ru = "Панама",
-	name_de = "Panama",
-	iso = "PA",
-	iso3 = "PAN",
-	continent = "North America",
-	color = { 84, 210, 30 },
-}
+local e = { id = "panama", name = "Panama", name_ru = "Панама", name_de = "Panama", iso = "PA", iso3 = "PAN", continent = "North America", color = { 84, 210, 30 } }
 byColor["84,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "papua_new_guinea",
-	name = "Papua New Guinea",
-	name_ru = "Папуа — Новая Гвинея",
-	name_de = "Papua-Neuguinea",
-	iso = "PG",
-	iso3 = "PNG",
-	continent = "Oceania",
-	color = { 102, 210, 30 },
-}
+local e = { id = "papua_new_guinea", name = "Papua New Guinea", name_ru = "Папуа — Новая Гвинея", name_de = "Papua-Neuguinea", iso = "PG", iso3 = "PNG", continent = "Oceania", color = { 102, 210, 30 } }
 byColor["102,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "paraguay",
-	name = "Paraguay",
-	name_ru = "Парагвай",
-	name_de = "Paraguay",
-	iso = "PY",
-	iso3 = "PRY",
-	continent = "South America",
-	color = { 120, 210, 30 },
-}
+local e = { id = "paraguay", name = "Paraguay", name_ru = "Парагвай", name_de = "Paraguay", iso = "PY", iso3 = "PRY", continent = "South America", color = { 120, 210, 30 } }
 byColor["120,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "peru",
-	name = "Peru",
-	name_ru = "Перу",
-	name_de = "Peru",
-	iso = "PE",
-	iso3 = "PER",
-	continent = "South America",
-	color = { 138, 210, 30 },
-}
+local e = { id = "peru", name = "Peru", name_ru = "Перу", name_de = "Peru", iso = "PE", iso3 = "PER", continent = "South America", color = { 138, 210, 30 } }
 byColor["138,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "philippines",
-	name = "Philippines",
-	name_ru = "Филиппины",
-	name_de = "Philippinen",
-	iso = "PH",
-	iso3 = "PHL",
-	continent = "Asia",
-	color = { 156, 210, 30 },
-}
+local e = { id = "philippines", name = "Philippines", name_ru = "Филиппины", name_de = "Philippinen", iso = "PH", iso3 = "PHL", continent = "Asia", color = { 156, 210, 30 } }
 byColor["156,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "poland",
-	name = "Poland",
-	name_ru = "Польша",
-	name_de = "Polen",
-	iso = "PL",
-	iso3 = "POL",
-	continent = "Europe",
-	color = { 174, 210, 30 },
-}
+local e = { id = "poland", name = "Poland", name_ru = "Польша", name_de = "Polen", iso = "PL", iso3 = "POL", continent = "Europe", color = { 174, 210, 30 } }
 byColor["174,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "portugal",
-	name = "Portugal",
-	name_ru = "Португалия",
-	name_de = "Portugal",
-	iso = "PT",
-	iso3 = "PRT",
-	continent = "Europe",
-	color = { 192, 210, 30 },
-}
+local e = { id = "portugal", name = "Portugal", name_ru = "Португалия", name_de = "Portugal", iso = "PT", iso3 = "PRT", continent = "Europe", color = { 192, 210, 30 } }
 byColor["192,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "puerto_rico",
-	name = "Puerto Rico",
-	name_ru = "Пуэрто-Рико",
-	name_de = "Puerto Rico",
-	iso = "PR",
-	iso3 = "PRI",
-	continent = "North America",
-	color = { 210, 210, 30 },
-}
+local e = { id = "puerto_rico", name = "Puerto Rico", name_ru = "Пуэрто-Рико", name_de = "Puerto Rico", iso = "PR", iso3 = "PRI", continent = "North America", color = { 210, 210, 30 } }
 byColor["210,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "qatar",
-	name = "Qatar",
-	name_ru = "Катар",
-	name_de = "Katar",
-	iso = "QA",
-	iso3 = "QAT",
-	continent = "Asia",
-	color = { 228, 210, 30 },
-}
+local e = { id = "qatar", name = "Qatar", name_ru = "Катар", name_de = "Katar", iso = "QA", iso3 = "QAT", continent = "Asia", color = { 228, 210, 30 } }
 byColor["228,210,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "romania",
-	name = "Romania",
-	name_ru = "Румыния",
-	name_de = "Rumänien",
-	iso = "RO",
-	iso3 = "ROU",
-	continent = "Europe",
-	color = { 30, 228, 30 },
-}
+local e = { id = "romania", name = "Romania", name_ru = "Румыния", name_de = "Rumänien", iso = "RO", iso3 = "ROU", continent = "Europe", color = { 30, 228, 30 } }
 byColor["30,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "russia",
-	name = "Russia",
-	name_ru = "Россия",
-	name_de = "Russland",
-	iso = "RU",
-	iso3 = "RUS",
-	continent = "Europe",
-	color = { 48, 228, 30 },
-}
+local e = { id = "russia", name = "Russia", name_ru = "Россия", name_de = "Russland", iso = "RU", iso3 = "RUS", continent = "Europe", color = { 48, 228, 30 } }
 byColor["48,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "rwanda",
-	name = "Rwanda",
-	name_ru = "Руанда",
-	name_de = "Ruanda",
-	iso = "RW",
-	iso3 = "RWA",
-	continent = "Africa",
-	color = { 66, 228, 30 },
-}
+local e = { id = "rwanda", name = "Rwanda", name_ru = "Руанда", name_de = "Ruanda", iso = "RW", iso3 = "RWA", continent = "Africa", color = { 66, 228, 30 } }
 byColor["66,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "s_sudan",
-	name = "S. Sudan",
-	name_ru = "Южный Судан",
-	name_de = "Südsudan",
-	iso = "SS",
-	iso3 = "SSD",
-	continent = "Africa",
-	color = { 84, 228, 30 },
-}
+local e = { id = "s_sudan", name = "S. Sudan", name_ru = "Южный Судан", name_de = "Südsudan", iso = "SS", iso3 = "SSD", continent = "Africa", color = { 84, 228, 30 } }
 byColor["84,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "saudi_arabia",
-	name = "Saudi Arabia",
-	name_ru = "Саудовская Аравия",
-	name_de = "Saudi-Arabien",
-	iso = "SA",
-	iso3 = "SAU",
-	continent = "Asia",
-	color = { 102, 228, 30 },
-}
+local e = { id = "saudi_arabia", name = "Saudi Arabia", name_ru = "Саудовская Аравия", name_de = "Saudi-Arabien", iso = "SA", iso3 = "SAU", continent = "Asia", color = { 102, 228, 30 } }
 byColor["102,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "senegal",
-	name = "Senegal",
-	name_ru = "Сенегал",
-	name_de = "Senegal",
-	iso = "SN",
-	iso3 = "SEN",
-	continent = "Africa",
-	color = { 120, 228, 30 },
-}
+local e = { id = "senegal", name = "Senegal", name_ru = "Сенегал", name_de = "Senegal", iso = "SN", iso3 = "SEN", continent = "Africa", color = { 120, 228, 30 } }
 byColor["120,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "serbia",
-	name = "Serbia",
-	name_ru = "Сербия",
-	name_de = "Serbien",
-	iso = "RS",
-	iso3 = "SRB",
-	continent = "Europe",
-	color = { 138, 228, 30 },
-}
+local e = { id = "serbia", name = "Serbia", name_ru = "Сербия", name_de = "Serbien", iso = "RS", iso3 = "SRB", continent = "Europe", color = { 138, 228, 30 } }
 byColor["138,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "sierra_leone",
-	name = "Sierra Leone",
-	name_ru = "Сьерра-Леоне",
-	name_de = "Sierra Leone",
-	iso = "SL",
-	iso3 = "SLE",
-	continent = "Africa",
-	color = { 156, 228, 30 },
-}
+local e = { id = "sierra_leone", name = "Sierra Leone", name_ru = "Сьерра-Леоне", name_de = "Sierra Leone", iso = "SL", iso3 = "SLE", continent = "Africa", color = { 156, 228, 30 } }
 byColor["156,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "slovakia",
-	name = "Slovakia",
-	name_ru = "Словакия",
-	name_de = "Slowakei",
-	iso = "SK",
-	iso3 = "SVK",
-	continent = "Europe",
-	color = { 174, 228, 30 },
-}
+local e = { id = "slovakia", name = "Slovakia", name_ru = "Словакия", name_de = "Slowakei", iso = "SK", iso3 = "SVK", continent = "Europe", color = { 174, 228, 30 } }
 byColor["174,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "slovenia",
-	name = "Slovenia",
-	name_ru = "Словения",
-	name_de = "Slowenien",
-	iso = "SI",
-	iso3 = "SVN",
-	continent = "Europe",
-	color = { 192, 228, 30 },
-}
+local e = { id = "slovenia", name = "Slovenia", name_ru = "Словения", name_de = "Slowenien", iso = "SI", iso3 = "SVN", continent = "Europe", color = { 192, 228, 30 } }
 byColor["192,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "solomon_is",
-	name = "Solomon Is.",
-	name_ru = "Соломоновы Острова",
-	name_de = "Salomonen",
-	iso = "SB",
-	iso3 = "SLB",
-	continent = "Oceania",
-	color = { 210, 228, 30 },
-}
+local e = { id = "solomon_is", name = "Solomon Is.", name_ru = "Соломоновы Острова", name_de = "Salomonen", iso = "SB", iso3 = "SLB", continent = "Oceania", color = { 210, 228, 30 } }
 byColor["210,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "somalia",
-	name = "Somalia",
-	name_ru = "Сомали",
-	name_de = "Somalia",
-	iso = "SO",
-	iso3 = "SOM",
-	continent = "Africa",
-	color = { 228, 228, 30 },
-}
+local e = { id = "somalia", name = "Somalia", name_ru = "Сомали", name_de = "Somalia", iso = "SO", iso3 = "SOM", continent = "Africa", color = { 228, 228, 30 } }
 byColor["228,228,30"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "somaliland",
-	name = "Somaliland",
-	name_ru = "Сомалиленд",
-	name_de = "Somaliland",
-	iso = "-99",
-	iso3 = "-99",
-	continent = "Africa",
-	color = { 30, 30, 48 },
-}
+local e = { id = "somaliland", name = "Somaliland", name_ru = "Сомалиленд", name_de = "Somaliland", iso = "-99", iso3 = "-99", continent = "Africa", color = { 30, 30, 48 } }
 byColor["30,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "south_africa",
-	name = "South Africa",
-	name_ru = "ЮАР",
-	name_de = "Südafrika",
-	iso = "ZA",
-	iso3 = "ZAF",
-	continent = "Africa",
-	color = { 48, 30, 48 },
-}
+local e = { id = "south_africa", name = "South Africa", name_ru = "ЮАР", name_de = "Südafrika", iso = "ZA", iso3 = "ZAF", continent = "Africa", color = { 48, 30, 48 } }
 byColor["48,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "south_korea",
-	name = "South Korea",
-	name_ru = "Республика Корея",
-	name_de = "Südkorea",
-	iso = "KR",
-	iso3 = "KOR",
-	continent = "Asia",
-	color = { 66, 30, 48 },
-}
+local e = { id = "south_korea", name = "South Korea", name_ru = "Республика Корея", name_de = "Südkorea", iso = "KR", iso3 = "KOR", continent = "Asia", color = { 66, 30, 48 } }
 byColor["66,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "spain",
-	name = "Spain",
-	name_ru = "Испания",
-	name_de = "Spanien",
-	iso = "ES",
-	iso3 = "ESP",
-	continent = "Europe",
-	color = { 84, 30, 48 },
-}
+local e = { id = "spain", name = "Spain", name_ru = "Испания", name_de = "Spanien", iso = "ES", iso3 = "ESP", continent = "Europe", color = { 84, 30, 48 } }
 byColor["84,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "sri_lanka",
-	name = "Sri Lanka",
-	name_ru = "Шри-Ланка",
-	name_de = "Sri Lanka",
-	iso = "LK",
-	iso3 = "LKA",
-	continent = "Asia",
-	color = { 102, 30, 48 },
-}
+local e = { id = "sri_lanka", name = "Sri Lanka", name_ru = "Шри-Ланка", name_de = "Sri Lanka", iso = "LK", iso3 = "LKA", continent = "Asia", color = { 102, 30, 48 } }
 byColor["102,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "sudan",
-	name = "Sudan",
-	name_ru = "Судан",
-	name_de = "Sudan",
-	iso = "SD",
-	iso3 = "SDN",
-	continent = "Africa",
-	color = { 120, 30, 48 },
-}
+local e = { id = "sudan", name = "Sudan", name_ru = "Судан", name_de = "Sudan", iso = "SD", iso3 = "SDN", continent = "Africa", color = { 120, 30, 48 } }
 byColor["120,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "suriname",
-	name = "Suriname",
-	name_ru = "Суринам",
-	name_de = "Suriname",
-	iso = "SR",
-	iso3 = "SUR",
-	continent = "South America",
-	color = { 138, 30, 48 },
-}
+local e = { id = "suriname", name = "Suriname", name_ru = "Суринам", name_de = "Suriname", iso = "SR", iso3 = "SUR", continent = "South America", color = { 138, 30, 48 } }
 byColor["138,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "sweden",
-	name = "Sweden",
-	name_ru = "Швеция",
-	name_de = "Schweden",
-	iso = "SE",
-	iso3 = "SWE",
-	continent = "Europe",
-	color = { 156, 30, 48 },
-}
+local e = { id = "sweden", name = "Sweden", name_ru = "Швеция", name_de = "Schweden", iso = "SE", iso3 = "SWE", continent = "Europe", color = { 156, 30, 48 } }
 byColor["156,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "switzerland",
-	name = "Switzerland",
-	name_ru = "Швейцария",
-	name_de = "Schweiz",
-	iso = "CH",
-	iso3 = "CHE",
-	continent = "Europe",
-	color = { 174, 30, 48 },
-}
+local e = { id = "switzerland", name = "Switzerland", name_ru = "Швейцария", name_de = "Schweiz", iso = "CH", iso3 = "CHE", continent = "Europe", color = { 174, 30, 48 } }
 byColor["174,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "syria",
-	name = "Syria",
-	name_ru = "Сирия",
-	name_de = "Syrien",
-	iso = "SY",
-	iso3 = "SYR",
-	continent = "Asia",
-	color = { 192, 30, 48 },
-}
+local e = { id = "syria", name = "Syria", name_ru = "Сирия", name_de = "Syrien", iso = "SY", iso3 = "SYR", continent = "Asia", color = { 192, 30, 48 } }
 byColor["192,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "taiwan",
-	name = "Taiwan",
-	name_ru = "Тайвань",
-	name_de = "Republik China",
-	iso = "CN-TW",
-	iso3 = "TWN",
-	continent = "Asia",
-	color = { 210, 30, 48 },
-}
+local e = { id = "taiwan", name = "Taiwan", name_ru = "Тайвань", name_de = "Republik China", iso = "CN-TW", iso3 = "TWN", continent = "Asia", color = { 210, 30, 48 } }
 byColor["210,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "tajikistan",
-	name = "Tajikistan",
-	name_ru = "Таджикистан",
-	name_de = "Tadschikistan",
-	iso = "TJ",
-	iso3 = "TJK",
-	continent = "Asia",
-	color = { 228, 30, 48 },
-}
+local e = { id = "tajikistan", name = "Tajikistan", name_ru = "Таджикистан", name_de = "Tadschikistan", iso = "TJ", iso3 = "TJK", continent = "Asia", color = { 228, 30, 48 } }
 byColor["228,30,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "tanzania",
-	name = "Tanzania",
-	name_ru = "Танзания",
-	name_de = "Tansania",
-	iso = "TZ",
-	iso3 = "TZA",
-	continent = "Africa",
-	color = { 30, 48, 48 },
-}
+local e = { id = "tanzania", name = "Tanzania", name_ru = "Танзания", name_de = "Tansania", iso = "TZ", iso3 = "TZA", continent = "Africa", color = { 30, 48, 48 } }
 byColor["30,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "thailand",
-	name = "Thailand",
-	name_ru = "Таиланд",
-	name_de = "Thailand",
-	iso = "TH",
-	iso3 = "THA",
-	continent = "Asia",
-	color = { 48, 48, 48 },
-}
+local e = { id = "thailand", name = "Thailand", name_ru = "Таиланд", name_de = "Thailand", iso = "TH", iso3 = "THA", continent = "Asia", color = { 48, 48, 48 } }
 byColor["48,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "timor_leste",
-	name = "Timor-Leste",
-	name_ru = "Восточный Тимор",
-	name_de = "Osttimor",
-	iso = "TL",
-	iso3 = "TLS",
-	continent = "Asia",
-	color = { 66, 48, 48 },
-}
+local e = { id = "timor_leste", name = "Timor-Leste", name_ru = "Восточный Тимор", name_de = "Osttimor", iso = "TL", iso3 = "TLS", continent = "Asia", color = { 66, 48, 48 } }
 byColor["66,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "togo",
-	name = "Togo",
-	name_ru = "Того",
-	name_de = "Togo",
-	iso = "TG",
-	iso3 = "TGO",
-	continent = "Africa",
-	color = { 84, 48, 48 },
-}
+local e = { id = "togo", name = "Togo", name_ru = "Того", name_de = "Togo", iso = "TG", iso3 = "TGO", continent = "Africa", color = { 84, 48, 48 } }
 byColor["84,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "trinidad_and_tobago",
-	name = "Trinidad and Tobago",
-	name_ru = "Тринидад и Тобаго",
-	name_de = "Trinidad und Tobago",
-	iso = "TT",
-	iso3 = "TTO",
-	continent = "North America",
-	color = { 102, 48, 48 },
-}
+local e = { id = "trinidad_and_tobago", name = "Trinidad and Tobago", name_ru = "Тринидад и Тобаго", name_de = "Trinidad und Tobago", iso = "TT", iso3 = "TTO", continent = "North America", color = { 102, 48, 48 } }
 byColor["102,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "tunisia",
-	name = "Tunisia",
-	name_ru = "Тунис",
-	name_de = "Tunesien",
-	iso = "TN",
-	iso3 = "TUN",
-	continent = "Africa",
-	color = { 120, 48, 48 },
-}
+local e = { id = "tunisia", name = "Tunisia", name_ru = "Тунис", name_de = "Tunesien", iso = "TN", iso3 = "TUN", continent = "Africa", color = { 120, 48, 48 } }
 byColor["120,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "turkey",
-	name = "Turkey",
-	name_ru = "Турция",
-	name_de = "Türkei",
-	iso = "TR",
-	iso3 = "TUR",
-	continent = "Asia",
-	color = { 138, 48, 48 },
-}
+local e = { id = "turkey", name = "Turkey", name_ru = "Турция", name_de = "Türkei", iso = "TR", iso3 = "TUR", continent = "Asia", color = { 138, 48, 48 } }
 byColor["138,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "turkmenistan",
-	name = "Turkmenistan",
-	name_ru = "Туркмения",
-	name_de = "Turkmenistan",
-	iso = "TM",
-	iso3 = "TKM",
-	continent = "Asia",
-	color = { 156, 48, 48 },
-}
+local e = { id = "turkmenistan", name = "Turkmenistan", name_ru = "Туркмения", name_de = "Turkmenistan", iso = "TM", iso3 = "TKM", continent = "Asia", color = { 156, 48, 48 } }
 byColor["156,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "uganda",
-	name = "Uganda",
-	name_ru = "Уганда",
-	name_de = "Uganda",
-	iso = "UG",
-	iso3 = "UGA",
-	continent = "Africa",
-	color = { 174, 48, 48 },
-}
+local e = { id = "uganda", name = "Uganda", name_ru = "Уганда", name_de = "Uganda", iso = "UG", iso3 = "UGA", continent = "Africa", color = { 174, 48, 48 } }
 byColor["174,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "ukraine",
-	name = "Ukraine",
-	name_ru = "Украина",
-	name_de = "Ukraine",
-	iso = "UA",
-	iso3 = "UKR",
-	continent = "Europe",
-	color = { 192, 48, 48 },
-}
+local e = { id = "ukraine", name = "Ukraine", name_ru = "Украина", name_de = "Ukraine", iso = "UA", iso3 = "UKR", continent = "Europe", color = { 192, 48, 48 } }
 byColor["192,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "united_arab_emirates",
-	name = "United Arab Emirates",
-	name_ru = "Объединённые Арабские Эмираты",
-	name_de = "Vereinigte Arabische Emirate",
-	iso = "AE",
-	iso3 = "ARE",
-	continent = "Asia",
-	color = { 210, 48, 48 },
-}
+local e = { id = "united_arab_emirates", name = "United Arab Emirates", name_ru = "Объединённые Арабские Эмираты", name_de = "Vereinigte Arabische Emirate", iso = "AE", iso3 = "ARE", continent = "Asia", color = { 210, 48, 48 } }
 byColor["210,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "united_kingdom",
-	name = "United Kingdom",
-	name_ru = "Великобритания",
-	name_de = "Vereinigtes Königreich",
-	iso = "GB",
-	iso3 = "GBR",
-	continent = "Europe",
-	color = { 228, 48, 48 },
-}
+local e = { id = "united_kingdom", name = "United Kingdom", name_ru = "Великобритания", name_de = "Vereinigtes Königreich", iso = "GB", iso3 = "GBR", continent = "Europe", color = { 228, 48, 48 } }
 byColor["228,48,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "united_states_of_america",
-	name = "United States of America",
-	name_ru = "США",
-	name_de = "Vereinigte Staaten",
-	iso = "US",
-	iso3 = "USA",
-	continent = "North America",
-	color = { 30, 66, 48 },
-}
+local e = { id = "united_states_of_america", name = "United States of America", name_ru = "США", name_de = "Vereinigte Staaten", iso = "US", iso3 = "USA", continent = "North America", color = { 30, 66, 48 } }
 byColor["30,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "uruguay",
-	name = "Uruguay",
-	name_ru = "Уругвай",
-	name_de = "Uruguay",
-	iso = "UY",
-	iso3 = "URY",
-	continent = "South America",
-	color = { 48, 66, 48 },
-}
+local e = { id = "uruguay", name = "Uruguay", name_ru = "Уругвай", name_de = "Uruguay", iso = "UY", iso3 = "URY", continent = "South America", color = { 48, 66, 48 } }
 byColor["48,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "uzbekistan",
-	name = "Uzbekistan",
-	name_ru = "Узбекистан",
-	name_de = "Usbekistan",
-	iso = "UZ",
-	iso3 = "UZB",
-	continent = "Asia",
-	color = { 66, 66, 48 },
-}
+local e = { id = "uzbekistan", name = "Uzbekistan", name_ru = "Узбекистан", name_de = "Usbekistan", iso = "UZ", iso3 = "UZB", continent = "Asia", color = { 66, 66, 48 } }
 byColor["66,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "vanuatu",
-	name = "Vanuatu",
-	name_ru = "Вануату",
-	name_de = "Vanuatu",
-	iso = "VU",
-	iso3 = "VUT",
-	continent = "Oceania",
-	color = { 84, 66, 48 },
-}
+local e = { id = "vanuatu", name = "Vanuatu", name_ru = "Вануату", name_de = "Vanuatu", iso = "VU", iso3 = "VUT", continent = "Oceania", color = { 84, 66, 48 } }
 byColor["84,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "venezuela",
-	name = "Venezuela",
-	name_ru = "Венесуэла",
-	name_de = "Venezuela",
-	iso = "VE",
-	iso3 = "VEN",
-	continent = "South America",
-	color = { 102, 66, 48 },
-}
+local e = { id = "venezuela", name = "Venezuela", name_ru = "Венесуэла", name_de = "Venezuela", iso = "VE", iso3 = "VEN", continent = "South America", color = { 102, 66, 48 } }
 byColor["102,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "vietnam",
-	name = "Vietnam",
-	name_ru = "Вьетнам",
-	name_de = "Vietnam",
-	iso = "VN",
-	iso3 = "VNM",
-	continent = "Asia",
-	color = { 120, 66, 48 },
-}
+local e = { id = "vietnam", name = "Vietnam", name_ru = "Вьетнам", name_de = "Vietnam", iso = "VN", iso3 = "VNM", continent = "Asia", color = { 120, 66, 48 } }
 byColor["120,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "w_sahara",
-	name = "W. Sahara",
-	name_ru = "Западная Сахара",
-	name_de = "Westsahara",
-	iso = "EH",
-	iso3 = "ESH",
-	continent = "Africa",
-	color = { 138, 66, 48 },
-}
+local e = { id = "w_sahara", name = "W. Sahara", name_ru = "Западная Сахара", name_de = "Westsahara", iso = "EH", iso3 = "ESH", continent = "Africa", color = { 138, 66, 48 } }
 byColor["138,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "yemen",
-	name = "Yemen",
-	name_ru = "Йемен",
-	name_de = "Jemen",
-	iso = "YE",
-	iso3 = "YEM",
-	continent = "Asia",
-	color = { 156, 66, 48 },
-}
+local e = { id = "yemen", name = "Yemen", name_ru = "Йемен", name_de = "Jemen", iso = "YE", iso3 = "YEM", continent = "Asia", color = { 156, 66, 48 } }
 byColor["156,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "zambia",
-	name = "Zambia",
-	name_ru = "Замбия",
-	name_de = "Sambia",
-	iso = "ZM",
-	iso3 = "ZMB",
-	continent = "Africa",
-	color = { 174, 66, 48 },
-}
+local e = { id = "zambia", name = "Zambia", name_ru = "Замбия", name_de = "Sambia", iso = "ZM", iso3 = "ZMB", continent = "Africa", color = { 174, 66, 48 } }
 byColor["174,66,48"] = e
 list[#list + 1] = e
 
-local e = {
-	id = "zimbabwe",
-	name = "Zimbabwe",
-	name_ru = "Зимбабве",
-	name_de = "Simbabwe",
-	iso = "ZW",
-	iso3 = "ZWE",
-	continent = "Africa",
-	color = { 192, 66, 48 },
-}
+local e = { id = "zimbabwe", name = "Zimbabwe", name_ru = "Зимбабве", name_de = "Simbabwe", iso = "ZW", iso3 = "ZWE", continent = "Africa", color = { 192, 66, 48 } }
 byColor["192,66,48"] = e
 list[#list + 1] = e
 
